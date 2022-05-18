@@ -1,0 +1,284 @@
+"use strict";
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+const jwtSessionManager_1 = __importDefault(require("../sessionManager/jwtSessionManager"));
+const ramSessionManager_1 = __importDefault(require("../sessionManager/ramSessionManager"));
+const redisSessionManager_1 = __importDefault(require("../sessionManager/redisSessionManager"));
+const origamits_1 = require("origamits");
+const errorMessages_1 = __importDefault(require("../models/errorMessages"));
+var url = require('url');
+var express = require('express');
+var bodyParser = require('body-parser');
+var path = require('path');
+var fs = require('fs');
+var formidable = require('formidable');
+var http = require('http');
+var https = require('https');
+class ExpressIndex {
+    constructor(config) {
+        this.config = config;
+    }
+    init() {
+        return __awaiter(this, void 0, void 0, function* () {
+            var app = express();
+            this.setUrlParser(app, this.config);
+            yield this.setSessionManager(this.config);
+            this.setPublic(app, this.config);
+            this.setCrossDomain(app, this.config);
+            this.runServer(app, this.config);
+            var self = this;
+            app.use((req, res, next) => __awaiter(this, void 0, void 0, function* () {
+                var data = this.reqToDomain(req, self, res);
+                if (!data)
+                    return;
+                var session = req.session;
+                if (this.config.authz) {
+                    let isAuthz = false;
+                    try {
+                        isAuthz = yield self.checkAuthz(session, data, self.config.authz);
+                    }
+                    catch (exp) {
+                        console.log('exp>>', exp);
+                    }
+                    if (!isAuthz)
+                        return self.sendData(res, 200, { message: errorMessages_1.default.authz });
+                }
+                var upload = yield self.checkUpload(req, data, self);
+                if (!upload)
+                    return self.sendData(res, 200, { message: errorMessages_1.default.upload });
+                try {
+                    var responseData = yield origamits_1.Router.runExternal(data.domain, data.service, new origamits_1.MessageModel(data.body));
+                    var token = yield this.setSession(req, responseData);
+                    var addedResponse = responseData === null || responseData === void 0 ? void 0 : responseData.addedResponse;
+                    if (addedResponse) {
+                        if (responseData.addedResponse.redirect)
+                            return res.redirect(responseData.addedResponse.redirect);
+                        if (responseData.addedResponse.directText)
+                            return self.sendData(res, 200, responseData.addedResponse.directText);
+                        if (addedResponse.directFileDownload) {
+                            fs.readFile(addedResponse.directFileDownload, function (err, downloadData) {
+                                if (responseData.addedResponse.type) {
+                                    res.set('Content-Type', responseData.addedResponse.type);
+                                }
+                                return self.sendData(res, 200, downloadData);
+                            });
+                            return;
+                        }
+                    }
+                    var resp = { isDone: true, data: responseData };
+                    if (token)
+                        resp.token = token;
+                    return self.sendData(res, 200, resp);
+                }
+                catch (exp) {
+                    console.log('exp>>', exp);
+                    return self.sendData(res, 500, { message: exp });
+                }
+            }));
+        });
+    }
+    setSession(req, data) {
+        return __awaiter(this, void 0, void 0, function* () {
+            var token = req.header('authorization');
+            var sessionData = req.session;
+            if (data === null || data === void 0 ? void 0 : data.session) {
+                if (!sessionData)
+                    sessionData = {};
+                for (var name in data.session) {
+                    if (data.session[name] == null)
+                        delete sessionData[name];
+                    else {
+                        sessionData[name] = data.session[name];
+                    }
+                }
+                delete data.session;
+                var key = yield this.sessionManager.setSession(token, sessionData);
+                return key;
+            }
+            return "";
+        });
+    }
+    getUploadFile(req, data) {
+        return __awaiter(this, void 0, void 0, function* () {
+            return new Promise((res, rej) => __awaiter(this, void 0, void 0, function* () {
+                var form = new formidable.IncomingForm();
+                if (data.maxUploadSize)
+                    form.maxFileSize = data.maxUploadSize;
+                form.parse(req, function (err, files) {
+                    if (err)
+                        return rej(err);
+                    if (files.media && files.media.path) {
+                        return res({
+                            path: files.media.path,
+                            type: files.media.type,
+                            name: files.media.name,
+                            size: files.media.size
+                        });
+                    }
+                    if (!files.filetoupload)
+                        return rej({});
+                    res({
+                        path: files.filetoupload.path,
+                        type: files.filetoupload.type,
+                        name: files.filetoupload.name,
+                        size: files.filetoupload.size
+                    });
+                });
+            }));
+        });
+    }
+    checkAuthz(session, dt, authz) {
+        return __awaiter(this, void 0, void 0, function* () {
+            return new Promise((res, rej) => __awaiter(this, void 0, void 0, function* () {
+                if (session && session.superadmin)
+                    return res(true);
+                try {
+                    var data = origamits_1.Router.runExternal(authz.domain, 'checkRole', new origamits_1.MessageModel({ data: { domain: dt.domain, service: dt.service }, session: session }));
+                    res(!!data);
+                }
+                catch (exp) {
+                    return res(false);
+                }
+            }));
+        });
+    }
+    checkUpload(req, data, self) {
+        return __awaiter(this, void 0, void 0, function* () {
+            var route = origamits_1.Router.getRouteData(data.domain, data.service);
+            if (route && route.maxUploadSize != null) {
+                try {
+                    data.body.$uploadedFile = yield self.getUploadFile(req, route);
+                }
+                catch (exp) {
+                    console.log('exp>>', exp);
+                    return false;
+                }
+            }
+            return true;
+        });
+    }
+    sendData(res, status, data) {
+        return res.status(status).send(data);
+    }
+    reqToDomain(req, self, res) {
+        var url_parts = url.parse(req.url, true);
+        var seperate = url_parts.pathname.split('/');
+        if (!seperate || seperate.length != 3) {
+            self.sendData(res, 200, { m: 'endpoint001' });
+            return;
+        }
+        var returnData = {
+            domain: seperate[1],
+            service: seperate[2]
+        };
+        var session = req.session;
+        var body = {
+            session: session,
+        };
+        if (req.method == 'GET') {
+            body.data = {};
+            for (var a in url_parts.query)
+                body.data[a] = url_parts.query[a];
+            if (req.body)
+                for (var a in req.body) {
+                    body.data[a] = req.body[a];
+                }
+        }
+        else {
+            body.data = req.body;
+            var bx = url_parts.query;
+            for (var a in bx) {
+                body.data[a] = bx[a];
+            }
+        }
+        returnData.body = body;
+        return returnData;
+    }
+    runServer(app, config) {
+        var pr = config.protocol;
+        if (pr.type == "http") {
+            var server = http.createServer(app);
+            server.listen(pr.port);
+            console.log("\x1b[32m%s\x1b[0m", 'http run at port ' + pr.port);
+        }
+        if (pr.type == "https") {
+            var privateKey = fs.readFileSync(pr.key, 'utf8');
+            var certificate = fs.readFileSync(pr.crt, 'utf8');
+            var credentials = { key: privateKey, cert: certificate };
+            var server = https.createServer(credentials, app);
+            server.listen(pr.port);
+            console.log("\x1b[32m%s\x1b[0m", 'http run at port ' + pr.port);
+        }
+    }
+    setUrlParser(app, config) {
+        var _a, _b;
+        if ((_a = config.limit) === null || _a === void 0 ? void 0 : _a.bodyLimit)
+            app.use(bodyParser.json({ limit: config.limit.bodyLimit * 1026 * 1024 }));
+        else
+            app.use(bodyParser.json());
+        if ((_b = config.limit) === null || _b === void 0 ? void 0 : _b.urlLimit)
+            app.use(bodyParser.urlencoded({ limit: config.limit.urlLimit * 1026 * 1024, extended: true }));
+        else
+            app.use(bodyParser.urlencoded({ extended: true }));
+    }
+    setSessionManager(config) {
+        return __awaiter(this, void 0, void 0, function* () {
+            if (config.protocol.redisConfig) {
+                this.sessionManager = new redisSessionManager_1.default();
+                yield this.sessionManager.init(config.protocol.redisConfig);
+            }
+            else if (config.protocol.jwtConfig) {
+                this.sessionManager = new jwtSessionManager_1.default();
+                yield this.sessionManager.init(config.protocol.jwtConfig);
+            }
+            else {
+                this.sessionManager = new ramSessionManager_1.default();
+                yield this.sessionManager.init({});
+            }
+        });
+    }
+    setPublic(app, config) {
+        for (var folder of config.publicFolder) {
+            app.use(express.static(folder));
+        }
+    }
+    setCrossDomain(app, config) {
+        if (!config.crossDomain)
+            return;
+        for (var cross of config.crossDomain) {
+            app.use(function (req, res, next) {
+                if ('OPTIONS' == req.method) {
+                    if (cross == '*')
+                        res.header('Access-Control-Allow-Origin', req.headers.origin);
+                    else
+                        res.header('Access-Control-Allow-Origin', cross);
+                    res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,PATCH,OPTIONS');
+                    res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization, Content-Length, X-Requested-With');
+                    res.setHeader('Access-Control-Allow-Credentials', true);
+                    res.status(200).send('OK');
+                }
+                else {
+                    if (cross == '*')
+                        res.header('Access-Control-Allow-Origin', req.headers.origin);
+                    else
+                        res.header('Access-Control-Allow-Origin', cross);
+                    res.setHeader('Access-Control-Allow-Credentials', true);
+                    next();
+                }
+            });
+        }
+    }
+}
+exports.default = ExpressIndex;
+//# sourceMappingURL=expressIndex.js.map

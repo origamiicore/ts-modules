@@ -1,0 +1,1 @@
+{"version":3,"file":"endpointConfig.js","sourceRoot":"","sources":["../../../src/models/endpointConfig.ts"],"names":[],"mappings":";;AAEA,yCAAuC;AAEvC,MAAqB,cAAe,SAAQ,wBAAY;IAGpD,YAEI,MAKC;QACD,KAAK,CAAC,MAAM,CAAC,CAAC;QACd,IAAI,MAAM;YAAE,MAAM,CAAC,MAAM,CAAC,IAAI,EAAE,MAAM,CAAC,CAAC;IAC5C,CAAC;CACJ;AAdD,iCAcC"}
