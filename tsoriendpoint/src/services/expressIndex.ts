@@ -7,6 +7,7 @@ import {Router,MessageModel,RouteResponse} from 'origamits'
 import AuthzEndpoint from "../models/authzEndpoint"; 
 import ExtrnalService from "origamits/src/models/extrnalService";
 import ErrorMessages from "../models/errorMessages";
+import Authorization from "../modules/authorization";
 var url = require('url');
 var express = require('express');
 var bodyParser = require('body-parser'); 
@@ -27,7 +28,7 @@ export default class ExpressIndex
         var app = express();
         this.setPublic(app,this.config);
         this.setUrlParser(app,this.config);
-        await this.setSessionManager(this.config);
+        await this.setSessionManager(app,this.config);
         this.setCrossDomain(app,this.config);
         this.runServer(app,this.config);
         var self=this;
@@ -38,9 +39,11 @@ export default class ExpressIndex
                 return
 			var session =req.session;
 			
+            let isAuthz = false;
+            console.log(session);
+            
             if(this.config.authz)
             { 
-				let isAuthz = false;
 				try{
 					isAuthz =await self.checkAuthz(session,data,self.config.authz)
 					
@@ -48,9 +51,13 @@ export default class ExpressIndex
 				{
 					console.log('exp>>',exp)
 				}
-                if(!isAuthz) 
-                    return self.sendData(res,200,{message:ErrorMessages.authz}) 
             }
+            else
+            {
+                isAuthz = Authorization.checkAuthorization(data.domain,data.service,session);
+            }
+            if(!isAuthz) 
+                return self.sendData(res,403,{message:ErrorMessages.authz}) 
 			var upload=await self.checkUpload(req,data,self)
 			if(!upload)
 				return self.sendData(res,200,{message:ErrorMessages.upload})
@@ -98,7 +105,8 @@ export default class ExpressIndex
 	{ 
 		var token = req.header('authorization') 
 		var sessionData=req.session
-		
+        console.log('-->>',data?.session);
+        
 		if(data?.session)
 		{
             if(!sessionData)
@@ -199,6 +207,8 @@ export default class ExpressIndex
             service:seperate[2]
         }
         var session = req.session;
+		console.log('>>>',req.session);
+		console.log('>>>',req.header('authorization') );
         var body:any={
             session:session,
         }
@@ -258,7 +268,7 @@ export default class ExpressIndex
             app.use(bodyParser.urlencoded({extended: true}));
     
     }
-    async setSessionManager(config:EndpointConnection)
+    async setSessionManager(app,config:EndpointConnection)
     {
         if(config.protocol.redisConfig)
         { 
@@ -275,6 +285,15 @@ export default class ExpressIndex
             this.sessionManager=new RamsSessionManager();
             await this.sessionManager.init({});
         }
+		app.use( (req, res, next)=>{
+            var token = req.header('authorization')
+            this.sessionManager.getSession(token).then((data)=>{ 
+				req.session=data;
+				next();
+			}).catch(()=>{
+				next()
+			});
+		})
     }
 	setPublic(app:any,config:EndpointConnection)
     { 

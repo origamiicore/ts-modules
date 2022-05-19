@@ -29,8 +29,8 @@ export default class RamsSessionManager implements SessionManager
 		} 
         return token;
     }
-    getSession(token: string): Promise<any> {
-        return session[token];      
+    async getSession(token: string): Promise<any> {
+        return session[token].value;      
     }
 
 }

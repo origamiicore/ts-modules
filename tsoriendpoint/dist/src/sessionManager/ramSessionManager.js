@@ -38,7 +38,9 @@ class RamsSessionManager {
         });
     }
     getSession(token) {
-        return session[token];
+        return __awaiter(this, void 0, void 0, function* () {
+            return session[token].value;
+        });
     }
 }
 exports.default = RamsSessionManager;

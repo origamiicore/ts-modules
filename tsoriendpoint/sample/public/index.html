@@ -6,9 +6,13 @@
             var baseUrl='http://localhost:9201/profile/'
             function callApi(url, cFunction) {
                 const xhttp = new XMLHttpRequest();
-                if(window.localStorage.token)
-                    xhttp.setRequestHeader('authorization',window.localStorage.token)
                 xhttp.onload = function() {
+                    console.log(this);
+                    if(this.status==403)
+                    {
+                        window.localStorage.setItem('token','')
+                        return alert(this.responseText)
+                    }
                     if(this.responseText)
                     {
                         var resp=JSON.parse(this.responseText)
@@ -18,14 +22,16 @@
                         }
                         cFunction( resp.data);
 
-                    }
+                    } 
                 }
                 xhttp.open("GET",baseUrl+ url);
+                if(window.localStorage.token)
+                    xhttp.setRequestHeader('authorization',window.localStorage.token)
                 xhttp.send();
             }
             function login()
             {
-                callApi('login',(data)=>{ 
+                callApi('login?name='+name,(data)=>{ 
                     console.log(data);
                 })
 
@@ -34,6 +40,7 @@
             {
                 callApi('isLogin',(data)=>{ 
                     console.log(data);
+                    alert('you are login')
                 })
             }
             function loadProfile()
@@ -44,7 +51,7 @@
                     console.log(data);
                 })
             }
-            isLogin()
+            //checkLogin()
             loadProfile()
         </script>
         <div id="profile">

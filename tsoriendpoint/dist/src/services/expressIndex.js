@@ -17,6 +17,7 @@ const ramSessionManager_1 = __importDefault(require("../sessionManager/ramSessio
 const redisSessionManager_1 = __importDefault(require("../sessionManager/redisSessionManager"));
 const origamits_1 = require("origamits");
 const errorMessages_1 = __importDefault(require("../models/errorMessages"));
+const authorization_1 = __importDefault(require("../modules/authorization"));
 var url = require('url');
 var express = require('express');
 var bodyParser = require('body-parser');
@@ -33,7 +34,7 @@ class ExpressIndex {
             var app = express();
             this.setPublic(app, this.config);
             this.setUrlParser(app, this.config);
-            yield this.setSessionManager(this.config);
+            yield this.setSessionManager(app, this.config);
             this.setCrossDomain(app, this.config);
             this.runServer(app, this.config);
             var self = this;
@@ -42,17 +43,21 @@ class ExpressIndex {
                 if (!data)
                     return;
                 var session = req.session;
+                let isAuthz = false;
+                console.log(session);
                 if (this.config.authz) {
-                    let isAuthz = false;
                     try {
                         isAuthz = yield self.checkAuthz(session, data, self.config.authz);
                     }
                     catch (exp) {
                         console.log('exp>>', exp);
                     }
-                    if (!isAuthz)
-                        return self.sendData(res, 200, { message: errorMessages_1.default.authz });
                 }
+                else {
+                    isAuthz = authorization_1.default.checkAuthorization(data.domain, data.service, session);
+                }
+                if (!isAuthz)
+                    return self.sendData(res, 403, { message: errorMessages_1.default.authz });
                 var upload = yield self.checkUpload(req, data, self);
                 if (!upload)
                     return self.sendData(res, 200, { message: errorMessages_1.default.upload });
@@ -91,6 +96,7 @@ class ExpressIndex {
         return __awaiter(this, void 0, void 0, function* () {
             var token = req.header('authorization');
             var sessionData = req.session;
+            console.log('-->>', data === null || data === void 0 ? void 0 : data.session);
             if (data === null || data === void 0 ? void 0 : data.session) {
                 if (!sessionData)
                     sessionData = {};
@@ -182,6 +188,8 @@ class ExpressIndex {
             service: seperate[2]
         };
         var session = req.session;
+        console.log('>>>', req.session);
+        console.log('>>>', req.header('authorization'));
         var body = {
             session: session,
         };
@@ -231,7 +239,7 @@ class ExpressIndex {
         else
             app.use(bodyParser.urlencoded({ extended: true }));
     }
-    setSessionManager(config) {
+    setSessionManager(app, config) {
         return __awaiter(this, void 0, void 0, function* () {
             if (config.protocol.redisConfig) {
                 this.sessionManager = new redisSessionManager_1.default();
@@ -245,6 +253,15 @@ class ExpressIndex {
                 this.sessionManager = new ramSessionManager_1.default();
                 yield this.sessionManager.init({});
             }
+            app.use((req, res, next) => {
+                var token = req.header('authorization');
+                this.sessionManager.getSession(token).then((data) => {
+                    req.session = data;
+                    next();
+                }).catch(() => {
+                    next();
+                });
+            });
         });
     }
     setPublic(app, config) {
