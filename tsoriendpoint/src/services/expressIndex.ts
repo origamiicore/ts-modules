@@ -9,8 +9,7 @@ import ExtrnalService from "origamits/src/models/extrnalService";
 import ErrorMessages from "../models/errorMessages";
 var url = require('url');
 var express = require('express');
-var bodyParser = require('body-parser');
-var path = require('path'); 
+var bodyParser = require('body-parser'); 
 var fs=require('fs')
 var formidable= require('formidable') ;
 var http = require('http');
@@ -26,9 +25,9 @@ export default class ExpressIndex
     async init()
     {
         var app = express();
+        this.setPublic(app,this.config);
         this.setUrlParser(app,this.config);
         await this.setSessionManager(this.config);
-        this.setPublic(app,this.config);
         this.setCrossDomain(app,this.config);
         this.runServer(app,this.config);
         var self=this;
@@ -281,6 +280,8 @@ export default class ExpressIndex
     { 
         for(var folder of config.publicFolder)
         {
+            console.log('>>',folder);
+            
             app.use(express.static(folder));
         }
     }

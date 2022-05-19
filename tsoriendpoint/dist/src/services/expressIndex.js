@@ -20,7 +20,6 @@ const errorMessages_1 = __importDefault(require("../models/errorMessages"));
 var url = require('url');
 var express = require('express');
 var bodyParser = require('body-parser');
-var path = require('path');
 var fs = require('fs');
 var formidable = require('formidable');
 var http = require('http');
@@ -32,9 +31,9 @@ class ExpressIndex {
     init() {
         return __awaiter(this, void 0, void 0, function* () {
             var app = express();
+            this.setPublic(app, this.config);
             this.setUrlParser(app, this.config);
             yield this.setSessionManager(this.config);
-            this.setPublic(app, this.config);
             this.setCrossDomain(app, this.config);
             this.runServer(app, this.config);
             var self = this;
@@ -250,6 +249,7 @@ class ExpressIndex {
     }
     setPublic(app, config) {
         for (var folder of config.publicFolder) {
+            console.log('>>', folder);
             app.use(express.static(folder));
         }
     }

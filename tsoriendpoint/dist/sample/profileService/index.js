@@ -50,6 +50,12 @@ let ProfileService = class ProfileService {
             return new origamits_1.RouteResponse({ session: { userid: name } });
         });
     }
+    isLogin() {
+        return __awaiter(this, void 0, void 0, function* () {
+            //return name;
+            return new origamits_1.RouteResponse({});
+        });
+    }
     saveProfile(info, session) {
         return __awaiter(this, void 0, void 0, function* () {
             console.log('info>', info);
@@ -63,6 +69,9 @@ __decorate([
 __decorate([
     (0, origamits_1.OriService)({ isPublic: true })
 ], ProfileService.prototype, "login", null);
+__decorate([
+    (0, origamits_1.OriService)()
+], ProfileService.prototype, "isLogin", null);
 __decorate([
     (0, origamits_1.OriService)({ isPublic: false }),
     __param(0, (0, origamits_1.DataInput)({ classType: profileModel_1.default })),

@@ -1,0 +1,56 @@
+<html>
+    <body>
+        
+        <script>
+            var name='';
+            var baseUrl='http://localhost:9201/profile/'
+            function callApi(url, cFunction) {
+                const xhttp = new XMLHttpRequest();
+                if(window.localStorage.token)
+                    xhttp.setRequestHeader('authorization',window.localStorage.token)
+                xhttp.onload = function() {
+                    if(this.responseText)
+                    {
+                        var resp=JSON.parse(this.responseText)
+                        if(resp.token)
+                        {
+                            window.localStorage.setItem('token',resp.token)
+                        }
+                        cFunction( resp.data);
+
+                    }
+                }
+                xhttp.open("GET",baseUrl+ url);
+                xhttp.send();
+            }
+            function login()
+            {
+                callApi('login',(data)=>{ 
+                    console.log(data);
+                })
+
+            }
+            function checkLogin()
+            {
+                callApi('isLogin',(data)=>{ 
+                    console.log(data);
+                })
+            }
+            function loadProfile()
+            {
+                callApi('getProfile',(data)=>{
+                    name=data.firstName;
+                    document.getElementById('profile').innerHTML=`FirstName : ${data.firstName} <br/> LastName:${data.lastName}`
+                    console.log(data);
+                })
+            }
+            isLogin()
+            loadProfile()
+        </script>
+        <div id="profile">
+
+        </div>
+        <button onclick="login()">Login</button>
+        <button onclick="checkLogin()">Chcek Login</button>
+    </body>
+</html>

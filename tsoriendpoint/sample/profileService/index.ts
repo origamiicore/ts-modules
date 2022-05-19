@@ -30,6 +30,12 @@ class ProfileService implements PackageIndex
     { 
         //return name;
         return new RouteResponse({session:{userid:name}})
+    }    
+    @OriService( )
+    async isLogin()
+    { 
+        //return name;
+        return new RouteResponse({})
     }   
     @OriService({isPublic:false})
     async saveProfile(@DataInput({classType:ProfileModel}) info,@SessionInput session)

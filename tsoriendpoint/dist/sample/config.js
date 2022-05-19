@@ -31,6 +31,7 @@ const connectionProtocol_1 = __importDefault(require("../src/models/connectionPr
 const endpointConfig_1 = __importDefault(require("../src/models/endpointConfig"));
 const endpointConnection_1 = __importStar(require("../src/models/endpointConnection"));
 const profileConfig_1 = __importDefault(require("./profileService/models/profileConfig"));
+var path = require('path');
 exports.default = new origamits_1.ConfigModel({
     packageConfig: [
         new endpointConfig_1.default({
@@ -40,6 +41,7 @@ exports.default = new origamits_1.ConfigModel({
             connections: [
                 new endpointConnection_1.default({
                     type: endpointConnection_1.EndpointConnectionType.Express,
+                    publicFolder: [path.join(__dirname, '../../sample/public')],
                     protocol: new connectionProtocol_1.default({
                         type: 'http',
                         port: 9201
