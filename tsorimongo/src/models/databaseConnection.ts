@@ -16,8 +16,7 @@ export default class DatabaseConnection
             username?: string, 
             password?: string, 
             database?: string,  
-            port?: number, 
-            type?: number, 
+            port?: number,  
             backup?:BackupModel
         }) {
         if (fields) Object.assign(this, fields);

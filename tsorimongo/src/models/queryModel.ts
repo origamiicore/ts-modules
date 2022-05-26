@@ -1,10 +1,12 @@
+import { MessageModel, Router } from "origamits";
+import OdataResponse from "./odataResponse";
 import SelectModel from "./selectModel";
 import SortModel from "./sortModel";
 
 export default class QueryModel<T>
 {
     context:string;
-    table:string;
+    collection:string;
     limitData?:number;
     skipData?:number;
     whereData:any;
@@ -13,7 +15,7 @@ export default class QueryModel<T>
     constructor(
         fields?: {
             context:string
-            table:string
+            collection:string
             limitData?:number
             skipData?:number
             whereData?: any 
@@ -42,7 +44,9 @@ export default class QueryModel<T>
     }
     select(fields:string[]):QueryModel<T>
     {
+        this.selectData??=[];
         this.selectData?.push(...fields);
+        console.log('..',this);
         return this;
     }
     whereAnd(condition:any):QueryModel<T>
@@ -94,7 +98,7 @@ export default class QueryModel<T>
         }
         return this;
     }
-    async findOneAndUpdate(newObject:T):Promise<T>
+    async findOneAndUpdate(set:any,inc:any,push:any):Promise<T>
     {
         return
     }
@@ -110,8 +114,18 @@ export default class QueryModel<T>
     {
         return
     }
-    async find():Promise<T>
+    async find():Promise<OdataResponse<T>>
     {
-        return;
+        
+        var data= await Router.runInternal('mongo','search',new MessageModel({data:{
+            context:this.context,
+            collection:this.collection,
+            query:{
+                select:this.selectData
+            }
+         }}))
+         console.log('><>');
+         
+         return new OdataResponse<T>(data.response.data); 
     }
 }
