@@ -1,6 +1,6 @@
 {
   "name": "tsorimongo",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "typescript origami mongo",
   "main": "index.js",
   "scripts": {
@@ -8,6 +8,10 @@
     "build": "npx tsc",
     "sample": "node ./dist/sample/databaseSample",
     "publish": "npm publish"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/origamiicore/ts-modules/tree/main/tsorimongo"
   },
   "author": "",
   "license": "ISC",
