@@ -18,9 +18,7 @@ export default class MongoService
         {
             uri+=connection.username+':'+connection.password+'@'
         }
-        uri+=connection.host+':'+connection.port+'/'+connection.database;
-        console.log('>>',uri);
-        
+        uri+=connection.host+':'+connection.port+'/'+connection.database;         
         this.client= new MongoClient(uri);
     }
     async connect()
@@ -40,16 +38,14 @@ export default class MongoService
         { 
             for(var x of query.select)
             {
+                
                 if(typeof(x)=='string')
                 {
                     select.push(x)
                 }
                 else
                 {
-                    if(x.type=='function')
-                    {
-                        selectGroup.push(x)
-                    }
+                    selectGroup.push(x)
                 }
             } 
         } 
@@ -83,13 +79,14 @@ export default class MongoService
             var ord=a.split(' ')
             if(ord.length>1)
             {
-              order.push([ord[0],ord[1]])
+              order.push({name:ord[0],type:ord[1]})
             }
             else {
-              order.push([a,'asc'])
+              order.push({name:a,type:'asc'}) 
             }
 
-          }
+          } 
+          
         }
         var filter = null;
         if(odata?.$filter)
@@ -113,23 +110,22 @@ export default class MongoService
             {
                 objwhere=filter
             }
-        }
+        } 
+        
         if(query.order)
         {
             for(var a of query.order)
               order.push(a);
         }
-        if(order.length)
+        for(var a of order)
         {
-            for(var a of order)
+            objorder[a.name]=1
+            if(a.type=='desc')
             {
-                objorder[a[0]]=1
-                if(a[1].toLowerCase() =='desc')
-                {
-                    objorder[a[0]]=-1
-                }
-            } 
-        }
+                objorder[a.name]=-1
+            }
+        }  
+        
         if(select.length)
             objselect={}
         for(var a of select)
@@ -145,10 +141,19 @@ export default class MongoService
         
         // {orders:,where:,select:,selectGroup:selectGroup}
         if(odata?.$top)
-            retobj.top=odata.$top
+            retobj.top=odata.$top;
         if(odata?.$skip)
-            retobj.skip=odata.$skip
-		 
+            retobj.skip=odata.$skip;
+            
+		if(query.limit)
+            retobj.top=query.limit;
+        if(query.skip)
+            retobj.skip=query.skip;
+
+        if(query.maxLimit)
+        {
+            if(!retobj.top || retobj.top>query.maxLimit)retobj.top= query.maxLimit;
+        }    
         return retobj;
     }
     async find(collection:string,query:any,odata:any):Promise<any>
@@ -157,10 +162,12 @@ export default class MongoService
         var coll = this.database.collection(collection);
         var selectQuery=null;
         var countQuery=null;
+
         if(syn.selectGroup.length)
         {
+            
             var marr=[]
-            marr.push({$match:syn.where})
+            marr.push({$match:syn.where??{}})
             var msel={}
             for(let a of syn.select)
             {
@@ -169,9 +176,10 @@ export default class MongoService
             var grp={_id:msel}
             for(let a of syn.selectGroup)
             {
-                if(a.name=='count')
+                
+                if(a.func=='count')
                     grp[a.title]={ $sum: 1 } 
-                if(a.name=='sum')
+                if(a.func=='sum')
                     grp[a.title]={ $sum: '$'+a.name } 
             }
 			var grpdata={$group:grp}
@@ -183,7 +191,14 @@ export default class MongoService
 				{
 					ord["_id."+xx]=syn.orders[xx]
 				}
-				marr.push({$sort:ord})
+                if(Object.keys(ord).length)
+				    marr.push({$sort:ord})
+                else
+                {
+                    var sortObj={lastName:1};
+                    sortObj['_id.'+syn.select[0]]=1
+                    marr.push({$sort:sortObj})
+                }
 			}
             selectQuery=coll.aggregate(marr)
             countQuery=coll.aggregate(marr)
@@ -196,15 +211,11 @@ export default class MongoService
             {
                 select[s]=1;
             }
-            console.log('}}',select);
-            
             selectQuery=coll.find(syn.where,{projection:select})
-            countQuery=coll.find(syn.where,{projection:select})
-        }
-        
-        if(syn.orders)
-            selectQuery=selectQuery.sort(syn.orders)
-            
+            countQuery=coll.find(syn.where,{projection:select}) 
+            if(syn.orders)
+                selectQuery=selectQuery.sort(syn.orders)
+        } 
         if(syn.skip)
         {
             selectQuery=selectQuery.skip(syn.skip)            
@@ -214,11 +225,11 @@ export default class MongoService
             selectQuery=selectQuery.limit(syn.top)
         }
         var count=null
-        if(odata?.$count)
+        if(odata?.$count || query.count)
         {
             count= await new Promise((res,rej)=>{
                 
-                selectQuery.count((ecount,dcount)=>{
+                countQuery.count((ecount,dcount)=>{
                     res(dcount)
                      
                 })
@@ -252,15 +263,14 @@ export default class MongoService
                 
             });
         });
-        return new OdataResponse({count,value})
+        return {count,value}
     }
     async updateOne(collection:string,condition:any,set:any,inc:any,push:any):Promise<any>
     {
         var saveObjec:any={};
         if(set)saveObjec.$set=set;
         if(inc)saveObjec.$inc=inc;
-        if(push)saveObjec.$push=push;
-        console.log(';;',condition,saveObjec);
+        if(push)saveObjec.$push=push; 
         
         var coll = this.database.collection(collection);
         return await coll.updateOne(condition,saveObjec);

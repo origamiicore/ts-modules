@@ -7,6 +7,6 @@ export default class SortModel
             name?: string
             type?: 'asc'|'desc'
     }){
-        
+        Object.assign(this,fields)
     }
 }

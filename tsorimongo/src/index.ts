@@ -32,8 +32,6 @@ export default class TsOriMongo implements PackageIndex
     @OriService({isInternal:true})
     async search(context:string,collection:string,query:any,odata:any):Promise<RouteResponse>
     { 
-        console.log('>',query);
-        
         var connection=this.connections[context] as MongoService;
         if(connection==null) return OriMongoError.connectionNotFound; 
         var data= await connection.find(collection,query,odata);

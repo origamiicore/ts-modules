@@ -1,4 +1,8 @@
 import { IOriModel, MessageModel, Router } from "origamits"
+import DeleteResponse from "../models/crudModels/deleteResponse";
+import InsertManyResponse from "../models/crudModels/inserteManyResponse";
+import InsertResponse from "../models/crudModels/insertResponse";
+import UpdateResponse from "../models/crudModels/updateResponse";
 import QueryModel from "../models/queryModel";
 import SelectModel from "../models/selectModel";
 import SortModel from "../models/sortModel";
@@ -19,25 +23,25 @@ export default class MangoRouter<T>
     {
         return JSON.parse(JSON.stringify(data));
     }
-    async InsertOne(document:T):Promise<any>
+    async InsertOne(document:T):Promise<InsertResponse>
     { 
-        var copy= JSON.parse(JSON.stringify(document));
+        var copy= this.copy(document);
         var data= await Router.runInternal('mongo','insertOne',new MessageModel({data:{
             context:this.context,
             collection:this.collection,
             document:copy, 
         }}))
-        return data.response; 
+        return new InsertResponse(data.response.data); 
     }
-    async InsertMany(documents:T[]):Promise<any>
+    async InsertMany(documents:T[]):Promise<InsertManyResponse>
     { 
-        var copy= JSON.parse(JSON.stringify(documents));
+        var copy= this.copy(documents);
         var data= await Router.runInternal('mongo','insertMany',new MessageModel({data:{
             context:this.context,
             collection:this.collection,
             documents:copy, 
         }}))
-        return data.response; 
+        return new InsertManyResponse(data.response.data); 
     }
     async UpdateOne(condition:any,
         fields?: {
@@ -45,7 +49,7 @@ export default class MangoRouter<T>
             inc?:any,
             push?:any
         }
-        ):Promise<any>
+        ):Promise<UpdateResponse>
     { 
        var data= await Router.runInternal('mongo','updateOne',new MessageModel({data:{
             context:this.context,
@@ -55,11 +59,9 @@ export default class MangoRouter<T>
              inc:fields?.inc,
              push:fields?.push
         }}))
-        return data.response; 
+        return new UpdateResponse(data.response.data); 
     }
-    async Replace(condition:any,
-        document:T
-        ):Promise<any>
+    async Replace(condition:any, document:T):Promise<UpdateResponse>
     { 
         var copy=this.copy(document);
        var data= await Router.runInternal('mongo','replaceOne',new MessageModel({data:{
@@ -68,7 +70,7 @@ export default class MangoRouter<T>
              condition,
              document:copy
         }}))
-        return data.response; 
+        return new UpdateResponse(data.response.data); 
     }
     async UpdateMany(condition:any,
         fields?: {
@@ -76,7 +78,7 @@ export default class MangoRouter<T>
             inc?:any,
             push?:any
         }
-        ):Promise<any>    
+        ):Promise<UpdateResponse>    
     {
         var data= await Router.runInternal('mongo','updateMany',new MessageModel({data:{
             context:this.context,
@@ -86,45 +88,77 @@ export default class MangoRouter<T>
             inc:fields?.inc,
             push:fields?.push
          }}))
-         return data.response; 
+         return new UpdateResponse(data.response.data); 
     }
-    async deleteOne(condition:any):Promise<any>
+    async deleteOne(condition:any):Promise<DeleteResponse>
     {
         var data= await Router.runInternal('mongo','deleteOne',new MessageModel({data:{
             context:this.context,
             collection:this.collection,
               condition, 
          }}))
-         return data.response; 
+         return new DeleteResponse(data.response.data); 
     }
-    async deleteMany(condition:any):Promise<any>
+    async deleteMany(condition:any):Promise<DeleteResponse>
     {
         var data= await Router.runInternal('mongo','deleteMany',new MessageModel({data:{
             context:this.context,
             collection:this.collection,
               condition, 
          }}))
-         return data.response; 
+         return new DeleteResponse(data.response.data); 
     }
     async findById(id:any):Promise<T>
     {
         if(id==null)throw 'id is null'
-        var data= await Router.runInternal('mongo','find',new MessageModel({data:{
-            condition:{id:id}
+        var data= await Router.runInternal('mongo','search',new MessageModel({data:{
+            context:this.context,
+            collection:this.collection,
+            query:{
+                where:{_id:id}
+            } 
          }}))  
+         console.log(data);
+         
          return new this.cls(data.response.data) ; 
     }
-    async findByIdAndDelete(id:any,isRemove:boolean=false):Promise<void>
+    async findByIdAndDelete(id:any):Promise<DeleteResponse>
     {
-        return;
+        var data= await Router.runInternal('mongo','deleteOne',new MessageModel({data:{
+            context:this.context,
+            collection:this.collection,
+            condition:  {_id:id}, 
+         }}))
+         return new DeleteResponse(data.response.data); 
     }
-    async findByIdAndReplace(newObject:T):Promise<void>
+    async findByIdAndReplace(document:T):Promise<UpdateResponse>
     {
-        return;
+        var copy=this.copy(document);
+       var data= await Router.runInternal('mongo','replaceOne',new MessageModel({data:{
+            context:this.context,
+            collection:this.collection,
+             condition:copy._id,
+             document:copy
+        }}))
+        return new UpdateResponse(data.response.data); 
     }
-    async findByIdAndUpdate(newObject:T):Promise<void>
+    async findByIdAndUpdate(id:any,
+        fields?: {
+            set?:any,            
+            inc?:any,
+            push?:any
+        }
+        ):Promise<UpdateResponse>    
     {
-        return;
+        var data= await Router.runInternal('mongo','updateMany',new MessageModel({data:{
+            context:this.context,
+            collection:this.collection,
+            condition:{_id:id},
+            set:fields?.set,
+            inc:fields?.inc,
+            push:fields?.push
+         }}))
+         return new UpdateResponse(data.response.data); 
     }
     search( 
         fields?: {
@@ -133,17 +167,21 @@ export default class MangoRouter<T>
             sort?:SortModel[]
             limit?:number
             skip?:number
+            showCount?:boolean
         }
     ):QueryModel<T>
     {
-        var query =new QueryModel<T>({
+        var query =new QueryModel<T>(
+            this.cls,
+            {
             context:this.context,
             collection:this.collection,
             whereData:fields?.where,
             selectData:fields?.select,
             sortData:fields?.sort,
             limitData:fields?.limit,
-            skipData:fields?.skip
+            skipData:fields?.skip,            
+            showCount:fields?.showCount
         });
         return query;
     }
