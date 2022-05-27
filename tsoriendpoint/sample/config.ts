@@ -1,8 +1,6 @@
 
 import {ConfigModel} from "origamits";
-import ConnectionProtocol from "../src/models/connectionProtocol";
-import EndpointConfig from "../src/models/endpointConfig";
-import EndpointConnection, { EndpointConnectionType } from "../src/models/endpointConnection";
+import {ConnectionProtocol,EndpointConfig,EndpointConnection,EndpointConnectionType} from "..";  
 import ProfileConfig from "./profileService/models/profileConfig";
 
 var path = require('path');  
