@@ -1,4 +1,6 @@
-export default class EmailConfig
+import BaseDriverConfig from "./baseDriverConfig";
+
+export default class EmailConfig extends BaseDriverConfig
 {
     host:string; 
     secure:boolean;
@@ -8,7 +10,8 @@ export default class EmailConfig
     fromEmail:string;
     public constructor(
         
-        fields?: {
+        fields: {
+            context:string;
             host?:string;
             port?:number;
             secure?:boolean;
@@ -16,6 +19,7 @@ export default class EmailConfig
             password?:string;
             fromEmail?:string;
         }) { 
+        super(fields.context);    
         if (fields) Object.assign(this, fields);
     }
 }

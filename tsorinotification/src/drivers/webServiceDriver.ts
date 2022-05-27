@@ -1,4 +1,5 @@
 import { RouteResponse } from "origamits";
+import { WebService } from "tsoribase";
 import TemplateModel from "../models/templateModel";
 import WebServiceConfig from "../models/webServiceConfig";
 import DriverBase from "./driverBase";
@@ -10,7 +11,7 @@ export default class WebServiceDiriver  implements DriverBase
     {
         this.config=config;
     }
-    sendMessage(template:TemplateModel,data:any): Promise<RouteResponse> {
+    async sendMessage(template:TemplateModel,data:any): Promise<RouteResponse> {
         
 		for(var x in data)
 		{
@@ -25,7 +26,16 @@ export default class WebServiceDiriver  implements DriverBase
 			option[this.config.titleField]=template.title
 		if(this.config.htmlField)
 			option[this.config.htmlField]=template.html 
-
-        return    
+		var reciveData;	
+		if(this.config.protocolType=='get')
+		{
+			reciveData=await WebService.get(this.config.sendUrl,option,{},null);
+		}	
+		if(this.config.protocolType=='post')
+		{
+			reciveData=await WebService.post(this.config.sendUrl,option,{},null);
+		}	
+		
+        return  RouteResponse.success(reciveData);
     }
 }

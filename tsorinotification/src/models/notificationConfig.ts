@@ -1,14 +1,15 @@
 import { ModuleConfig } from 'origamits'; 
-import EmailConfig from './emailConfig';
-import WebServiceConfig from './webServiceConfig';
+import BaseDriverConfig from './baseDriverConfig'; 
 export default class NotificationConfig extends ModuleConfig
 { 
-    drivers:(EmailConfig|WebServiceConfig)[]
+    dbContext:string;
+    drivers:(BaseDriverConfig)[]
     public constructor(
         fields?: {
             id: string
             name: string  
-            drivers:(EmailConfig|WebServiceConfig)[]
+            drivers:(BaseDriverConfig)[]
+            dbContext:string
         }) {
         super(fields);
         if (fields) Object.assign(this, fields);

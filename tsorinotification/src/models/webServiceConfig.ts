@@ -1,4 +1,6 @@
-export default class WebServiceConfig
+import BaseDriverConfig from "./baseDriverConfig";
+
+export default class WebServiceConfig extends BaseDriverConfig
 {
     toField:string;
     textField:string; 
@@ -6,16 +8,20 @@ export default class WebServiceConfig
     htmlField:string;
     protocolType:'get'|'post';
     option:any;
+    sendUrl:string;
     public constructor(
         
-        fields?: {
+        fields: {
+            context:string;
             toField?:string;
             textField?:string; 
             titleField?:string;
             htmlField?:string;
+            sendUrl?:string;
             protocolType?:'get'|'post';
             option?:any;
         }) { 
+        super(fields.context);
         if (fields) Object.assign(this, fields);
     }
 }

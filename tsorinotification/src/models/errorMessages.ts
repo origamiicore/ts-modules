@@ -8,4 +8,6 @@ export default class ErrorMessages
             data
         })})
     }
+    static contextNotFound=RouteResponse.failed(null,'Context Not Found','notification001')
+    static templateNotFound=RouteResponse.failed(null,'Template Not Found','notification002')
 }
