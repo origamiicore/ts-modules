@@ -8,4 +8,4 @@ npm install tsoriredis
 ```
 
 ## Samples
-[Redis Functions](https://github.com/origamiicore/ts-modules/tree/main/tsoriredis/sample)
+[Redis Functions](https://github.com/origamiicore/ts-modules/tree/main/tsoriredis/sample/redisSample.ts)
