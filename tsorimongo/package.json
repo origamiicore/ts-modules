@@ -1,6 +1,6 @@
 {
   "name": "tsorimongo",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "typescript origami mongo",
   "main": "index.js",
   "scripts": {
@@ -14,7 +14,7 @@
     "url": "https://github.com/origamiicore/ts-modules/tree/main/tsorimongo"
   },
   "author": "",
-  "license": "ISC",
+  "license": "MIT",
   "dependencies": {
     "mongodb": "^4.6.0",
     "odata-v4-parser": "^0.1.29",
