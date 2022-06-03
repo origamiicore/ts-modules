@@ -2,11 +2,13 @@ import {ModuleConfig, PackageIndex} from 'origamits'
 import EndpointConfig from './models/endpointConfig';
 import { EndpointConnectionType } from './models/endpointConnection';
 import ExpressIndex from './services/expressIndex';
+import SocketIndex from './services/socketIndex';
 export default class TsOriEndpoint implements PackageIndex
 {
     name: string='endpoint';
     private config:EndpointConfig;
     private expressList:ExpressIndex[]=[];
+    private socketList:SocketIndex[]=[];
     jsonConfig(config: ModuleConfig): Promise<void> {
          this.config=config as EndpointConfig;
          
@@ -14,7 +16,7 @@ export default class TsOriEndpoint implements PackageIndex
         {
             if(connection.type==EndpointConnectionType.Soucket)
             {
-                
+                this.socketList.push(new SocketIndex(connection))
             }
             else
             {
@@ -28,6 +30,10 @@ export default class TsOriEndpoint implements PackageIndex
         for(var express of this.expressList)
         {
             await express.init();
+        }
+        for(var socket of this.socketList)
+        {
+            await socket.init()
         }
         return
     }

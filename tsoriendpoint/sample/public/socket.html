@@ -1,0 +1,69 @@
+<html>
+    <body>
+        <script>
+            var name;
+            var id=2;
+            var token=''
+            var baseUrl='ws://localhost:9202';
+            const client = new WebSocket(baseUrl, 'echo-protocol');
+            var temp={};
+            function callApi(domain,service,param) {
+                id++;
+                return new Promise((res,rej)=>{
+                    client.send(JSON.stringify({domain,service,param,id,token})); 
+                    temp[id.toString()]={res,rej}
+                })
+            } 
+
+            async function loadProfile()
+            {
+                return await callApi('profile','getProfile',{})
+            }
+            // Connection opened
+            client.addEventListener('open', async function (event) {
+                var profile=await loadProfile();
+                    name=profile.firstName;
+                    document.getElementById('profile').innerHTML=`FirstName : ${profile.firstName} <br/> LastName:${profile.lastName}`
+               
+            });
+
+            // Listen for messages
+            client.addEventListener('message', function (event) {
+                var data=JSON.parse(event.data) ; 
+                var id=data.id.toString();
+                if(data.session?.token)
+                {
+                    token=data.session?.token;
+                }
+                if(temp[id])
+                {
+                    if(data.error)temp[id].rej(data.error)
+                    else temp[id].res(data.data)
+                } 
+            });
+            async function login()
+            {
+                var data =await callApi('profile','login',{name})
+                console.log(data);
+
+            }
+            async function checkLogin()
+            {
+                try{
+                    var data =await callApi('profile','isLogin',{})
+                    console.log(data);
+                        alert('you are login') 
+                    
+                }catch(ext){
+                        alert('you are not login') 
+                }
+                    
+            }
+        </script>
+        <div id="profile">
+
+        </div>
+        <button onclick="login()">Login</button>
+        <button onclick="checkLogin()">Chcek Login</button>
+    </body>
+</html>

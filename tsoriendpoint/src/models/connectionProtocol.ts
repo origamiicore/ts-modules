@@ -7,7 +7,7 @@ export default class ConnectionProtocol
     port:number;
     key:string;
     crt:string; 
-    socketProtocol:string;
+    socketProtocol:string='echo-protocol';
     jwtConfig:JwtConfig;
     redisConfig:RedisConfig;
 

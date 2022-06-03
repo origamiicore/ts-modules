@@ -18,7 +18,15 @@ export default new ConfigModel({
                          type:'http',
                          port:9201
                      })
-                 })
+                 }),
+                 
+                 new EndpointConnection({
+                    type:EndpointConnectionType.Soucket,
+                    protocol:new ConnectionProtocol({
+                        type:'http',
+                        port:9202
+                    })
+                })
              ]
          }),
         new ProfileConfig({

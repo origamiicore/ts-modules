@@ -14,15 +14,18 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const endpointConnection_1 = require("./models/endpointConnection");
 const expressIndex_1 = __importDefault(require("./services/expressIndex"));
+const socketIndex_1 = __importDefault(require("./services/socketIndex"));
 class TsOriEndpoint {
     constructor() {
         this.name = 'endpoint';
         this.expressList = [];
+        this.socketList = [];
     }
     jsonConfig(config) {
         this.config = config;
         for (var connection of this.config.connections) {
             if (connection.type == endpointConnection_1.EndpointConnectionType.Soucket) {
+                this.socketList.push(new socketIndex_1.default(connection));
             }
             else {
                 this.expressList.push(new expressIndex_1.default(connection));
@@ -34,6 +37,9 @@ class TsOriEndpoint {
         return __awaiter(this, void 0, void 0, function* () {
             for (var express of this.expressList) {
                 yield express.init();
+            }
+            for (var socket of this.socketList) {
+                yield socket.init();
             }
             return;
         });

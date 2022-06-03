@@ -38,8 +38,9 @@ class RamsSessionManager {
         });
     }
     getSession(token) {
+        var _a;
         return __awaiter(this, void 0, void 0, function* () {
-            return session[token].value;
+            return (_a = session[token]) === null || _a === void 0 ? void 0 : _a.value;
         });
     }
 }
