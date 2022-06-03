@@ -8,6 +8,5 @@ npm install tsoriEndpoint
 ```
 
 ## Samples
-[Run Express](https://github.com/origamiicore/ts-modules/tree/main/tsoriendpoint/sample)
+[Run Express And Socket](https://github.com/origamiicore/ts-modules/tree/main/tsoriendpoint/sample)
 
-More Samples Coming Soon
