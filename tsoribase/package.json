@@ -1,12 +1,11 @@
 {
   "name": "tsoribase",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "npx tsc",
-    "sample": "node ./dist/sample/endpointSample"
+    "build": "npx tsc"
   },
   "dependencies": {
     "@types/node": "^17.0.35",
