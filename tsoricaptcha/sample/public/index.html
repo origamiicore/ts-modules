@@ -1,0 +1,98 @@
+<html>
+    <body>
+
+        <img  id="captcha" />
+        <br/>
+        <input id="code" />
+        <script>
+            var id='';
+            var img=''
+            var baseUrl='http://localhost:9201/';
+            function callApi(url, cFunction) {
+
+                const xhttp = new XMLHttpRequest();
+                xhttp.onload = function() {
+                    console.log(this);
+                    if(this.status==403)
+                    {
+                        window.localStorage.setItem('token','')
+                        return alert(this.responseText)
+                    }
+                    if(this.responseText)
+                    {
+                        var resp=JSON.parse(this.responseText)
+                        if(resp.token)
+                        {
+                            window.localStorage.setItem('token',resp.token)
+                        }
+                        cFunction( resp.data.response.data);
+
+                    } 
+                }
+                xhttp.open("GET",baseUrl+ url);
+                if(window.localStorage.token)
+                    xhttp.setRequestHeader('authorization',window.localStorage.token)
+                xhttp.send();
+            }
+            function postApi(url,data, cFunction) {
+
+                const xhttp = new XMLHttpRequest();
+                xhttp.onload = function() {
+                    console.log(this);
+                    if(this.status==403)
+                    {
+                        window.localStorage.setItem('token','')
+                        return alert(this.responseText)
+                    }
+                    if(this.responseText)
+                    {
+                        var resp=JSON.parse(this.responseText)
+                        if(resp.token)
+                        {
+                            window.localStorage.setItem('token',resp.token)
+                        }
+                        if(resp.data.response)
+                            cFunction( resp.data.response.data);
+                        else cFunction({})
+                    } 
+                }
+                xhttp.open("POST",baseUrl+ url);
+                if(window.localStorage.token)
+                    xhttp.setRequestHeader('authorization',window.localStorage.token)
+                xhttp.setRequestHeader('Content-Type','application/json; charset=utf-8')
+                xhttp.send(JSON.stringify({data}) );
+            }
+
+            function getCaptcha()
+            {
+                callApi('captcha/getCode',(data)=>{ 
+                    console.log(data);
+                    this.id=data.id;
+                    document.getElementById("captcha").src='data:image/png;base64,'+data.img
+                })
+
+            }
+            function valiadte()
+            {
+                
+                callApi('test/testService?id='+id,(data)=>{ 
+                    alert(data)
+                })
+                    getCaptcha();
+            }
+            function send()
+            {
+                var code=document.getElementById('code').value 
+                postApi('captcha/setCode',{id,code},(data)=>{ 
+                    console.log(data); 
+                    document.getElementById("captcha").src='data:image/png;base64,'+data.img
+                    valiadte()
+                })
+            }
+            getCaptcha()
+        </script>
+        <button onclick="send()" >
+        Send
+        </button>
+    </body>
+</html>
