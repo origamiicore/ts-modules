@@ -6,12 +6,12 @@ function getRandomArbitrary(min, max) {
 } 
 export default class CommonService
 {
-    random(min:number=0,max:number=1000)
+    static random(min:number=0,max:number=1000)
     {
         var r = Math.floor(Math.random() * (max - min + 1) + min); 
         return r;        
     }
-    randomText(n:number=5)
+    static randomText(n:number=5)
     {
         var str=''
         var sr='qwertyuiopasdfghjklzxcvbnm'
@@ -24,7 +24,7 @@ export default class CommonService
             str='1'+str
         return parseInt(str)
     }
-    randomNumber(n:number=12)
+    static randomNumber(n:number=12)
     {
         var str=''
         var sr='123456890'
