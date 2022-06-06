@@ -1,7 +1,8 @@
 import { OriProps,IOriModel } from "origamits"; 
 export default class UserModel extends IOriModel
 {
-    @OriProps({isRequired:true})
+    _id:string
+    @OriProps({isRequired:true,})
     username:string;
     @OriProps({isRequired:true})
     password:string;
@@ -9,14 +10,16 @@ export default class UserModel extends IOriModel
     email:string;
     @OriProps({isRequired:true})
     phoneNumber:string;
-    @OriProps({})
+
+    @OriProps({tags:'adminOnly'})
     wrongCount:number;
-    @OriProps({})
+    @OriProps({tags:'adminOnly'})
     wrongDate:number;
-    @OriProps({})
+    @OriProps({tags:'adminOnly'})
     lockDate:number;
     constructor(
         fields?: {
+            _id?:string
             username?: string
             password?: string
             email?: string
