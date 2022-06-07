@@ -3,7 +3,7 @@ import RedisConfig from "./redisConfig";
 
 export default class ConnectionProtocol
 {
-    type:string;
+    type:'http'|'https';
     port:number;
     key:string;
     crt:string; 
@@ -13,8 +13,8 @@ export default class ConnectionProtocol
 
     public constructor(
         fields?: {
-            type?: string
-            port?: number  
+            type: 'http'|'https'
+            port: number  
             key?: string  
             crt?: string
             socketProtocol?: string

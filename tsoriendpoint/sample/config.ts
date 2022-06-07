@@ -6,10 +6,7 @@ import ProfileConfig from "./profileService/models/profileConfig";
 var path = require('path');  
 export default new ConfigModel({
     packageConfig:[
-         new EndpointConfig({
-             id:'1',
-             type:'module',
-             name:'endpoint',
+         new EndpointConfig({ 
              connections:[
                  new EndpointConnection({
                      type:EndpointConnectionType.Express,

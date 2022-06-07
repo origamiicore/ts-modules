@@ -1,6 +1,6 @@
 {
   "name": "tsoriendpoint",
-  "version": "0.0.9",
+  "version": "0.0.10",
   "description": "",
   "main": "dist/index.js",
   "scripts": {
@@ -9,9 +9,9 @@
     "sample": "node ./dist/sample/endpointSample",
     "publish": "npm publish"
   },
-  "keywords": ["express","socket","typescript"],
-  "author": "",
-  "license": "ISC",
+  "keywords": ["express","socket","typescript","origamits","prigamicore"],
+  "author": "vahid.hossaini@gmail.com",
+  "license": "MIT",
   "devDependencies": {
     "typescript": "^4.6.4"
   },

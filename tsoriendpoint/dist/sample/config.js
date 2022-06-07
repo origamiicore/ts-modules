@@ -10,9 +10,6 @@ var path = require('path');
 exports.default = new origamits_1.ConfigModel({
     packageConfig: [
         new __1.EndpointConfig({
-            id: '1',
-            type: 'module',
-            name: 'endpoint',
             connections: [
                 new __1.EndpointConnection({
                     type: __1.EndpointConnectionType.Express,

@@ -11,7 +11,7 @@ export default class EndpointConnection
 { 
     name:string;
     bindAddress:string;
-    type:string;
+    type:EndpointConnectionType;
     sessionManager:string;
     allowHeader:string;
     publicFolder:string[]=[];
@@ -21,17 +21,17 @@ export default class EndpointConnection
     protocol:ConnectionProtocol;
     
     public constructor(
-        fields?: {
-          name?: string, 
-          bindAddress?: string, 
-          type?: string, 
-          sessionManager?: string, 
-          publicFolder?: string[], 
-          crossDomain?: string[], 
-          allowHeader?: string, 
-          authz?:AuthzEndpoint,
-          limit?:LimitModel,
-          protocol?:ConnectionProtocol
+        fields: {
+            type: EndpointConnectionType, 
+            protocol:ConnectionProtocol
+            name?: string, 
+            bindAddress?: string, 
+            sessionManager?: string, 
+            publicFolder?: string[], 
+            crossDomain?: string[], 
+            allowHeader?: string, 
+            authz?:AuthzEndpoint,
+            limit?:LimitModel,
         }) {
         if (fields) Object.assign(this, fields);
     }
