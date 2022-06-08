@@ -15,10 +15,7 @@ export default class CaptchaSample
     {
         var config=new ConfigModel({
             packageConfig:[
-                 new EndpointConfig({
-                     id:'1',
-                     type:'module',
-                     name:'endpoint',
+                 new EndpointConfig({ 
                      connections:[
                          new EndpointConnection({
                              type:EndpointConnectionType.Express,
@@ -43,7 +40,7 @@ export default class CaptchaSample
         await origamicore.start([
             new TsOriEndpoint(),
             new TestService(),
-            new TsoriCptcha()
+           // new TsoriCptcha()
         ])   
     }
 }

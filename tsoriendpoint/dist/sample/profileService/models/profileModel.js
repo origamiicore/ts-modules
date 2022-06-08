@@ -16,7 +16,7 @@ class ProfileModel extends origamits_1.IOriModel {
     }
 }
 __decorate([
-    (0, origamits_1.OriProps)()
+    (0, origamits_1.OriProps)({})
 ], ProfileModel.prototype, "firstName", void 0);
 __decorate([
     (0, origamits_1.OriProps)({})

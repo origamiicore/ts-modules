@@ -8,7 +8,7 @@ import ErrorMessage from './models/errorMessage';
 import {RedisRouter} from 'tsoriredis'
 import {CommonService} from 'tsoribase'
 const uuid=require('uuid');
-@OriInjectable({domain:'captcha'})
+@OriInjectable({domain:'auth'})
 export default class TsOriAuth implements PackageIndex
 {
     name: string='auth';
