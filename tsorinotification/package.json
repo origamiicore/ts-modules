@@ -9,7 +9,7 @@
   },
   "dependencies": {
     "origamits": "^0.2.1",
-    "tsoribase": "^0.0.3",
+    "tsoribase": "^0.1.0",
     "tsorimongo": "^0.1.1",
     "typescript": "^4.7.2"
   },
