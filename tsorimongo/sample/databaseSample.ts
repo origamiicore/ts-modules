@@ -114,10 +114,7 @@ export default class DatabaseSample
         var context='default';
         var config=new ConfigModel({
             packageConfig:[
-                  new MongoConfig({
-                      id:'1',
-                      name:'mongo',
-                      type:'module',
+                  new MongoConfig({ 
                       connections:[
                         new DatabaseConnection({
                             database:'oridb-test',

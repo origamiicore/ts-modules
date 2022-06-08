@@ -7,12 +7,15 @@ export default class MongoConfig extends ModuleConfig
     public constructor(
         
         fields?: {
-            id?: string
-            name?: string
-            type?: 'module'|'service'
+            id?: string 
             connections?: DatabaseConnection[]
         }) {
         super(fields);
         if (fields) Object.assign(this, fields);
+        if(!fields?.id)
+        {
+            this.id=Math.random().toString();
+        }
+        this.name='mongo';
     }
 }
