@@ -42,11 +42,15 @@ export default class ExpressIndex
             let isAuthz = false;
             console.log(session);
             
+            var route = Router.getRouteData(data.domain,data.service);
+            if(!route)
+            {
+                return self.sendData(res,404,{message:ErrorMessages.notFound});
+            }
             if(this.config.authz)
             { 
 				try{
-					isAuthz =await self.checkAuthz(session,data,self.config.authz)
-					
+					isAuthz =await self.checkAuthz(session,data,self.config.authz);					
 				}catch(exp)
 				{
 					console.log('exp>>',exp)

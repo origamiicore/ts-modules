@@ -45,6 +45,10 @@ class ExpressIndex {
                 var session = req.session;
                 let isAuthz = false;
                 console.log(session);
+                var route = origamits_1.Router.getRouteData(data.domain, data.service);
+                if (!route) {
+                    return self.sendData(res, 404, { message: errorMessages_1.default.notFound });
+                }
                 if (this.config.authz) {
                     try {
                         isAuthz = yield self.checkAuthz(session, data, self.config.authz);
