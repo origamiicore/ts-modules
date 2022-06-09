@@ -1,4 +1,5 @@
-import { OriProps,IOriModel } from "origamits"; 
+import { OriProps,IOriModel, OriModel } from "origamits"; 
+@OriModel()
 export default class TemplateModel extends IOriModel
 {
     _id:string

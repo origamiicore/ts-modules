@@ -1,11 +1,11 @@
 {
   "name": "tsorinotification",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "",
   "main": "dist/index.js",
   "scripts": {
     "build": "npx tsc",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "publish": "npm publish"
   },
   "dependencies": {
     "origamits": "^0.2.1",

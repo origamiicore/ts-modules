@@ -1,4 +1,5 @@
-import { OriProps,IOriModel } from "origamits"; 
+import { OriProps,IOriModel, OriModel } from "origamits"; 
+@OriModel()
 export default class UserModel extends IOriModel
 {
     _id:string
