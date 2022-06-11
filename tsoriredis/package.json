@@ -1,6 +1,6 @@
 {
   "name": "tsoriredis",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "",
   "main": "dist/index.js",
   "scripts": {
@@ -10,7 +10,7 @@
     "publish": "npm publish"
   },
   "dependencies": {
-    "origamits": "^0.2.1",
+    "origamits": "^0.2.2",
     "redis": "^4.0.6",
     "typescript": "^4.7.2"
   },

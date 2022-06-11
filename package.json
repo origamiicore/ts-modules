@@ -3,7 +3,10 @@
     "captchapng": "^0.0.1",
     "origamits": "^0.2.1",
     "tsoribase": "^0.1.0",
+    "tsoricaptcha": "^0.1.0",
     "tsoriendpoint": "^0.1.0",
+    "tsorimongo": "^0.1.6",
+    "tsoriredis": "^0.1.0",
     "typescript": "^4.7.3"
   }
 }

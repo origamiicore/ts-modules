@@ -1,6 +1,6 @@
 {
   "name": "tsoriauth",
-  "version": "0.0.2",
+  "version": "0.0.5",
   "description": "",
   "main": "dist/index.js",
   "scripts": {
@@ -10,11 +10,11 @@
     "publish": "npm publish"
   },
   "dependencies": {
-    "origamits": "^0.2.1",
+    "origamits": "^0.2.2",
     "tsoribase": "^0.1.0",
-    "tsoricaptcha": "^0.0.2",
-    "tsorimongo": "^0.1.5",
-    "tsoriredis": "^0.1.0",
+    "tsoricaptcha": "^0.1.1",
+    "tsorimongo": "^0.1.7",
+    "tsoriredis": "^0.1.1",
     "typescript": "^4.7.2",
     "uuid": "^8.3.2"
   },

@@ -64,7 +64,8 @@ export default class TsOriAuth implements PackageIndex
     {
         var isvalid =await CaptchaRouter.Validate(captchaId);
         if(!isvalid)return ErrorMessage.captchaValidate;
-        var code= CommonService.randomNumber(5)
+        var code= CommonService.randomNumber(5);
+        console.log('code >>> ',code);        
         await this.redis.setValue(mobile,code.toString())
         await this.redis.expire(mobile,this.config.verifyMobile.expire);
         return RouteResponse.success(mobile);
