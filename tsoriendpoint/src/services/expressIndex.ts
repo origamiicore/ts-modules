@@ -91,7 +91,12 @@ export default class ExpressIndex
                         return
                     } 
                 }
-                var resp:any=(responseData instanceof RouteResponse)?responseData:{isDone:true,data:responseData};        
+                if(responseData.error)
+                {
+                    return self.sendData(res,500,responseData.error);
+                } 
+
+                var resp:any= responseData.response;       
                 
 				if(token)
 					resp.token=token;

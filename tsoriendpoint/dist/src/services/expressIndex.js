@@ -84,7 +84,10 @@ class ExpressIndex {
                             return;
                         }
                     }
-                    var resp = { isDone: true, data: responseData };
+                    if (responseData.error) {
+                        return self.sendData(res, 500, responseData.error);
+                    }
+                    var resp = responseData.response;
                     if (token)
                         resp.token = token;
                     return self.sendData(res, 200, resp);
