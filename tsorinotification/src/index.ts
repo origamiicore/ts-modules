@@ -1,4 +1,4 @@
-import {ModuleConfig, SessionInput, OriService, PackageIndex, ResponseDataModel, RouteResponse,DataInput} from 'origamits' 
+import {ModuleConfig, SessionInput, OriService, PackageIndex, ResponseDataModel, RouteResponse,DataInput, OriInjectable} from 'origamits' 
 import DriverBase from './drivers/driverBase';
 import EmailDriver from './drivers/emailDriver';
 import WebServiceDiriver from './drivers/webServiceDriver';
@@ -7,6 +7,7 @@ import ErrorMessages from './models/errorMessages';
 import NotificationConfig from './models/notificationConfig';
 import WebServiceConfig from './models/webServiceConfig';
 import TemplateSchima from './models/db/templateSchema'
+@OriInjectable({domain:'notification'})
 export default class TsOriNotification implements PackageIndex
 {
     name: string='notification';

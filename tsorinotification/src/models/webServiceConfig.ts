@@ -8,6 +8,7 @@ export default class WebServiceConfig extends BaseDriverConfig
     htmlField:string;
     protocolType:'get'|'post';
     option:any;
+    header:any;
     sendUrl:string;
     public constructor(
         
@@ -20,6 +21,7 @@ export default class WebServiceConfig extends BaseDriverConfig
             sendUrl?:string;
             protocolType?:'get'|'post';
             option?:any;
+            header?:any;
         }) { 
         super(fields.context);
         if (fields) Object.assign(this, fields);
