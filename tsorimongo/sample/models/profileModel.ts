@@ -2,9 +2,9 @@ import { OriProps,IOriModel, OriModel } from "origamits";
 @OriModel()
 export default class ProfileModel extends IOriModel
 {
-    @OriProps()
+    @OriProps({})
     _id:string;
-    @OriProps()
+    @OriProps({})
     firstName:string;
     @OriProps({})
     lastName:string;

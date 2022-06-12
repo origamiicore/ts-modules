@@ -111,7 +111,7 @@ export default class MangoRouter<T>
     async findById(id:any):Promise<T>
     {
         if(id==null)throw 'id is null'
-        var data= await Router.runInternal('mongo','search',new MessageModel({data:{
+        var data= await Router.runInternal('mongo','searchOne',new MessageModel({data:{
             context:this.context,
             collection:this.collection,
             query:{
