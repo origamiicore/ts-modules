@@ -11,7 +11,7 @@ export default class RedisRouter
     {
         var response= await Router.runInternal('redis','runCommand',new MessageModel({data:{
              context:this.context,
-             data:['EXPIRE',key,sec]
+             data:['EXPIRE',key,sec.toString()]
          }}))
          return response.response.data;  
     }
