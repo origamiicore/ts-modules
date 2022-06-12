@@ -188,7 +188,7 @@ export default class QueryModel<T>
             collection:this.collection,
             query 
          }})) 
-         
+         if(!data.response.data) return null;
          return new this.cls(data.response.data); 
     }
     async find():Promise<OdataResponse<T>>

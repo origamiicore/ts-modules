@@ -65,7 +65,10 @@ export default class DatabaseSample
         })).find();
         console.log('14>>',records.toJson());
         var record= await coll.search().where({age:{$ne:null}}).findOne();
-        console.log('15>>',record.toJSON());
+
+        console.log('15>>',JSON.stringify (record));
+        record= await coll.search().where({_id:'noid'}).findOne();
+        console.log('16>>',JSON.stringify (record));
     }
     async delete(coll:MangoRouter<ProfileModel>)
     {

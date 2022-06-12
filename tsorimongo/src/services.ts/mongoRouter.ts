@@ -118,8 +118,10 @@ export default class MangoRouter<T>
                 where:{_id:id}
             } 
          }}))  
-         console.log(data);
-         
+         if(!data.response.data)
+         {
+            return null;
+         }
          return new this.cls(data.response.data) ; 
     }
     async findByIdAndDelete(id:any):Promise<DeleteResponse>
