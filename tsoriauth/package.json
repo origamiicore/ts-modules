@@ -1,6 +1,6 @@
 {
   "name": "tsoriauth",
-  "version": "0.1.0",
+  "version": "0.1.2",
   "description": "",
   "main": "dist/index.js",
   "scripts": {
@@ -14,10 +14,10 @@
     "origamits": "^0.2.2",
     "tsoribase": "^0.1.1",
     "tsoricaptcha": "^0.1.1",
-    "tsorimongo": "^0.1.7",
+    "tsorimongo": "^0.1.11",
     "tsoriredis": "^0.1.2",
     "typescript": "^4.7.2",
-    "tsorinotification": "^0.0.6",
+    "tsorinotification": "^0.0.7",
     "uuid": "^8.3.2"
   },
   "keywords": [],

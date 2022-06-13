@@ -1,6 +1,6 @@
-import { MangoRouter } from "tsorimongo";
+import { MongoRouter } from "tsorimongo";
 import UserModel from "../models/userModel";
 
 export default class DbModels{
-    static userModel:MangoRouter<UserModel>;
+    static userModel:MongoRouter<UserModel>;
 }
