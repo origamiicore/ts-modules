@@ -1,5 +1,8 @@
 {
   "compilerOptions": {
+    "lib": [ 
+      "ES2021.String"
+    ],
     "experimentalDecorators": true, 
     "module": "commonjs",
     "esModuleInterop": true,

@@ -19,6 +19,7 @@ export default class AuthConfig extends ModuleConfig
         }) {
         super(fields);
         if (fields) Object.assign(this, fields);
+        if(!this.id)this.id=Math.random().toString();
         this.name='auth'
     }
 }
