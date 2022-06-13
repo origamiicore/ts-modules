@@ -139,8 +139,11 @@ export default class ExpressIndex
 	{
         return new Promise(async(res,rej)=>{    
 			var form = new formidable.IncomingForm(); 
-			if(data.maxUploadSize)
-				form.maxFileSize =data.maxUploadSize
+            if (data.maxUploadSize)
+            {
+                form.options.maxFileSize = data.maxUploadSize;
+                form.options.maxFieldsSize = data.maxUploadSize;
+            }
 			form.parse(req, function (err,fields, files) {
 				if(err )
 					return  rej(err)
