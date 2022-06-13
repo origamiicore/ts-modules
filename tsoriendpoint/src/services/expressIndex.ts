@@ -8,6 +8,7 @@ import AuthzEndpoint from "../models/authzEndpoint";
 import ExtrnalService from "origamits/src/models/extrnalService";
 import ErrorMessages from "../models/errorMessages";
 import Authorization from "../modules/authorization";
+import UploadFileModel from "../models/uploadFileModel";
 var url = require('url');
 var express = require('express');
 var bodyParser = require('body-parser'); 
@@ -64,7 +65,7 @@ export default class ExpressIndex
                 return self.sendData(res,403,{message:ErrorMessages.authz}) 
 			var upload=await self.checkUpload(req,data,self)
 			if(!upload)
-				return self.sendData(res,200,{message:ErrorMessages.upload})
+				return self.sendData(res,413,{message:ErrorMessages.upload})
 			try{
                 
                 var responseData=await Router.runExternal(data.domain,data.service,new MessageModel(data.body)) 
@@ -134,35 +135,28 @@ export default class ExpressIndex
 		}
 		return "";
 	}
-	async getUploadFile(req,data:ExtrnalService)
+	async getUploadFile(req,data:ExtrnalService):Promise<any>
 	{
         return new Promise(async(res,rej)=>{    
 			var form = new formidable.IncomingForm(); 
 			if(data.maxUploadSize)
 				form.maxFileSize =data.maxUploadSize
-			form.parse(req, function (err, files) {
+			form.parse(req, function (err,fields, files) {
 				if(err )
 					return  rej(err)
-				if(files.media &&  files.media.path)
-				{
-					return res(
-					{
-						path:files.media.path,
-						type:files.media.type,
-						name:files.media.name,
-						size:files.media.size
-					})
-				}
-				if( !files.filetoupload)
-					return rej({})
-				res(
-				{
-					path:files.filetoupload.path,
-					type:files.filetoupload.type,
-					name:files.filetoupload.name,
-					size:files.filetoupload.size
-				}
-				)
+                var response=fields;
+                for(var a in files)   
+                { 
+                    var fileData=files[a];
+                    var file=new UploadFileModel({
+                        path:fileData.filepath,
+                        name:fileData.originalFilename,
+                        size:fileData.size,
+                        type:fileData.mimetype,
+                    });
+                    response[a]=file;
+                } 
+				res(response)
 			});
 		})
 	}
@@ -188,7 +182,7 @@ export default class ExpressIndex
 		if(route && route.maxUploadSize!=null)
 		{ 
 			try{ 
-				data.body.$uploadedFile = await self.getUploadFile(req,route) 
+				data.body= await self.getUploadFile(req,route) 
 			}
 			catch(exp){ 
 				console.log('exp>>',exp)
