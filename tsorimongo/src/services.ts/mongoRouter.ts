@@ -9,7 +9,7 @@ import SortModel from "../models/sortModel";
 interface NoParamConstructor<T> {
     new (): T;
 }
-export default class MangoRouter<T>
+export default class MongoRouter<T>
 {
     context:string;
     collection:string; 

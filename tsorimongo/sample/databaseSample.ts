@@ -1,5 +1,5 @@
 import OrigamiTs, { ConfigModel } from "origamits";
-import { DatabaseConnection, MangoRouter, MongoConfig, OdataResponse, SelectModel, SortModel, TsOriMongo } from "..";
+import { DatabaseConnection, MongoRouter, MongoConfig, OdataResponse, SelectModel, SortModel, TsOriMongo } from "..";
 import OdataModel from "../src/models/odataModel";
 import ProfileModel from "./models/profileModel";
 
@@ -8,7 +8,7 @@ export default class DatabaseSample
     constructor(){
         this.init()
     }
-    async update(coll:MangoRouter<ProfileModel>)
+    async update(coll:MongoRouter<ProfileModel>)
     {
         var updateOneData =await coll.UpdateOne({_id:'1'},{set:{firstName:'name1'},inc:{age:2}})
         console.log('updateOne>>',updateOneData);
@@ -18,7 +18,7 @@ export default class DatabaseSample
         console.log('replaceData',replaceData);
 
     }
-    async search(coll:MangoRouter<ProfileModel>)
+    async search(coll:MongoRouter<ProfileModel>)
     {
         var records:OdataResponse<ProfileModel>;
         records= await coll.search().select(['firstName','age']).find();
@@ -70,7 +70,7 @@ export default class DatabaseSample
         record= await coll.search().where({_id:'noid'}).findOne();
         console.log('16>>',JSON.stringify (record));
     }
-    async delete(coll:MangoRouter<ProfileModel>)
+    async delete(coll:MongoRouter<ProfileModel>)
     {
         var deleteOneData=await coll.deleteOne({_id:'1'})
         console.log('deleteOne',deleteOneData);
@@ -79,7 +79,7 @@ export default class DatabaseSample
         var deleteManyData=await coll.deleteMany({age:13})
         console.log('deleteMany',deleteManyData);
     }
-    async insert(coll:MangoRouter<ProfileModel>)
+    async insert(coll:MongoRouter<ProfileModel>)
     {
         var insertData= await coll.InsertOne(new ProfileModel({
             _id:'2',
@@ -132,7 +132,7 @@ export default class DatabaseSample
         await origamicore.start([
             new TsOriMongo() 
         ])   
-        var coll = new MangoRouter('default','profile',ProfileModel);
+        var coll = new MongoRouter('default','profile',ProfileModel);
         try{
             await this.insert(coll);
             await this.update(coll);

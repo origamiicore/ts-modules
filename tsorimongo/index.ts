@@ -6,14 +6,14 @@ import MongoConfig from "./src/models/mongoConfig";
 import OdataResponse from "./src/models/odataResponse";
 import SelectModel from "./src/models/selectModel";
 import SortModel from "./src/models/sortModel";
-import MangoRouter from "./src/services.ts/mongoRouter";
+import MongoRouter from "./src/services.ts/mongoRouter";
 
 export {
     MongoConfig,
     BackupModel,
     DatabaseConnection,
     TsOriMongo,
-    MangoRouter,
+    MongoRouter,
     OdataResponse,
     SelectModel,
     SortModel
