@@ -12,9 +12,7 @@ export default class RedisSample
         var context="default";
         var config=new ConfigModel({
             packageConfig:[
-                  new RedisConfig({
-                      id:'1',
-                      name:'redis', 
+                  new RedisConfig({ 
                       connections:new Map<string, RedisConnection>([
                           [context,new RedisConnection({})]
                       ]) 
