@@ -63,12 +63,12 @@ export default class TsOriMongo implements PackageIndex
         }
     }
     @OriService({isInternal:true})
-    async updateOne(context:string,collection:string,condition:any,set:any,inc:any,push:any):Promise<RouteResponse>
+    async updateOne(context:string,collection:string,condition:any,set:any,inc:any,push:any,upsert:boolean):Promise<RouteResponse>
     {
         var connection=this.connections[context] as MongoService;
         if(connection==null) return OriMongoError.connectionNotFound; 
         try{
-            var data= await connection.updateOne(collection,condition,set,inc,push); 
+            var data= await connection.updateOne(collection,condition,set,inc,push,upsert); 
             return new RouteResponse({response:new ResponseDataModel({data:data})});
         }catch(exp){
             return OriMongoError.unknownError(exp);
@@ -111,7 +111,7 @@ export default class TsOriMongo implements PackageIndex
         }
     }
     @OriService({isInternal:true})
-    async deleteOne(context:string,collection:string,condition:any,set:any,inc:any,push:any):Promise<RouteResponse>
+    async deleteOne(context:string,collection:string,condition:any):Promise<RouteResponse>
     {
         var connection=this.connections[context] as MongoService;
         if(connection==null) return OriMongoError.connectionNotFound; 

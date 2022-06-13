@@ -133,6 +133,19 @@ export default class MangoRouter<T>
          }}))
          return new DeleteResponse(data.response.data); 
     }
+    async saveById(document:T):Promise<UpdateResponse>
+    { 
+        var copy=this.copy(document);
+        var data= await Router.runInternal('mongo','updateOne',new MessageModel({data:{
+            context:this.context,
+            collection:this.collection,
+            condition:{_id:copy._id},
+            set:copy, 
+            upsert:true
+         }}))
+         return new UpdateResponse(data.response.data); 
+
+    }
     async findByIdAndReplace(document:T):Promise<UpdateResponse>
     {
         var copy=this.copy(document);

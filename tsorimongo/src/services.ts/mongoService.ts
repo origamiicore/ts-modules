@@ -265,15 +265,16 @@ export default class MongoService
         });
         return {count,value}
     }
-    async updateOne(collection:string,condition:any,set:any,inc:any,push:any):Promise<any>
+    async updateOne(collection:string,condition:any,set:any,inc:any,push:any,upsert:boolean):Promise<any>
     {
         var saveObjec:any={};
         if(set)saveObjec.$set=set;
         if(inc)saveObjec.$inc=inc;
         if(push)saveObjec.$push=push; 
-        
+        var option:any={};
+        if(upsert)option.upsert=upsert;
         var coll = this.database.collection(collection);
-        return await coll.updateOne(condition,saveObjec);
+        return await coll.updateOne(condition,saveObjec,option);
     }
     async updateMany(collection:string,condition:any,set:any,inc:any,push:any):Promise<any[]>
     {
