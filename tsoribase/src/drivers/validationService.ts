@@ -3,11 +3,11 @@ const usernameRegexp =/^[a-zA-Z0-9_]*$/;
 var passwordValidator = require('password-validator');
 export default class ValidationService
 {
-    checkEmail(email:string):boolean
+    static checkEmail(email:string):boolean
     {
         return emailRegexp.test(email)
     }
-    checkUsername(username:string,
+    static checkUsername(username:string,
         fields?:{
             min:number;
             max:number;
@@ -19,7 +19,7 @@ export default class ValidationService
         if(username.length>(fields?.max??20))return false;
         return usernameRegexp.test(username)
     }
-    checkPassword(password:string,
+    static checkPassword(password:string,
         fields?:{
             min:number;
             max:number;
