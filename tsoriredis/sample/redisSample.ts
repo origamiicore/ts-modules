@@ -25,6 +25,9 @@ export default class RedisSample
         ])   
         var con=new RedisRouter(context);
         var stringkey='stringkey'
+        //increment
+        console.log('>',await con.increment('inc'))
+
         //string
         console.log('>',await con.exist(stringkey))
         console.log('>',await con.setValue(stringkey,'string 1'))

@@ -74,7 +74,7 @@ export default class RedisRouter
          return response.response.data; 
         
     }
-    async increment(key:string,value?:number)
+    async increment(key:string,value?:number):Promise<number>
     {
         var response= await Router.runInternal('redis','runCommand',new MessageModel({data:{
              context:this.context,
