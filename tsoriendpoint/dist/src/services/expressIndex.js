@@ -18,6 +18,7 @@ const redisSessionManager_1 = __importDefault(require("../sessionManager/redisSe
 const origamits_1 = require("origamits");
 const errorMessages_1 = __importDefault(require("../models/errorMessages"));
 const authorization_1 = __importDefault(require("../modules/authorization"));
+const uploadFileModel_1 = __importDefault(require("../models/uploadFileModel"));
 var url = require('url');
 var express = require('express');
 var bodyParser = require('body-parser');
@@ -64,7 +65,7 @@ class ExpressIndex {
                     return self.sendData(res, 403, { message: errorMessages_1.default.authz });
                 var upload = yield self.checkUpload(req, data, self);
                 if (!upload)
-                    return self.sendData(res, 200, { message: errorMessages_1.default.upload });
+                    return self.sendData(res, 413, { message: errorMessages_1.default.upload });
                 try {
                     var responseData = yield origamits_1.Router.runExternal(data.domain, data.service, new origamits_1.MessageModel(data.body));
                     var token = yield this.setSession(req, responseData);
@@ -127,25 +128,21 @@ class ExpressIndex {
                 var form = new formidable.IncomingForm();
                 if (data.maxUploadSize)
                     form.maxFileSize = data.maxUploadSize;
-                form.parse(req, function (err, files) {
+                form.parse(req, function (err, fields, files) {
                     if (err)
                         return rej(err);
-                    if (files.media && files.media.path) {
-                        return res({
-                            path: files.media.path,
-                            type: files.media.type,
-                            name: files.media.name,
-                            size: files.media.size
+                    var response = fields;
+                    for (var a in files) {
+                        var fileData = files[a];
+                        var file = new uploadFileModel_1.default({
+                            path: fileData.filepath,
+                            name: fileData.originalFilename,
+                            size: fileData.size,
+                            type: fileData.mimetype,
                         });
+                        response[a] = file;
                     }
-                    if (!files.filetoupload)
-                        return rej({});
-                    res({
-                        path: files.filetoupload.path,
-                        type: files.filetoupload.type,
-                        name: files.filetoupload.name,
-                        size: files.filetoupload.size
-                    });
+                    res(response);
                 });
             }));
         });
@@ -170,7 +167,7 @@ class ExpressIndex {
             var route = origamits_1.Router.getRouteData(data.domain, data.service);
             if (route && route.maxUploadSize != null) {
                 try {
-                    data.body.$uploadedFile = yield self.getUploadFile(req, route);
+                    data.body.data = yield self.getUploadFile(req, route);
                 }
                 catch (exp) {
                     console.log('exp>>', exp);

@@ -182,7 +182,7 @@ export default class ExpressIndex
 		if(route && route.maxUploadSize!=null)
 		{ 
 			try{ 
-				data.body= await self.getUploadFile(req,route) 
+				data.body.data= await self.getUploadFile(req,route) 
 			}
 			catch(exp){ 
 				console.log('exp>>',exp)
