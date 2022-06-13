@@ -1,5 +1,5 @@
 import {ModuleConfig, SessionInput, OriService, PackageIndex, ResponseDataModel, RouteResponse,DataInput, OriInjectable} from 'origamits' 
-import { MangoRouter } from 'tsorimongo';
+import { MongoRouter } from 'tsorimongo';
 import AuthConfig from './models/authConfig';
 import UserModel from './models/userModel';
 import UserScheama from './dbModels/userScheama';
@@ -21,7 +21,7 @@ export default class TsOriAuth implements PackageIndex
     redis:RedisRouter;
     jsonConfig(moduleConfig: AuthConfig): Promise<void> {
         this.config=moduleConfig;
-        DbModels.userModel=new MangoRouter(this.config.dbContext,'auth_user',UserModel);
+        DbModels.userModel=new MongoRouter(this.config.dbContext,'auth_user',UserModel);
         this.redis=new RedisRouter(this.config.redisContext);
         return;
     }
