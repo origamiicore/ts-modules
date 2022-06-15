@@ -3,6 +3,6 @@ import FileModel from "./fileMode";
 
 export default class DatabaseModels
 {
-    static profile:MongoRouter<FileModel>;
+    static file:MongoRouter<FileModel>;
 
 }

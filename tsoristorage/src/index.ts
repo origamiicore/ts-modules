@@ -1,6 +1,6 @@
-import { AddedResponse, ModuleConfig, OriInjectable, OriService, PackageIndex, RouteResponse } from "origamits";import { RedisRouter } from "tsoriredis";
+import { AddedResponse, DataInput, ModuleConfig, OriInjectable, OriService, PackageIndex, RouteResponse } from "origamits";import { RedisRouter } from "tsoriredis";
 import StorageConfig from "./models/storageConfig";
-import StorageService from "./serbices/storageService";
+import StorageService from "./services/storageService";
 import fs from 'fs'
 import {MongoRouter} from 'tsorimongo'
 import DatabaseModels from "./models/databaseModels";
@@ -16,7 +16,7 @@ export default class TsOriStorage implements PackageIndex
     async jsonConfig(moduleConfig: StorageConfig): Promise<void> {
         this.config =moduleConfig;
         StorageService.redis=new RedisRouter(this.config.redisContext);
-        DatabaseModels.profile=new MongoRouter(this.config.dbContext,'storage_files',FileModel);
+        DatabaseModels.file=new MongoRouter(this.config.dbContext,'storage_files',FileModel);
     }
     async start(): Promise<void> {  
     }
@@ -27,17 +27,27 @@ export default class TsOriStorage implements PackageIndex
         throw new Error("Method not implemented.");
     }
     
+    @OriService({isInternal:true})
+    async useFile(id:string,data:any):Promise<boolean>
+    {
+        var file= await DatabaseModels.file.findById(id);
+        console.log('>>>>>>>>>>>>',file);
+        
+        if(!file) return false;
+        if(file.isUsed)return false;
+        await DatabaseModels.file.findByIdAndUpdate(id,{set:{useData:data,isUsed:true}})
+    }
     @OriService({isPublic:true,})
     async download(id:string):Promise<RouteResponse>
     {
-        var file= await DatabaseModels.profile.findById(id);
+        var file= await DatabaseModels.file.findById(id);
         if(!file) return StorageErrors.fileNotFound;
         return new RouteResponse({
             addedResponse:new AddedResponse({directFileDownload:file.path,type:file.type})
         });
     }
     @OriService({isPublic:false,maxUploadSize:1024*1024*5})
-    async uploadStream(media:any):Promise<string>
+    async uploadStream(@DataInput({isRequired:true}) media:any):Promise<FileModel>
     {
         var file= await StorageService.getPath(this.config.path);
         fs.copyFileSync(media.path,file);
@@ -48,8 +58,10 @@ export default class TsOriStorage implements PackageIndex
             type:media.type,
             name:media.name,
             size:media.size,
+            createdTime:new Date().getTime(),
+            isUsed:false
         });
-        await DatabaseModels.profile.saveById(fileModel)
-        return id;
+        await DatabaseModels.file.saveById(fileModel)
+        return fileModel;
     }
 }

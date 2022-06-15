@@ -8,6 +8,9 @@ export default class FileModel extends IOriModel
     type:string;
     name:string;
     size:number;
+    isUsed:boolean=false;
+    createdTime:number;
+    useData:any;
     constructor(
         fields?:{ 
             _id:string;
@@ -15,6 +18,9 @@ export default class FileModel extends IOriModel
             type:string;
             name:string;
             size:number;
+            isUsed:boolean;
+            createdTime:number;
+            useData?:any;
         }
     )
     {
