@@ -78,7 +78,7 @@ export default class RedisRouter
     {
         var response= await Router.runInternal('redis','runCommand',new MessageModel({data:{
              context:this.context,
-             data:value!=null?['INCRBY',key,value]:['INCR',key]
+             data:value!=null?['INCRBY',key,value.toString()]:['INCR',key]
          }}))
          return response.response.data;  
     }
