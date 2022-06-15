@@ -46,7 +46,7 @@ export default class TsOriAuth implements PackageIndex
     @OriService({isPublic:false,})
     async isLogin(@SessionInput session):Promise<RouteResponse>
     {  
-        return new RouteResponse({response:new ResponseDataModel({data:session})})
+        return   RouteResponse.success({});
     }
     @OriService({isPublic:true,})
     async register(@DataInput({classType:UserModel})user:UserModel,captchaId:string):Promise<RouteResponse>
