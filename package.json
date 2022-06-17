@@ -9,6 +9,7 @@
     "tsorimongo": "^0.1.11",
     "tsorinotification": "^0.0.7",
     "tsoriredis": "^0.1.0",
+    "tsoristorage": "^0.1.0",
     "typescript": "^4.7.3"
   }
 }
