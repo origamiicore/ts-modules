@@ -77,8 +77,7 @@ export default class WebService
             body:data,
             json: true };
         if(header)
-            options.headers=header;
-            //console.log(options)
+            options.headers=header; 
         if(func)
         {
             request(options, function (error, response, body) {
@@ -90,7 +89,6 @@ export default class WebService
         }
         else
         {
-            console.log(options)
             return new Promise(function (resolve, reject) {
                 request(options, function (error, response, body) {
                     if (error) return reject(error);
@@ -113,7 +111,6 @@ export default class WebService
         if(header)
             for(var a in header)
                  headers[a]=header[a]
-        console.log('post------------>',headers)     
         if(func)
         { 
           request({
@@ -155,7 +152,6 @@ export default class WebService
             json: true };
         if(header)
             options.headers=header;
-            //console.log(options)
         if(func)
         {
             request(options, function (error, response, body) {
@@ -167,7 +163,6 @@ export default class WebService
         }
         else
         {
-            console.log(options)
             return new Promise(function (resolve, reject) {
                 request(options, function (error, response, body) {
                     if (error) return reject(error);

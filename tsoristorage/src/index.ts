@@ -31,8 +31,6 @@ export default class TsOriStorage implements PackageIndex
     async useFile(id:string,data:any):Promise<boolean>
     {
         var file= await DatabaseModels.file.findById(id);
-        console.log('>>>>>>>>>>>>',file);
-        
         if(!file) return false;
         if(file.isUsed)return false;
         await DatabaseModels.file.findByIdAndUpdate(id,{set:{useData:data,isUsed:true}})

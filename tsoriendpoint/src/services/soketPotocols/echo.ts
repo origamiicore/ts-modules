@@ -16,7 +16,6 @@ export default class EchoPortocol{
 			this.response({message:'Json Support'},{},connection,key,id)  
 			return;
 		}
-        console.log('---->',data)
         var id=data.id??1
 		if(!data.domain || !data.service)
 			return this.response({message:"wrong service"},{id:data.id},connection,sessionManager,id)

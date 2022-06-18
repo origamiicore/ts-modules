@@ -31,9 +31,7 @@ class TsoriCptcha implements PackageIndex
     }
     @OriService({isPublic:true})
     async setCode(data:any):Promise<RouteResponse>
-    {   
-        console.log('>>>>>>>>>>>>>',data);
-        
+    {    
         return this.driver.setCaptcha(data);
     }
     @OriService({isInternal:true})

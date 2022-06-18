@@ -41,7 +41,6 @@ export default class ExpressIndex
 			var session =req.session;
 			
             let isAuthz = false;
-            console.log(session);
             
             var route = Router.getRouteData(data.domain,data.service);
             if(!route)
@@ -114,8 +113,7 @@ export default class ExpressIndex
 	async setSession(req,data:RouteResponse)
 	{ 
 		var token = req.header('authorization') 
-		var sessionData=req.session
-        console.log('-->>',data?.session);
+		var sessionData=req.session;
         
 		if(data?.session)
 		{
@@ -212,9 +210,7 @@ export default class ExpressIndex
             domain:seperate[1],
             service:seperate[2]
         }
-        var session = req.session;
-		console.log('>>>',req.session);
-		console.log('>>>',req.header('authorization') );
+        var session = req.session; 
         var body:any={
             session:session,
         }
@@ -305,8 +301,6 @@ export default class ExpressIndex
     { 
         for(var folder of config.publicFolder)
         {
-            console.log('>>',folder);
-            
             app.use(express.static(folder));
         }
     }

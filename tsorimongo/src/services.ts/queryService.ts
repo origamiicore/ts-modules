@@ -8,7 +8,6 @@ export default class QueryService
             var p=token.parameters
             var obj={}
             obj[this.convert(p[0])]={'$regex':"\^"+this.convert(p[1])+"",$options:'i'}
-            console.log(obj)
             //obj[convert(p[1])]={'$regex':\^convert(p[0])\}
             return obj
         }
@@ -17,7 +16,6 @@ export default class QueryService
             var p=token.parameters
             var obj={}
             obj[this.convert(p[0])]={'$regex':""+this.convert(p[1])+"\^",$options:'i'}
-            console.log(obj)
             //obj[convert(p[1])]={'$regex':\^convert(p[0])\}
             return obj
         }
@@ -76,14 +74,12 @@ export default class QueryService
             }
             if(token.type=="ODataIdentifier")
             {
-                //console.log('XXX->',token.value)
                 return token.value.name
             }
             if(token.type=="AndExpression")
             {
                 var cv=this.convert(token.value.right)
                 var lf=this.convert(token.value.left) 
-               // console.log('VVVVV ',lf)
                 return {"$and":[lf,cv]}
             }
             
@@ -91,7 +87,6 @@ export default class QueryService
             {
                 var cv=this.convert(token.value.right)
                 var lf=this.convert(token.value.left) 
-               // console.log('VVVVV ',lf)
                 return {"$or":[lf,cv]}
             }
             if(token.type=="EqualsExpression")
@@ -108,10 +103,8 @@ export default class QueryService
                 var s={}
                 var cv=this.convert(token.value.right)
                 var lf=this.convert(token.value.left) 
-                    s['$gt']=cv
-                    obj[lf] =s
-                //console.log(JSON.stringify(token,null,4))
-               // console.log( token)
+                s['$gt']=cv
+                obj[lf] =s
             }
             if(token.type=="GreaterOrEqualsExpression")
             {
@@ -153,7 +146,6 @@ export default class QueryService
             if(token.value.current)
             {
                 let cv=this.convert(token.value.current)+'.'+this.convert(token.value.next)
-                console.log('CCC->',cv)
                return   cv
             }
             if(token.type=="PropertyPathExpression"||
@@ -198,7 +190,6 @@ export default class QueryService
             }
             if(obj[a] && obj[a].$like)
             {
-				//console.log('------>',context)
                 var stval= new RegExp( obj[a].$like , "gi")            
                 if(obj[a].$like[0]=='%' && obj[a].$like[obj[a].$like.length]=='%')
                     stval = new RegExp("^" + obj[a].$like + "$", "gi");

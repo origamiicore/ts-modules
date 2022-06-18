@@ -43,9 +43,7 @@ export default class SocketIndex
             autoAcceptConnections: false
         });
         wsServer.on('request', (request)=> {
-            var connection:any ={} 
-            console.log('>>>>>>>>>>>',protocol);
-            
+            var connection:any ={}              
             try{
                 connection = request.accept(protocol.socketProtocol, request.origin); 
                 if(protocol.socketProtocol=='echo-protocol')
