@@ -51,11 +51,12 @@ export default class MongoRouter<T>
         }
         ):Promise<UpdateResponse>
     { 
+        
        var data= await Router.runInternal('mongo','updateOne',new MessageModel({data:{
             context:this.context,
             collection:this.collection,
              condition,
-             set:fields?.set,
+             set:fields?.set?this.copy(fields.set):null,
              inc:fields?.inc,
              push:fields?.push
         }}))
@@ -84,7 +85,7 @@ export default class MongoRouter<T>
             context:this.context,
             collection:this.collection,
             condition,
-            set:fields?.set,
+            set:fields?.set?this.copy(fields.set):null,
             inc:fields?.inc,
             push:fields?.push
          }}))
@@ -169,7 +170,7 @@ export default class MongoRouter<T>
             context:this.context,
             collection:this.collection,
             condition:{_id:id},
-            set:fields?.set,
+            set:fields?.set?this.copy(fields.set):null,
             inc:fields?.inc,
             push:fields?.push
          }}))
