@@ -1,7 +1,13 @@
-import { ModuleConfig } from "origamits"; 
+import { ModuleConfig, PackageIndex } from "origamits"; 
+import TsOriStorage from "..";
 
 export default class StorageConfig extends ModuleConfig
-{ 
+{
+    async createInstance(): Promise<PackageIndex> {
+        var instance=new TsOriStorage();
+        await instance.jsonConfig(this);
+        return instance;
+    } 
     dbContext:string;
     redisContext:string;
     path:string;
@@ -17,8 +23,7 @@ export default class StorageConfig extends ModuleConfig
         if(!fields?.id)
         {
             this.id=Math.random().toString();
-        }
-        this.name='storage';
+        } 
     }
 
 }

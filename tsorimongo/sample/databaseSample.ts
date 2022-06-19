@@ -129,9 +129,7 @@ export default class DatabaseSample
         });
         
         var origamicore = new OrigamiTs(config);
-        await origamicore.start([
-            new TsOriMongo() 
-        ])   
+        await origamicore.start( )   
         var coll = new MongoRouter('default','profile',ProfileModel);
         try{
             await this.insert(coll);

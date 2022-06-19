@@ -12,10 +12,7 @@ export default class EndpointSample
     {
         
         var origamicore = new OrigamiTs(config);
-        await origamicore.start([
-            new TsOriEndpoint(),
-            new ProfileService()
-        ])   
+        await origamicore.start( )   
     }
 }
 

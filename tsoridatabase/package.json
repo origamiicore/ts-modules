@@ -16,6 +16,6 @@
   },
   "dependencies": {
     "@types/node": "^17.0.31",
-    "origamits": "^0.1.3"
+    "origamits": "^0.3.0"
   }
 }

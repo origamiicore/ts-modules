@@ -1,7 +1,13 @@
-import { ModuleConfig } from "origamits";
+import { ModuleConfig, PackageIndex } from "origamits";
+import TsOriBlog from "..";
  
 export default class BlogConfig extends ModuleConfig
-{  
+{
+    async createInstance(): Promise<PackageIndex> {
+        var instance =new TsOriBlog();
+        await instance.jsonConfig(this);
+        return instance;
+    }  
     dbContext:string;
     useOriStorage:boolean;
     public constructor(
@@ -12,8 +18,6 @@ export default class BlogConfig extends ModuleConfig
             useOriStorage:boolean;
         }) {
         super(fields);
-        if (fields) Object.assign(this, fields);
-        this.name='blog'
-        this.id??=Math.random().toString();
+        if (fields) Object.assign(this, fields); 
     }
 }

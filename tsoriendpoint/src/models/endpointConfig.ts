@@ -1,9 +1,15 @@
  
   
-import {ModuleConfig} from 'origamits';
+import {ModuleConfig, PackageIndex} from 'origamits';
+import TsOriEndpoint from '..';
 import EndpointConnection from './endpointConnection';
 export default class EndpointConfig extends ModuleConfig
-{ 
+{
+    async createInstance(): Promise<PackageIndex> {
+        var instance = new TsOriEndpoint();
+        await instance.jsonConfig(this);
+        return instance;
+    } 
     connections:EndpointConnection[];
     public constructor(
         
@@ -13,10 +19,5 @@ export default class EndpointConfig extends ModuleConfig
         }) {
         super(fields);
         if (fields) Object.assign(this, fields);
-        if(!fields?.id)
-        {
-            this.id=Math.random().toString();
-        }
-        this.name='endpoint';
     }
 }

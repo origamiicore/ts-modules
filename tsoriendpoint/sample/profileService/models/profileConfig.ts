@@ -1,14 +1,18 @@
-import { ModuleConfig } from "origamits";
+import { ModuleConfig, PackageIndex } from "origamits";
+import ProfileService from "..";
 
 export default class ProfileConfig extends ModuleConfig
 {
+    async createInstance(): Promise<PackageIndex> {
+        var instance=new ProfileService()
+        await instance.jsonConfig(this);
+        return instance;
+    }
     readOnle:boolean;
     public constructor(
         
         fields?: {
-            id?: string,
-            name?: string, 
-            type?: 'module'|'service', 
+            id?: string, 
             readOnley?:boolean  
         }) {
 

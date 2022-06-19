@@ -96,7 +96,7 @@ export default class ExpressIndex
                     return self.sendData(res,500,responseData.error);
                 } 
 
-                var resp:any= responseData.response;       
+                var resp:any= responseData.response??{};       
                 
 				if(token)
 					resp.token=token;

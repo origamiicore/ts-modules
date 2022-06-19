@@ -29,9 +29,6 @@ exports.default = new origamits_1.ConfigModel({
             ]
         }),
         new profileConfig_1.default({
-            id: '2',
-            type: 'service',
-            name: 'profile',
             readOnley: false
         })
     ]

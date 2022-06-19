@@ -1,7 +1,13 @@
-import { ModuleConfig } from 'origamits';
+import { ModuleConfig, PackageIndex } from 'origamits';
+import TsOriMongo from '..';
 import DatabaseConnection from './databaseConnection';
 export default class MongoConfig extends ModuleConfig
 {
+    async createInstance(): Promise<PackageIndex> {
+        var instance=new TsOriMongo();
+        await instance.jsonConfig(this)
+        return instance;
+    }
     connections:DatabaseConnection[] = []; 
     
     public constructor(
@@ -12,10 +18,5 @@ export default class MongoConfig extends ModuleConfig
         }) {
         super(fields);
         if (fields) Object.assign(this, fields);
-        if(!fields?.id)
-        {
-            this.id=Math.random().toString();
-        }
-        this.name='mongo';
     }
 }

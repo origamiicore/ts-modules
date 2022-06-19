@@ -9,7 +9,7 @@ export default class TsOriRedis implements PackageIndex
     name: string='redis';
     config:RedisConfig;
     context:Map<string,any>=new Map<string,any>();
-    async jsonConfig(moduleConfig: ModuleConfig): Promise<void> {
+    async jsonConfig(moduleConfig: RedisConfig): Promise<void> {
         this.config =moduleConfig as RedisConfig;
     }
     async start(): Promise<void> { 

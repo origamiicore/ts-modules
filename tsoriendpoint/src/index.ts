@@ -9,8 +9,8 @@ export default class TsOriEndpoint implements PackageIndex
     private config:EndpointConfig;
     private expressList:ExpressIndex[]=[];
     private socketList:SocketIndex[]=[];
-    jsonConfig(config: ModuleConfig): Promise<void> {
-         this.config=config as EndpointConfig;
+    jsonConfig(config: EndpointConfig): Promise<void> {
+         this.config=config ;
          
         for(var connection of this.config.connections )
         {

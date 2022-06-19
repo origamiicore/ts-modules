@@ -40,10 +40,7 @@ class NotificationSample
         });
         
         var origamicore = new OrigamiTs(config);
-        await origamicore.start([
-            new TsOriMongo() ,
-            new TsOriNotification()
-        ])    
+        await origamicore.start( )    
         NotificationRouter.sendMessage
         
         

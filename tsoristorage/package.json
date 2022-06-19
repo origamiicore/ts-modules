@@ -1,6 +1,6 @@
 {
   "name": "tsoristorage",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "",
   "main": "dist/index.js",
   "scripts": {
@@ -13,9 +13,10 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "tsorimongo": "^0.1.11",
+    "tsorimongo": "^0.2.0",
     "@types/node": "^17.0.31",
-    "origamits": "^0.2.5",
+    "origamits": "^0.3.0",
+    "tsoriredis":"^0.2.0",
     "uuid": "^8.3.2"
   }
 }

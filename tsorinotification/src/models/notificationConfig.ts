@@ -1,7 +1,13 @@
-import { ModuleConfig } from 'origamits'; 
+import { ModuleConfig, PackageIndex } from 'origamits'; 
+import TsOriNotification from '..';
 import BaseDriverConfig from './baseDriverConfig'; 
 export default class NotificationConfig extends ModuleConfig
-{ 
+{
+    async createInstance(): Promise<PackageIndex> {
+        var instance=new TsOriNotification();
+        await instance.jsonConfig(this);
+        return instance
+    } 
     dbContext:string;
     drivers:BaseDriverConfig[]
     public constructor(
@@ -15,7 +21,6 @@ export default class NotificationConfig extends ModuleConfig
         if(!fields?.id)
         {
             this.id=Math.random().toString();
-        }
-        this.name='mongo';
+        } 
     }
 }

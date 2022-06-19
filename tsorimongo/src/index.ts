@@ -8,8 +8,8 @@ export default class TsOriMongo implements PackageIndex
     name: string='mongo';
     private config:MongoConfig;
     private connections:Map<string,MongoService>=new Map<string,MongoService>();
-    jsonConfig(config: ModuleConfig): Promise<void> {
-        this.config= config as MongoConfig;
+    jsonConfig(config: MongoConfig): Promise<void> {
+        this.config= config ;
         for(var connection of this.config.connections)
         {
             this.connections[connection.name]=new MongoService(connection); 

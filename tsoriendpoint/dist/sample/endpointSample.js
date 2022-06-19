@@ -13,9 +13,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const origamits_1 = __importDefault(require("origamits"));
-const src_1 = __importDefault(require("../src"));
 const config_1 = __importDefault(require("./config"));
-const profileService_1 = __importDefault(require("./profileService"));
 class EndpointSample {
     constructor() {
         this.init();
@@ -23,10 +21,7 @@ class EndpointSample {
     init() {
         return __awaiter(this, void 0, void 0, function* () {
             var origamicore = new origamits_1.default(config_1.default);
-            yield origamicore.start([
-                new src_1.default(),
-                new profileService_1.default()
-            ]);
+            yield origamicore.start();
         });
     }
 }

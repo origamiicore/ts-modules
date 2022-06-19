@@ -1,7 +1,13 @@
-import { ModuleConfig } from 'origamits'; 
+import { ModuleConfig, PackageIndex } from 'origamits'; 
+import TsOriAuth from '..';
 import NotifConfig from './notifConfig';
 export default class AuthConfig extends ModuleConfig
 {
+    async createInstance(): Promise<PackageIndex> {
+        var instance =new TsOriAuth();
+        await instance.jsonConfig(this);
+        return instance;
+    }
     dbContext:string;
     redisContext:string;
     useCaptcha:boolean;
@@ -18,8 +24,6 @@ export default class AuthConfig extends ModuleConfig
             useCaptcha?:boolean 
         }) {
         super(fields);
-        if (fields) Object.assign(this, fields);
-        if(!this.id)this.id=Math.random().toString();
-        this.name='auth'
+        if (fields) Object.assign(this, fields); 
     }
 }

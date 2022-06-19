@@ -1,6 +1,6 @@
 {
   "name": "tsoriendpoint",
-  "version": "0.1.9",
+  "version": "0.2.0",
   "description": "",
   "main": "dist/index.js",
   "scripts": {
@@ -26,6 +26,6 @@
     "jsonwebtoken": "^8.5.1", 
     "redis": "^4.0.6",
     "websocket": "^1.0.34",
-    "origamits": "^0.2.3"
+    "origamits": "^0.3.0"
   }
 }

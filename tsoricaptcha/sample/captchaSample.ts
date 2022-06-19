@@ -28,7 +28,6 @@ export default class CaptchaSample
                      ]
                  }),
                 new TestConfig({
-                    id:'2'
                 }) ,
                 new CaptchaConfig({
                     id:'3',  
@@ -37,11 +36,7 @@ export default class CaptchaSample
             ]
         });
         var origamicore = new OrigamiTs(config);
-        await origamicore.start([
-            new TsOriEndpoint(),
-            new TestService(),
-           // new TsoriCptcha()
-        ])   
+        await origamicore.start()   
     }
 }
 new CaptchaSample()

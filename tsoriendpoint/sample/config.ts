@@ -26,10 +26,7 @@ export default new ConfigModel({
                 })
              ]
          }),
-        new ProfileConfig({
-            id:'2',
-            type:'service',
-            name:'profile',
+        new ProfileConfig({ 
             readOnley:false
         }) 
     ]

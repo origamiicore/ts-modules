@@ -20,9 +20,7 @@ export default class RedisSample
             ]
         });
         var origamicore = new OrigamiTs(config);
-        await origamicore.start([
-            new TsOriRedis() 
-        ])   
+        await origamicore.start()   
         var con=new RedisRouter(context);
         var stringkey='stringkey'
         //increment

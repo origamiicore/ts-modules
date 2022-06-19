@@ -1,5 +1,6 @@
  
 import {OriInjectable,PackageIndex,DataInput, OriService, SessionInput,ModuleConfig, RouteResponse} from "origamits"; 
+import ProfileConfig from "./models/profileConfig";
 import ProfileModel from "./models/profileModel";
  
 
@@ -7,7 +8,7 @@ import ProfileModel from "./models/profileModel";
 class ProfileService implements PackageIndex
 { 
     name:string='profile';
-    jsonConfig(moduleConfig: ModuleConfig): Promise<void> { 
+    jsonConfig(moduleConfig: ProfileConfig): Promise<void> { 
         return ;
     }
     start(): Promise<void> {

@@ -1,6 +1,6 @@
 {
   "name": "tsoriblog",
-  "version": "0.0.6",
+  "version": "0.2.0",
   "description": "",
   "main": "dist/index.js",
   "scripts": {
@@ -10,8 +10,8 @@
     "publish": "npm publish"
   },
   "dependencies": { 
-    "origamits": "^0.2.9",
-    "tsorimongo": "^0.1.12",
+    "origamits": "^0.3.0",
+    "tsorimongo": "^0.2.0",
     "typescript": "^4.7.2",
     "uuid": "^8.3.2"
   },

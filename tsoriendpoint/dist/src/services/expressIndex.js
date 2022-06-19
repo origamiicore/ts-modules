@@ -40,12 +40,12 @@ class ExpressIndex {
             this.runServer(app, this.config);
             var self = this;
             app.use((req, res, next) => __awaiter(this, void 0, void 0, function* () {
+                var _a;
                 var data = this.reqToDomain(req, self, res);
                 if (!data)
                     return;
                 var session = req.session;
                 let isAuthz = false;
-                console.log(session);
                 var route = origamits_1.Router.getRouteData(data.domain, data.service);
                 if (!route) {
                     return self.sendData(res, 404, { message: errorMessages_1.default.notFound });
@@ -88,7 +88,7 @@ class ExpressIndex {
                     if (responseData.error) {
                         return self.sendData(res, 500, responseData.error);
                     }
-                    var resp = responseData.response;
+                    var resp = (_a = responseData.response) !== null && _a !== void 0 ? _a : {};
                     if (token)
                         resp.token = token;
                     return self.sendData(res, 200, resp);
@@ -104,7 +104,6 @@ class ExpressIndex {
         return __awaiter(this, void 0, void 0, function* () {
             var token = req.header('authorization');
             var sessionData = req.session;
-            console.log('-->>', data === null || data === void 0 ? void 0 : data.session);
             if (data === null || data === void 0 ? void 0 : data.session) {
                 if (!sessionData)
                     sessionData = {};
@@ -194,8 +193,6 @@ class ExpressIndex {
             service: seperate[2]
         };
         var session = req.session;
-        console.log('>>>', req.session);
-        console.log('>>>', req.header('authorization'));
         var body = {
             session: session,
         };
@@ -272,7 +269,6 @@ class ExpressIndex {
     }
     setPublic(app, config) {
         for (var folder of config.publicFolder) {
-            console.log('>>', folder);
             app.use(express.static(folder));
         }
     }

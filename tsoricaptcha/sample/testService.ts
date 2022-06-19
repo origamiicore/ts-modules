@@ -25,7 +25,12 @@ export default class TestService implements PackageIndex
 
 
 export  class TestConfig extends ModuleConfig
-{ 
+{
+    async createInstance(): Promise<PackageIndex> {
+        var instance =new TestService();
+        await instance.jsonConfig(this);
+        return instance;
+    } 
     public constructor(
         
         fields?: {
@@ -33,8 +38,7 @@ export  class TestConfig extends ModuleConfig
             name?: string,   
         }) {
 
-        super(fields);
-        this.name='test'
+        super(fields); 
         if (fields) Object.assign(this, fields);
     }
 }

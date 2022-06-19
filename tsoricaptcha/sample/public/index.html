@@ -25,7 +25,7 @@
                         {
                             window.localStorage.setItem('token',resp.token)
                         }
-                        cFunction( resp.data.response.data);
+                        cFunction( resp.data);
 
                     } 
                 }
@@ -51,8 +51,8 @@
                         {
                             window.localStorage.setItem('token',resp.token)
                         }
-                        if(resp.data.response)
-                            cFunction( resp.data.response.data);
+                        if(resp.data)
+                            cFunction( resp.data);
                         else cFunction({})
                     } 
                 }
