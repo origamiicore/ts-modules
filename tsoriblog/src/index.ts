@@ -1,4 +1,4 @@
-import { ModuleConfig, OriInjectable, OriService, PackageIndex, RouteResponse, SessionInput } from "origamits";
+import { ModuleConfig, OdataInput, OdataModel, OriInjectable, OriService, PackageIndex, RouteResponse, SessionInput } from "origamits";
 import { MongoRouter, OdataResponse, SelectModel } from "tsorimongo"; 
 import BadgeModel from "./models/badgeModel";
 import BlogConfig from "./models/blogConfig";
@@ -6,7 +6,7 @@ import BlogErrors from "./models/blogErrors";
 import CategoryModel from "./models/categoryModel";
 import DbModels from "./models/dbModels";
 import PostModel from "./models/postModel";
-import {StorageRouter} from 'tsoristorage';
+import {StorageRouter} from 'tsoristorage'; 
 const uuid =require('uuid');
 @OriInjectable({domain:'blog'})
 class TsOriBlog implements PackageIndex
@@ -29,13 +29,13 @@ class TsOriBlog implements PackageIndex
     }
     
     @OriService({isPublic:true})
-    async getPosts():Promise<OdataResponse<PostModel>>
+    async getPosts(@OdataInput odata:OdataModel):Promise<OdataResponse<PostModel>>
     { 
         var post=await DbModels.post.search({
             select:['_id','image','title','brief','badge','category','time','writer'],
             where:{active:true},
             showCount:true
-        }).find();
+        }).odata(odata).find();
         return post;
     }
     @OriService({isPublic:true})

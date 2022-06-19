@@ -1,6 +1,6 @@
-import OrigamiTs, { ConfigModel } from "origamits";
+import OrigamiTs, { ConfigModel, OdataModel } from "origamits";
 import { DatabaseConnection, MongoRouter, MongoConfig, OdataResponse, SelectModel, SortModel, TsOriMongo } from "..";
-import OdataModel from "../src/models/odataModel";
+
 import ProfileModel from "./models/profileModel";
 
 export default class DatabaseSample
@@ -136,8 +136,8 @@ export default class DatabaseSample
         try{
             await this.insert(coll);
             await this.update(coll);
-            await this.delete(coll);
             await this.search(coll);
+            await this.delete(coll);
  
             
 

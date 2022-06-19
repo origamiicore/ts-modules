@@ -1,7 +1,6 @@
-import { MessageModel, Router } from "origamits";
+import { MessageModel, Router,OdataModel } from "origamits";
 import DeleteResponse from "./crudModels/deleteResponse";
-import UpdateResponse from "./crudModels/updateResponse";
-import OdataModel from "./odataModel";
+import UpdateResponse from "./crudModels/updateResponse"; 
 import OdataResponse from "./odataResponse";
 import SelectModel from "./selectModel";
 import SortModel from "./sortModel";
