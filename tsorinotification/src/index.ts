@@ -7,6 +7,8 @@ import ErrorMessages from './models/errorMessages';
 import NotificationConfig from './models/notificationConfig';
 import WebServiceConfig from './models/webServiceConfig';
 import TemplateSchima from './models/db/templateSchema'
+import TelegramConfig from './models/telegramConfig';
+import TelegramDriver from './drivers/telegramDriver';
 @OriInjectable({domain:'notification'})
 export default class TsOriNotification implements PackageIndex
 {
@@ -24,6 +26,10 @@ export default class TsOriNotification implements PackageIndex
             if(driver instanceof EmailConfig)
             {
                 this.drivers[driver.context]=new EmailDriver(driver);
+            }
+            if(driver instanceof TelegramConfig)
+            {
+                this.drivers[driver.context]=new TelegramDriver(driver);
             }
         }
         return;

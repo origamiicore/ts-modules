@@ -1,6 +1,7 @@
 import OrigamiTs, { ConfigModel } from "origamits";
 import { DatabaseConnection, MongoConfig, TsOriMongo } from "tsorimongo";
 import TsOriNotification, { NotificationConfig, NotificationRouter, WebServiceConfig } from "..";
+import TelegramConfig from "../src/models/telegramConfig";
 
 class NotificationSample
 {
@@ -25,6 +26,11 @@ class NotificationSample
                   new NotificationConfig({ 
                         dbContext:context,
                         drivers:[
+                            new TelegramConfig({
+                                context:'telegram',
+                                dbContext:context,
+                                telegramApi:''
+                            }),
                             new WebServiceConfig({
                                 context:'sms',
                                 header:{
@@ -41,7 +47,7 @@ class NotificationSample
         
         var origamicore = new OrigamiTs(config);
         await origamicore.start( )    
-        NotificationRouter.sendMessage
+        NotificationRouter.sendMessage('telegram','1',{code:'12345',to:'+989378092520'})
         
         
     }
