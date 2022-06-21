@@ -9,4 +9,5 @@ export default class ErrorMessage
     static wrongUsername:RouteResponse=RouteResponse.failed({},'wrong username','auth005')
     static wrongPassword:RouteResponse=RouteResponse.failed({},'wrong password','auth006')
     static existUsername:RouteResponse=RouteResponse.failed({},'exist username','auth007')
+    static wrongUserPass:RouteResponse=RouteResponse.failed({},'wrong username or password','auth007')
 }

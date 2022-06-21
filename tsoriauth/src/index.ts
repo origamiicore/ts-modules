@@ -40,8 +40,17 @@ export default class TsOriAuth implements PackageIndex
         @DataInput({isRequired:true}) username:string,
         @DataInput({isRequired:true}) password:string):Promise<RouteResponse>
     {  
-        
-        return
+        var user =await  DbModels.userModel.search({where:{
+            $and:[
+                {password:md5(password)},
+                {username}
+            ]
+        }}).findOne();
+        if(user)
+        {
+            return new RouteResponse({session:{userid:user._id}, response:new ResponseDataModel({isDone:true})});
+        }
+        return ErrorMessage.wrongUserPass;
     }
     @OriService({isPublic:false,})
     async isLogin(@SessionInput session):Promise<RouteResponse>
@@ -92,6 +101,7 @@ export default class TsOriAuth implements PackageIndex
     {
         var status=new UserStatusModel();
         var user =await  DbModels.userModel.findById(session.userid);
+        if(!user) return status;
         status.setPassword=!!user.password;
         status.verifyedEmail=!!user.email;
         status.verifyedPhoneNumber=!!user.phoneNumber;
@@ -108,6 +118,7 @@ export default class TsOriAuth implements PackageIndex
         var code= CommonService.randomNumber(5);
         console.log('code >>> ',code);      
         var config=this.config.verifyMobile;
+        if(mobile[0]!='+')mobile='+'+mobile
         NotificationRouter.sendMessage(config.context,config.template,{code:code,to:mobile});
         await this.redis.setValue(mobile,code.toString())
         await this.redis.expire(mobile,this.config.verifyMobile.expire);
