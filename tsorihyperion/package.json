@@ -1,0 +1,20 @@
+{
+  "name": "tsorihyperion",
+  "version": "0.0.4",
+  "description": "",
+  "main": "dist/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "npx tsc",
+    "serve": "node ./dist/sample/sampleHyperion.js",
+    "publish": "npm publish"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@eosrio/hyperion-stream-client": "^0.4.0-beta.5",
+    "eosjs-account-name": "^2.2.1",
+    "fetch": "^1.1.0"
+  }
+}
