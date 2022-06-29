@@ -72,6 +72,8 @@ export default class RedisSample
         console.log('>',await con.addToArray(uarrayKey,'a2',{type:'toUnique'}))
         console.log('>',await con.addToArray(uarrayKey,'a3',{type:'toUnique'}))
         console.log('>',await con.addToArray(uarrayKey,'a4',{type:'toUnique'}))
+        console.log('>',await con.remove(uarrayKey,'a3'))
+        console.log('>',await con.getArray(uarrayKey,{isUniqueu:true}))
         console.log('>',await con.pop(uarrayKey,'unique'))
         console.log('>',await con.getArray(uarrayKey,{isUniqueu:true}))
         console.log('>',await con.exist(uarrayKey))

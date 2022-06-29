@@ -109,6 +109,16 @@ export default class RedisRouter
          }}))
          return response.response.data; 
     }
+    async remove(key:string,value:string,type?:'unique')
+    {
+        var data=['SREM',key,value]
+        var response= await Router.runInternal('redis','runCommand',new MessageModel({data:{
+             context:this.context,
+             data
+         }}))
+         return response.response.data;  
+
+    }
     async pop(key:string,type?:'left'|'rigth'|'unique',count?:number)
     { 
         var command='LPOP'
