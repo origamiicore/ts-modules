@@ -12,9 +12,9 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const origamits_1 = require("origamits");
+const origamicore_1 = require("origamicore");
 const __1 = __importDefault(require(".."));
-class EndpointConfig extends origamits_1.ModuleConfig {
+class EndpointConfig extends origamicore_1.ModuleConfig {
     constructor(fields) {
         super(fields);
         if (fields)

@@ -15,7 +15,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const jwtSessionManager_1 = __importDefault(require("../sessionManager/jwtSessionManager"));
 const ramSessionManager_1 = __importDefault(require("../sessionManager/ramSessionManager"));
 const redisSessionManager_1 = __importDefault(require("../sessionManager/redisSessionManager"));
-const origamits_1 = require("origamits");
+const origamicore_1 = require("origamicore");
 const errorMessages_1 = __importDefault(require("../models/errorMessages"));
 const authorization_1 = __importDefault(require("../modules/authorization"));
 const uploadFileModel_1 = __importDefault(require("../models/uploadFileModel"));
@@ -46,7 +46,7 @@ class ExpressIndex {
                     return;
                 var session = req.session;
                 let isAuthz = false;
-                var route = origamits_1.Router.getRouteData(data.domain, data.service);
+                var route = origamicore_1.Router.getRouteData(data.domain, data.service);
                 if (!route) {
                     return self.sendData(res, 404, { message: errorMessages_1.default.notFound });
                 }
@@ -67,7 +67,7 @@ class ExpressIndex {
                 if (!upload)
                     return self.sendData(res, 413, { message: errorMessages_1.default.upload });
                 try {
-                    var responseData = yield origamits_1.Router.runExternal(data.domain, data.service, new origamits_1.MessageModel(data.body));
+                    var responseData = yield origamicore_1.Router.runExternal(data.domain, data.service, new origamicore_1.MessageModel(data.body));
                     var token = yield this.setSession(req, responseData);
                     var addedResponse = responseData === null || responseData === void 0 ? void 0 : responseData.addedResponse;
                     if (addedResponse) {
@@ -154,7 +154,7 @@ class ExpressIndex {
                 if (session && session.superadmin)
                     return res(true);
                 try {
-                    var data = origamits_1.Router.runExternal(authz.domain, 'checkRole', new origamits_1.MessageModel({ data: { domain: dt.domain, service: dt.service }, session: session }));
+                    var data = origamicore_1.Router.runExternal(authz.domain, 'checkRole', new origamicore_1.MessageModel({ data: { domain: dt.domain, service: dt.service }, session: session }));
                     res(!!data);
                 }
                 catch (exp) {
@@ -165,7 +165,7 @@ class ExpressIndex {
     }
     checkUpload(req, data, self) {
         return __awaiter(this, void 0, void 0, function* () {
-            var route = origamits_1.Router.getRouteData(data.domain, data.service);
+            var route = origamicore_1.Router.getRouteData(data.domain, data.service);
             if (route && route.maxUploadSize != null) {
                 try {
                     data.body.data = yield self.getUploadFile(req, route);

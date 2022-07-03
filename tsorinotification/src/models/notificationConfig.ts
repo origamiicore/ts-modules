@@ -1,4 +1,4 @@
-import { ModuleConfig, PackageIndex } from 'origamits'; 
+import { ModuleConfig, PackageIndex } from 'origamicore'; 
 import TsOriNotification from '..';
 import BaseDriverConfig from './baseDriverConfig'; 
 export default class NotificationConfig extends ModuleConfig

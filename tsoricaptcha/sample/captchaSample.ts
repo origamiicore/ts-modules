@@ -1,4 +1,4 @@
-import OrigamiTs, { ConfigModel } from "origamits";
+import OrigamiCore, { ConfigModel } from "origamicore";
 import TsOriEndpoint, { ConnectionProtocol, EndpointConfig, EndpointConnection, EndpointConnectionType } from "tsoriendpoint";
 import TsoriCptcha, { CaptchaConfig, SimpleDriverConfig } from "..";
 import TestService, { TestConfig } from "./testService";
@@ -35,7 +35,7 @@ export default class CaptchaSample
                 }) 
             ]
         });
-        var origamicore = new OrigamiTs(config);
+        var origamicore = new OrigamiCore(config);
         await origamicore.start()   
     }
 }

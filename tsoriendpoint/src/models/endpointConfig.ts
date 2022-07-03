@@ -1,6 +1,6 @@
  
   
-import {ModuleConfig, PackageIndex} from 'origamits';
+import {ModuleConfig, PackageIndex} from 'origamicore';
 import TsOriEndpoint from '..';
 import EndpointConnection from './endpointConnection';
 export default class EndpointConfig extends ModuleConfig

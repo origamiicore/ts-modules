@@ -1,6 +1,6 @@
 {
   "name": "tsoricaptcha",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "",
   "main": "dist/index.js",
   "scripts": {
@@ -11,14 +11,14 @@
   },
   "dependencies": {
     "@types/node": "^17.0.35",
-    "captchapng": "^0.0.1", 
+    "captchapng": "^0.3.0", 
     "path": "^0.12.7",
     "request": "^2.88.2",
-    "tsoribase": "^0.1.0",
-    "tsoriendpoint": "^0.2.0",
+    "tsoribase": "^0.1.3",
+    "tsoriendpoint": "^0.3.0",
     "typescript": "^4.7.2",
     "uuid": "^8.3.2",
-    "origamits": "^0.3.0"
+    "origamicore": "^3.0.1"
   },
   "keywords": [],
   "author": "",

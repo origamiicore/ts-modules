@@ -1,4 +1,4 @@
-import { MessageModel, RouteResponse, Router } from "origamits";
+import { MessageModel, RouteResponse, Router } from "origamicore";
 
 export default class NotificationRouter
 {

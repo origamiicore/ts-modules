@@ -1,4 +1,4 @@
-import { ModuleConfig, PackageIndex } from "origamits";
+import { ModuleConfig, PackageIndex } from "origamicore";
 import TsOriBlog from "..";
  
 export default class BlogConfig extends ModuleConfig

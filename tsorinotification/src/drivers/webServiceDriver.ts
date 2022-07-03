@@ -1,4 +1,4 @@
-import { RouteResponse } from "origamits";
+import { RouteResponse } from "origamicore";
 import { WebService } from "tsoribase";
 import TemplateModel from "../models/templateModel";
 import WebServiceConfig from "../models/webServiceConfig";

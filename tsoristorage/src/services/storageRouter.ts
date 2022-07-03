@@ -1,4 +1,4 @@
-import { MessageModel, Router } from "origamits";
+import { MessageModel, Router } from "origamicore";
 
 export default class StorageRouter
 {

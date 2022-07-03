@@ -1,9 +1,9 @@
 # TypeScript TsOriCaptcha
 
 ## Installation
-OriCaptcha requires [OrigamiTs](https://www.npmjs.com/package/origamits)  to run.
+OriCaptcha requires [OrigamiCore](https://www.npmjs.com/package/origamicore)  to run.
 ```sh
-npm install origamits
+npm install origamicore
 npm install tsoricaptcha
 ```
 

@@ -1,4 +1,4 @@
-import {ModuleConfig, SessionInput, OriService, PackageIndex, ResponseDataModel, RouteResponse,DataInput, OriInjectable} from 'origamits' 
+import {ModuleConfig, SessionInput, OriService, PackageIndex, ResponseDataModel, RouteResponse,DataInput, OriInjectable} from 'origamicore' 
 import DriverBase from './drivers/driverBase';
 import EmailDriver from './drivers/emailDriver';
 import WebServiceDiriver from './drivers/webServiceDriver';

@@ -1,4 +1,4 @@
-import { RouteResponse } from "origamits";
+import { RouteResponse } from "origamicore";
 import { WebService } from "tsoribase";
 import { MongoRouter } from "tsorimongo";
 import TelegramConfig from "../models/telegramConfig";

@@ -1,4 +1,4 @@
-import { Router } from "origamits";
+import { Router } from "origamicore";
 
 export default class Authorization
 {

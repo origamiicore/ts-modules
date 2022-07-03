@@ -1,4 +1,4 @@
-import {RouteResponse,ResponseErrorModel} from 'origamits'
+import {RouteResponse,ResponseErrorModel} from 'origamicore'
 export default class ErrorMessages
 {
     static unknownError(data:any):RouteResponse

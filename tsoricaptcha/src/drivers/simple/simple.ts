@@ -1,4 +1,4 @@
-import { RouteResponse } from "origamits";
+import { RouteResponse } from "origamicore";
 import { CommonService } from "tsoribase";
 import SimpleSetModel from "../../models/driverModels/simple/simpleSetModel";
 import SimpleValidateModel from "../../models/driverModels/simple/simpleValidateModel";

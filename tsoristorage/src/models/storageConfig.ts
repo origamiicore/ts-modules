@@ -1,4 +1,4 @@
-import { ModuleConfig, PackageIndex } from "origamits"; 
+import { ModuleConfig, PackageIndex } from "origamicore"; 
 import TsOriStorage from "..";
 
 export default class StorageConfig extends ModuleConfig

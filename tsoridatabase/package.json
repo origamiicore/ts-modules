@@ -1,6 +1,6 @@
 {
   "name": "tsoridatabase",
-  "version": "0.0.1",
+  "version": "0.3.0",
   "description": "",
   "main": "dist/index.js",
   "scripts": {
@@ -16,6 +16,6 @@
   },
   "dependencies": {
     "@types/node": "^17.0.31",
-    "origamits": "^0.3.0"
+    "origamicore": "^3.0.1"
   }
 }

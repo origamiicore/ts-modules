@@ -1,4 +1,4 @@
-import {ModuleConfig, OriInjectable, OriService, PackageIndex, ResponseDataModel, RouteResponse} from 'origamits' 
+import {ModuleConfig, OriInjectable, OriService, PackageIndex, ResponseDataModel, RouteResponse} from 'origamicore' 
 import OriMongoError from './models/errors';
 import MongoConfig from './models/mongoConfig';
 import MongoService from './services.ts/mongoService';

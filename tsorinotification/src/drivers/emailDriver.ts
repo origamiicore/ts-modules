@@ -1,4 +1,4 @@
-import { RouteResponse,ResponseDataModel } from "origamits";
+import { RouteResponse,ResponseDataModel } from "origamicore";
 import EmailConfig from "../models/emailConfig";
 import ErrorMessages from "../models/errorMessages";
 import TemplateModel from "../models/templateModel";

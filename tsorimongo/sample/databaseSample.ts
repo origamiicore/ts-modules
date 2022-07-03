@@ -1,4 +1,4 @@
-import OrigamiTs, { ConfigModel, OdataModel } from "origamits";
+import OrigamiCore, { ConfigModel, OdataModel } from "origamicore";
 import { DatabaseConnection, MongoRouter, MongoConfig, OdataResponse, SelectModel, SortModel, TsOriMongo } from "..";
 
 import ProfileModel from "./models/profileModel";
@@ -128,7 +128,7 @@ export default class DatabaseSample
             ]
         });
         
-        var origamicore = new OrigamiTs(config);
+        var origamicore = new OrigamiCore(config);
         await origamicore.start( )   
         var coll = new MongoRouter('default','profile',ProfileModel);
         try{

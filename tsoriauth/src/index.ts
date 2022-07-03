@@ -1,8 +1,7 @@
-import {ModuleConfig, SessionInput, OriService, PackageIndex, ResponseDataModel, RouteResponse,DataInput, OriInjectable} from 'origamits' 
+import { SessionInput, OriService, PackageIndex, ResponseDataModel, RouteResponse,DataInput, OriInjectable} from 'origamicore' 
 import { MongoRouter } from 'tsorimongo';
 import AuthConfig from './models/authConfig';
-import UserModel from './models/userModel';
-import UserScheama from './dbModels/userScheama';
+import UserModel from './models/userModel'; 
 import {CaptchaRouter} from 'tsoricaptcha'
 import ErrorMessage from './models/errorMessage';
 import {RedisRouter} from 'tsoriredis'

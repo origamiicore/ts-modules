@@ -1,12 +1,12 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const origamits_1 = require("origamits");
+const origamicore_1 = require("origamicore");
 class Authorization {
     static checkAuthorization(domain, service, session) {
         var _a;
         if (session && session.superadmin)
             return true;
-        var route = origamits_1.Router.getRouteData(domain, service);
+        var route = origamicore_1.Router.getRouteData(domain, service);
         if (route.isPublic)
             return true;
         if (!(session === null || session === void 0 ? void 0 : session.userid))

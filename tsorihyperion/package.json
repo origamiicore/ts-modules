@@ -1,7 +1,7 @@
 {
   "name": "tsorihyperion",
-  "version": "0.0.5",
-  "description": "",
+  "version": "0.3.0",
+  "description": "telos hyperion",
   "main": "dist/index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
@@ -14,6 +14,7 @@
   "license": "ISC",
   "dependencies": {
     "@eosrio/hyperion-stream-client": "^0.4.0-beta.5",
+    "origamicore": "^3.0.1",
     "eosjs-account-name": "^2.2.1",
     "fetch": "^1.1.0"
   }

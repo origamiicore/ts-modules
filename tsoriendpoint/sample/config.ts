@@ -1,5 +1,5 @@
 
-import {ConfigModel} from "origamits";
+import {ConfigModel} from "origamicore";
 import {ConnectionProtocol,EndpointConfig,EndpointConnection,EndpointConnectionType} from "..";  
 import ProfileConfig from "./profileService/models/profileConfig";
 

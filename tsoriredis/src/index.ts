@@ -1,4 +1,4 @@
-import { ModuleConfig, OriInjectable, OriService, PackageIndex, RouteResponse } from "origamits";
+import { ModuleConfig, OriInjectable, OriService, PackageIndex, RouteResponse } from "origamicore";
 import RedisConfig from "./models/redisConfig";
 import RedisConnection from "./models/redisConnection";
 import RedisError from "./models/redisErrors";

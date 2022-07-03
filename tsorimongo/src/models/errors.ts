@@ -1,5 +1,5 @@
-import { RouteResponse } from "origamits";
-import { ResponseErrorModel } from "origamits";
+import { RouteResponse } from "origamicore";
+import { ResponseErrorModel } from "origamicore";
 
 export default class OriMongoError
 {

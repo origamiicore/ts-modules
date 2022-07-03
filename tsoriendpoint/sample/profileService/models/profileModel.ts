@@ -1,4 +1,4 @@
-import { OriProps,IOriModel, OriModel } from "origamits"; 
+import { OriProps,IOriModel, OriModel } from "origamicore"; 
 
 @OriModel()
 export default class ProfileModel extends IOriModel

@@ -21,7 +21,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const origamits_1 = require("origamits");
+const origamicore_1 = require("origamicore");
 const profileModel_1 = __importDefault(require("./models/profileModel"));
 let ProfileService = class ProfileService {
     constructor() {
@@ -47,13 +47,13 @@ let ProfileService = class ProfileService {
     login(name) {
         return __awaiter(this, void 0, void 0, function* () {
             //return name;
-            return new origamits_1.RouteResponse({ session: { userid: name } });
+            return new origamicore_1.RouteResponse({ session: { userid: name } });
         });
     }
     isLogin() {
         return __awaiter(this, void 0, void 0, function* () {
             //return name;
-            return new origamits_1.RouteResponse({});
+            return new origamicore_1.RouteResponse({});
         });
     }
     saveProfile(info, session) {
@@ -64,21 +64,21 @@ let ProfileService = class ProfileService {
     }
 };
 __decorate([
-    (0, origamits_1.OriService)({ isPublic: true })
+    (0, origamicore_1.OriService)({ isPublic: true })
 ], ProfileService.prototype, "getProfile", null);
 __decorate([
-    (0, origamits_1.OriService)({ isPublic: true })
+    (0, origamicore_1.OriService)({ isPublic: true })
 ], ProfileService.prototype, "login", null);
 __decorate([
-    (0, origamits_1.OriService)()
+    (0, origamicore_1.OriService)()
 ], ProfileService.prototype, "isLogin", null);
 __decorate([
-    (0, origamits_1.OriService)({ isPublic: false }),
-    __param(0, (0, origamits_1.DataInput)({ classType: profileModel_1.default })),
-    __param(1, origamits_1.SessionInput)
+    (0, origamicore_1.OriService)({ isPublic: false }),
+    __param(0, (0, origamicore_1.DataInput)({ classType: profileModel_1.default })),
+    __param(1, origamicore_1.SessionInput)
 ], ProfileService.prototype, "saveProfile", null);
 ProfileService = __decorate([
-    (0, origamits_1.OriInjectable)({ domain: 'profile' })
+    (0, origamicore_1.OriInjectable)({ domain: 'profile' })
 ], ProfileService);
 exports.default = ProfileService;
 //# sourceMappingURL=index.js.map

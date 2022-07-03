@@ -1,5 +1,5 @@
  
-import {OriInjectable,PackageIndex,DataInput, OriService, SessionInput,ModuleConfig, RouteResponse} from "origamits"; 
+import {OriInjectable,PackageIndex,DataInput, OriService, SessionInput,ModuleConfig, RouteResponse} from "origamicore"; 
 import ProfileConfig from "./models/profileConfig";
 import ProfileModel from "./models/profileModel";
  

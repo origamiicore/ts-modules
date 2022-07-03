@@ -1,4 +1,4 @@
-import { ModuleConfig, PackageIndex } from "origamits";
+import { ModuleConfig, PackageIndex } from "origamicore";
 import TsoriCptcha from "..";
 import SimpleDriverConfig from "./simpleDriverConfig";
 

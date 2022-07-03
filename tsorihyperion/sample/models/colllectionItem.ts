@@ -1,4 +1,4 @@
-import { IOriModel, OriModel } from "origamits";
+import { IOriModel, OriModel } from "origamicore";
 
 @OriModel()
 export default class CollectionItem extends IOriModel

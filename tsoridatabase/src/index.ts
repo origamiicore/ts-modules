@@ -1,4 +1,4 @@
-import {PackageIndex} from 'origamits' 
+import {PackageIndex} from 'origamicore' 
 export default class TsoriDatabase implements PackageIndex
 {
     name: string;

@@ -1,4 +1,4 @@
-import OrigamiTs, { ConfigModel } from "origamits"; 
+import OrigamiCore, { ConfigModel } from "origamicore"; 
 import TsOriRedis, { RedisConfig, RedisConnection, RedisRouter } from "..";
 
 export default class RedisSample
@@ -19,7 +19,7 @@ export default class RedisSample
                   })
             ]
         });
-        var origamicore = new OrigamiTs(config);
+        var origamicore = new OrigamiCore(config);
         await origamicore.start()   
         var con=new RedisRouter(context);
         var stringkey='stringkey'

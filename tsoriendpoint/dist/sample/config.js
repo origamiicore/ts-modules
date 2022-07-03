@@ -3,11 +3,11 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const origamits_1 = require("origamits");
+const origamicore_1 = require("origamicore");
 const __1 = require("..");
 const profileConfig_1 = __importDefault(require("./profileService/models/profileConfig"));
 var path = require('path');
-exports.default = new origamits_1.ConfigModel({
+exports.default = new origamicore_1.ConfigModel({
     packageConfig: [
         new __1.EndpointConfig({
             connections: [

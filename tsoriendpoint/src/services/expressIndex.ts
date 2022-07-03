@@ -3,9 +3,8 @@ import JwtSessionManager from "../sessionManager/jwtSessionManager";
 import RamsSessionManager from "../sessionManager/ramSessionManager";
 import RedisSessionManager from "../sessionManager/redisSessionManager";
 import SessionManager from "../sessionManager/sessionManager";
-import {Router,MessageModel,RouteResponse} from 'origamits' 
-import AuthzEndpoint from "../models/authzEndpoint"; 
-import ExtrnalService from "origamits/src/models/extrnalService";
+import {Router,MessageModel,RouteResponse,ExtrnalService} from 'origamicore' 
+import AuthzEndpoint from "../models/authzEndpoint";  
 import ErrorMessages from "../models/errorMessages";
 import Authorization from "../modules/authorization";
 import UploadFileModel from "../models/uploadFileModel";

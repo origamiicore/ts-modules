@@ -1,4 +1,4 @@
-import {ModuleConfig, OriInjectable, OriService, PackageIndex, RouteResponse} from 'origamits' 
+import {ModuleConfig, OriInjectable, OriService, PackageIndex, RouteResponse} from 'origamicore' 
 import IDriver from './drivers/driverInterface';
 import SimpleCaptchaDriver from './drivers/simple/simple';
 import CaptchaConfig from './models/cpatchaConfig';

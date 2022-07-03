@@ -1,4 +1,4 @@
-import { ModuleConfig, PackageIndex } from 'origamits';
+import { ModuleConfig, PackageIndex } from 'origamicore';
 import TsOriMongo from '..';
 import DatabaseConnection from './databaseConnection';
 export default class MongoConfig extends ModuleConfig

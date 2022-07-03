@@ -1,4 +1,4 @@
-import { MessageModel, Router } from "origamits";
+import { MessageModel, Router } from "origamicore";
 import EndpointConnection from "../../models/endpointConnection";
 import Authorization from "../../modules/authorization";
 import SessionManager from "../../sessionManager/sessionManager";

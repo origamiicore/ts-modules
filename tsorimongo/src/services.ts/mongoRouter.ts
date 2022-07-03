@@ -1,4 +1,4 @@
-import { IOriModel, MessageModel, Router } from "origamits"
+import { IOriModel, MessageModel, Router } from "origamicore"
 import DeleteResponse from "../models/crudModels/deleteResponse";
 import InsertManyResponse from "../models/crudModels/inserteManyResponse";
 import InsertResponse from "../models/crudModels/insertResponse";

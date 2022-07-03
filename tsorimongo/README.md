@@ -1,9 +1,9 @@
 # TypeScript TsOriMongo
 
 ## Installation
-OriEndpoint requires [OrigamiTs](https://www.npmjs.com/package/origamits)  to run.
+OriEndpoint requires [OrigamiCore](https://www.npmjs.com/package/origamicore)  to run.
 ```sh
-npm install origamits
+npm install origamicore
 npm install tsorimongo
 ```
 

@@ -1,6 +1,6 @@
 {
   "name": "tsorinotification",
-  "version": "0.2.4",
+  "version": "0.3.0",
   "description": "",
   "main": "dist/index.js",
   "scripts": {
@@ -10,9 +10,9 @@
   },
   "dependencies": {
     "node-telegram-bot-api": "^0.57.0",
-    "origamits": "^0.3.0",
-    "tsoribase": "^0.1.0",
-    "tsorimongo": "^0.2.0",
+    "origamicore": "^3.0.1",
+    "tsoribase": "^0.1.3",
+    "tsorimongo": "^0.3.0",
     "typescript": "^4.7.2"
   },
   "keywords": [],

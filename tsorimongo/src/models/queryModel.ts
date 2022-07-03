@@ -1,4 +1,4 @@
-import { MessageModel, Router,OdataModel } from "origamits";
+import { MessageModel, Router,OdataModel } from "origamicore";
 import DeleteResponse from "./crudModels/deleteResponse";
 import UpdateResponse from "./crudModels/updateResponse"; 
 import OdataResponse from "./odataResponse";

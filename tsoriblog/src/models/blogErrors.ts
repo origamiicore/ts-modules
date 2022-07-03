@@ -1,4 +1,4 @@
-import { RouteResponse } from "origamits";
+import { RouteResponse } from "origamicore";
 
 export default class BlogErrors
 {

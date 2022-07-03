@@ -1,7 +1,5 @@
-import OrigamiTs from 'origamits'
-import TsOriEndpoint from '../src'; 
-import config from './config';
-import ProfileService from './profileService';
+import OrigamiCore from 'origamicore' 
+import config from './config'; 
 export default class EndpointSample
 {
     constructor()
@@ -11,7 +9,7 @@ export default class EndpointSample
     async init()
     {
         
-        var origamicore = new OrigamiTs(config);
+        var origamicore = new OrigamiCore(config);
         await origamicore.start( )   
     }
 }

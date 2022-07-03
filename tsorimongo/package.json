@@ -1,6 +1,6 @@
 {
   "name": "tsorimongo",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "typescript origami mongo",
   "main": "dist/index.js",
   "scripts": {
@@ -18,7 +18,7 @@
   "dependencies": {
     "mongodb": "^4.6.0",
     "odata-v4-parser": "^0.1.29",
-    "origamits": "^0.3.0",
+    "origamicore": "^3.0.1",
     "typescript": "^4.7.2"
   }
 }

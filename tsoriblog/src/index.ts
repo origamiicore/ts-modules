@@ -1,4 +1,4 @@
-import { ModuleConfig, OdataInput, OdataModel, OriInjectable, OriService, PackageIndex, RouteResponse, SessionInput } from "origamits";
+import { ModuleConfig, OdataInput, OdataModel, OriInjectable, OriService, PackageIndex, RouteResponse, SessionInput } from "origamicore";
 import { MongoRouter, OdataResponse, SelectModel } from "tsorimongo"; 
 import BadgeModel from "./models/badgeModel";
 import BlogConfig from "./models/blogConfig";

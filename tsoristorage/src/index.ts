@@ -1,4 +1,5 @@
-import { AddedResponse, DataInput, ModuleConfig, OriInjectable, OriService, PackageIndex, RouteResponse } from "origamits";import { RedisRouter } from "tsoriredis";
+import { AddedResponse, DataInput, ModuleConfig, OriInjectable, OriService, PackageIndex, RouteResponse } from "origamicore";
+import { RedisRouter } from "tsoriredis";
 import StorageConfig from "./models/storageConfig";
 import StorageService from "./services/storageService";
 import fs from 'fs'

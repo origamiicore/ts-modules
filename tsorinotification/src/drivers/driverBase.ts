@@ -1,4 +1,4 @@
-import {RouteResponse} from 'origamits' 
+import {RouteResponse} from 'origamicore' 
 import TemplateModel from '../models/templateModel';
 export default interface DriverBase
 {

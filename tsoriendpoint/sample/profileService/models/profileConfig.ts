@@ -1,4 +1,4 @@
-import { ModuleConfig, PackageIndex } from "origamits";
+import { ModuleConfig, PackageIndex } from "origamicore";
 import ProfileService from "..";
 
 export default class ProfileConfig extends ModuleConfig

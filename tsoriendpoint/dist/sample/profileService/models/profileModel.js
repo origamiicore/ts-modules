@@ -6,8 +6,8 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const origamits_1 = require("origamits");
-let ProfileModel = class ProfileModel extends origamits_1.IOriModel {
+const origamicore_1 = require("origamicore");
+let ProfileModel = class ProfileModel extends origamicore_1.IOriModel {
     constructor(fields) {
         super();
         if (fields) {
@@ -16,13 +16,13 @@ let ProfileModel = class ProfileModel extends origamits_1.IOriModel {
     }
 };
 __decorate([
-    (0, origamits_1.OriProps)({})
+    (0, origamicore_1.OriProps)({})
 ], ProfileModel.prototype, "firstName", void 0);
 __decorate([
-    (0, origamits_1.OriProps)({})
+    (0, origamicore_1.OriProps)({})
 ], ProfileModel.prototype, "lastName", void 0);
 ProfileModel = __decorate([
-    (0, origamits_1.OriModel)()
+    (0, origamicore_1.OriModel)()
 ], ProfileModel);
 exports.default = ProfileModel;
 //# sourceMappingURL=profileModel.js.map

@@ -1,4 +1,4 @@
-import { ModuleConfig, OriInjectable, PackageIndex } from "origamits";
+import { ModuleConfig, OriInjectable, PackageIndex } from "origamicore";
 import HyperionConfig from "./models/hyperionConfig";
 
 @OriInjectable({domain:'hyperion'})

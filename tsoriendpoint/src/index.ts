@@ -1,4 +1,4 @@
-import {ModuleConfig, PackageIndex} from 'origamits' 
+import {ModuleConfig, PackageIndex} from 'origamicore' 
 import EndpointConfig from './models/endpointConfig';
 import { EndpointConnectionType } from './models/endpointConnection';
 import ExpressIndex from './services/expressIndex';

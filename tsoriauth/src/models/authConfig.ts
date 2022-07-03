@@ -1,4 +1,4 @@
-import { ModuleConfig, PackageIndex } from 'origamits'; 
+import { ModuleConfig, PackageIndex } from 'origamicore'; 
 import TsOriAuth from '..';
 import NotifConfig from './notifConfig';
 export default class AuthConfig extends ModuleConfig
