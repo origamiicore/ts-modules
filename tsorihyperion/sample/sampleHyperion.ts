@@ -1,7 +1,5 @@
 import OrigamiTs, { ConfigModel } from "origamits";   
-import { HpTable, HyperionConfig, HyperionRouter, TableModel } from "..";
-import ActionModel from "../src/models/actionModel";
-import HpAction from "../src/models/hpAction";
+import { ActionModel, HpAction, HpTable, HyperionConfig, HyperionRouter, TableModel } from ".."; 
 import CollectionItem from "./models/colllectionItem";
 import Follow from "./models/follow";
 

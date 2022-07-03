@@ -1,3 +1,5 @@
+import ActionModel from "./src/models/actionModel";
+import HpAction from "./src/models/hpAction";
 import HpTable from "./src/models/hpTable";
 import HyperionConfig from "./src/models/hyperionConfig";
 import TableModel from "./src/models/tableMode";
@@ -7,5 +9,7 @@ export {
     HyperionConfig,
     HpTable,
     HyperionRouter,
-    TableModel
+    TableModel,
+    HpAction,
+    ActionModel
 }
