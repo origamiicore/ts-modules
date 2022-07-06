@@ -1,10 +1,11 @@
 
-import {ConfigModel} from "origamicore";
+import {ConfigModel,HttpMethod} from "origamicore";
 import {ConnectionProtocol,EndpointConfig,EndpointConnection,EndpointConnectionType} from "..";  
 import ProfileConfig from "./profileService/models/profileConfig";
 
 var path = require('path');  
 export default new ConfigModel({
+    defaultMethod:HttpMethod.Get,
     packageConfig:[
          new EndpointConfig({ 
              connections:[

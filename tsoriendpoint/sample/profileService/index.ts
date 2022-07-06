@@ -1,5 +1,5 @@
  
-import {OriInjectable,PackageIndex,DataInput, OriService, SessionInput,ModuleConfig, RouteResponse} from "origamicore"; 
+import {OriInjectable,PackageIndex,DataInput, OriService, SessionInput,ModuleConfig, RouteResponse, HttpMethod} from "origamicore"; 
 import ProfileConfig from "./models/profileConfig";
 import ProfileModel from "./models/profileModel";
  
@@ -21,6 +21,11 @@ class ProfileService implements PackageIndex
         return;
     }
     
+    @OriService({isPublic:true,route:'test/:id',method:HttpMethod.Get})
+    async testRoute(id:string)
+    { 
+        return {id}
+    }  
     @OriService({isPublic:true})
     async getProfile()
     { 

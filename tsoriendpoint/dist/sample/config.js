@@ -8,6 +8,7 @@ const __1 = require("..");
 const profileConfig_1 = __importDefault(require("./profileService/models/profileConfig"));
 var path = require('path');
 exports.default = new origamicore_1.ConfigModel({
+    defaultMethod: origamicore_1.HttpMethod.Get,
     packageConfig: [
         new __1.EndpointConfig({
             connections: [

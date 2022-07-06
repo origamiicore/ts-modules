@@ -34,7 +34,7 @@ export default class ExpressIndex
         var self=this;
         app.use(async(req, res, next)=> { 
             
-            var data = this.reqToDomain(req,self,res) 
+            var data = this.reqToDomain(req) 
             if(!data)
                 return
 			var session =req.session;
@@ -66,7 +66,7 @@ export default class ExpressIndex
 				return self.sendData(res,413,{message:ErrorMessages.upload})
 			try{
                 
-                var responseData=await Router.runExternal(data.domain,data.service,new MessageModel(data.body)) 
+                var responseData=await Router.runExternal(data.domain,data.service,new MessageModel(data.body),data.path,req.method);
                 
 				var token= await this.setSession(req,responseData);
                 var addedResponse=responseData?.addedResponse;
@@ -166,7 +166,7 @@ export default class ExpressIndex
             if(session && session.superadmin)
                 return res(true)
             try{ 
-                var data= Router.runExternal(authz.domain,'checkRole',new MessageModel({data:{domain:dt.domain,service:dt.service},session:session})
+                var data= Router.runInternal(authz.domain,'checkRole',new MessageModel({data:{domain:dt.domain,service:dt.service},session:session})
                 );
                 res(!!data)
             }catch(exp){
@@ -196,19 +196,21 @@ export default class ExpressIndex
     { 
         return res.status(status).send(data)
     }
-	reqToDomain(req,self:ExpressIndex,res)
+	reqToDomain(req):{
+        
+        domain:string,
+        service:string,
+        path:string,
+        body:any
+    }
     {
         var url_parts = url.parse(req.url, true); 
         var seperate = url_parts.pathname.split('/')
-        if(!seperate || seperate.length!=3)
-        {
-            self.sendData(res,200,{m:'endpoint001'})
-            return
-        }  
-        var returnData:any={
-            domain:seperate[1],
-            service:seperate[2]
-        }
+        // if(!seperate || seperate.length!=3)
+        // {
+        //     self.sendData(res,200,{m:'endpoint001'})
+        //     return
+        // } 
         var session = req.session; 
         var body:any={
             session:session,
@@ -232,8 +234,13 @@ export default class ExpressIndex
             {
                 body.data[a]=bx[a]
             } 
-        }
-        returnData.body=body
+        } 
+        var returnData:any={
+            domain:seperate[1],
+            service:seperate[2],
+            path:url_parts.pathname,
+            body
+        } 
         return returnData
     }
 	runServer(app,config:EndpointConnection)

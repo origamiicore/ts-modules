@@ -41,7 +41,7 @@ class ExpressIndex {
             var self = this;
             app.use((req, res, next) => __awaiter(this, void 0, void 0, function* () {
                 var _a;
-                var data = this.reqToDomain(req, self, res);
+                var data = this.reqToDomain(req);
                 if (!data)
                     return;
                 var session = req.session;
@@ -67,7 +67,7 @@ class ExpressIndex {
                 if (!upload)
                     return self.sendData(res, 413, { message: errorMessages_1.default.upload });
                 try {
-                    var responseData = yield origamicore_1.Router.runExternal(data.domain, data.service, new origamicore_1.MessageModel(data.body));
+                    var responseData = yield origamicore_1.Router.runExternal(data.domain, data.service, new origamicore_1.MessageModel(data.body), data.path, req.method);
                     var token = yield this.setSession(req, responseData);
                     var addedResponse = responseData === null || responseData === void 0 ? void 0 : responseData.addedResponse;
                     if (addedResponse) {
@@ -154,7 +154,7 @@ class ExpressIndex {
                 if (session && session.superadmin)
                     return res(true);
                 try {
-                    var data = origamicore_1.Router.runExternal(authz.domain, 'checkRole', new origamicore_1.MessageModel({ data: { domain: dt.domain, service: dt.service }, session: session }));
+                    var data = origamicore_1.Router.runInternal(authz.domain, 'checkRole', new origamicore_1.MessageModel({ data: { domain: dt.domain, service: dt.service }, session: session }));
                     res(!!data);
                 }
                 catch (exp) {
@@ -181,17 +181,14 @@ class ExpressIndex {
     sendData(res, status, data) {
         return res.status(status).send(data);
     }
-    reqToDomain(req, self, res) {
+    reqToDomain(req) {
         var url_parts = url.parse(req.url, true);
         var seperate = url_parts.pathname.split('/');
-        if (!seperate || seperate.length != 3) {
-            self.sendData(res, 200, { m: 'endpoint001' });
-            return;
-        }
-        var returnData = {
-            domain: seperate[1],
-            service: seperate[2]
-        };
+        // if(!seperate || seperate.length!=3)
+        // {
+        //     self.sendData(res,200,{m:'endpoint001'})
+        //     return
+        // } 
         var session = req.session;
         var body = {
             session: session,
@@ -212,7 +209,12 @@ class ExpressIndex {
                 body.data[a] = bx[a];
             }
         }
-        returnData.body = body;
+        var returnData = {
+            domain: seperate[1],
+            service: seperate[2],
+            path: url_parts.pathname,
+            body
+        };
         return returnData;
     }
     runServer(app, config) {

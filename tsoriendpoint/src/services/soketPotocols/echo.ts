@@ -1,4 +1,4 @@
-import { MessageModel, Router } from "origamicore";
+import { HttpMethod, MessageModel, Router } from "origamicore";
 import EndpointConnection from "../../models/endpointConnection";
 import Authorization from "../../modules/authorization";
 import SessionManager from "../../sessionManager/sessionManager";
@@ -32,7 +32,7 @@ export default class EchoPortocol{
         }
         if(config.authz)
         {
-            var dt =Router.runExternal(config.authz.domain,config.authz.service,new MessageModel({data:{domain:data.domain,service:data.service},session:session.session}))
+            var dt =Router.runExternal(config.authz.domain,config.authz.service,new MessageModel({data:{domain:data.domain,service:data.service},session:session.session}),'','None')
             if(!(await dt).error)
                 return connection.sendUTF(JSON.stringify({error:'glb002',id}));
         }
@@ -45,7 +45,7 @@ export default class EchoPortocol{
         }
         try{
             var resp= await Router.runExternal(data.domain,data.service,
-                new MessageModel(body))
+                new MessageModel(body),'','None')
             this.response(null,resp,connection,sessionManager,id)
         }catch(exp){
             this.response(exp,null,connection,sessionManager,id)

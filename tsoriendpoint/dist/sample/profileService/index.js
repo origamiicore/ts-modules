@@ -39,6 +39,11 @@ let ProfileService = class ProfileService {
     stop() {
         return;
     }
+    testRoute(id) {
+        return __awaiter(this, void 0, void 0, function* () {
+            return { id };
+        });
+    }
     getProfile() {
         return __awaiter(this, void 0, void 0, function* () {
             return new profileModel_1.default({ firstName: 'vahid', lastName: 'hossaini' });
@@ -63,6 +68,9 @@ let ProfileService = class ProfileService {
         });
     }
 };
+__decorate([
+    (0, origamicore_1.OriService)({ isPublic: true, route: 'test/:id', method: origamicore_1.HttpMethod.Get })
+], ProfileService.prototype, "testRoute", null);
 __decorate([
     (0, origamicore_1.OriService)({ isPublic: true })
 ], ProfileService.prototype, "getProfile", null);
