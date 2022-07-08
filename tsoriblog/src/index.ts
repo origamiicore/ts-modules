@@ -85,7 +85,7 @@ class TsOriBlog implements PackageIndex
             select:['category']
         }).group([
             new SelectModel({name:'_id',title:'total',func:'count'})
-        ])
+        ]).find()
     }
 
 }
