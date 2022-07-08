@@ -1,8 +1,11 @@
 import ActionModel from "./src/models/actionModel";
+import ApiRequest from "./src/models/api/apiRequest";
+import ApiResponse from "./src/models/api/apiResponse";
 import HpAction from "./src/models/hpAction";
 import HpTable from "./src/models/hpTable";
 import HyperionConfig from "./src/models/hyperionConfig";
 import TableModel from "./src/models/tableMode";
+import ApiController from "./src/services/apiController";
 import HyperionRouter from "./src/services/hyperionRouter";
 
 export {
@@ -11,5 +14,8 @@ export {
     HyperionRouter,
     TableModel,
     HpAction,
-    ActionModel
+    ActionModel,
+    ApiController,
+    ApiResponse,
+    ApiRequest
 }
