@@ -34,14 +34,14 @@ export default class HyperionRouter
             {
                 var key=`${data.content.code}_${table}`            
                 var tempData=this.tables.get(key);
-                tempData.response(new TableModel(data.content,tempData.cls))
+                await tempData.response(new TableModel(data.content,tempData.cls))
             } 
             else
             {
                 var act=data.content.act;
                 var key=`${act.account}_${act.name}`
                 var tempData = this.actions.get(key);
-                tempData.response(new ActionModel(data.content,tempData.cls))
+                await tempData.response(new ActionModel(data.content,tempData.cls))
                 //ActionModel
             }
             
