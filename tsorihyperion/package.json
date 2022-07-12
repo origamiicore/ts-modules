@@ -1,6 +1,6 @@
 {
   "name": "tsorihyperion",
-  "version": "0.3.2",
+  "version": "0.3.3",
   "description": "telos hyperion",
   "main": "dist/index.js",
   "scripts": {
@@ -17,6 +17,7 @@
     "origamicore": "^3.0.1",
     "tsoribase": "^0.1.3",
     "eosjs-account-name": "^2.2.1",
-    "fetch": "^1.1.0"
+    "fetch": "^1.1.0",
+    "web3": "^1.7.4"
   }
 }
