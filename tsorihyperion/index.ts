@@ -6,6 +6,8 @@ import HpAction from "./src/models/hpAction";
 import HpTable from "./src/models/hpTable";
 import HyperionConfig from "./src/models/hyperionConfig";
 import TableModel from "./src/models/tableMode";
+import TransactionModel, { EosAction , Authorization } from "./src/models/transactionModel";
+import ActionController from "./src/services/actionController";
 import ApiController from "./src/services/apiController";
 import EvmRouter from "./src/services/evmRouter";
 import HyperionRouter from "./src/services/hyperionRouter";
@@ -21,5 +23,9 @@ export {
     ApiResponse,
     ApiRequest,
     EvmRouter,
-    EventModel
+    EventModel,
+    TransactionModel,
+    EosAction,
+    Authorization,
+    ActionController
 }

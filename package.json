@@ -2,6 +2,7 @@
   "dependencies": {
     "@eosrio/hyperion-stream-client": "^0.4.0-beta.5",
     "captchapng": "^0.0.1",
+    "eosjs": "^22.1.0",
     "eosjs-account-name": "^2.2.1",
     "fetch": "^1.1.0",
     "node-telegram-bot-api": "^0.57.0",
