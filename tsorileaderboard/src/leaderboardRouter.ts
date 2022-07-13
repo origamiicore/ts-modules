@@ -30,6 +30,14 @@ export default class LeaderboardRouter
          }}))
          return response.response.data;  
     }
+    static async getTop(gameId:string,top:number):Promise<number>
+    {
+        var response= await Router.runInternal('leaderboard','getTop',new MessageModel({data:{
+            gameId,
+            top
+         }}))          
+         return response.response.data;  
+    }
     static async updateUser(userid:string,value:string):Promise<boolean>
     {
         var response= await Router.runInternal('leaderboard','updateUser',new MessageModel({data:{

@@ -52,14 +52,20 @@ export default class TsOriLeaderboard implements PackageIndex
         var begin=val-3
         var end=val+3
         if(begin<0)begin=0;
-        var data = await this.connection.sendCommand(['zrevrange',gameId,begin, end, 'withscores'])
+        var data = await this.connection.sendCommand(['zrevrange',gameId,begin.toString(), end.toString(), 'withscores'])
         return this.convertUser(data)
          
 	}
     @OriService({})
 	async getTopTen(gameId:string)
 	{
-        var data = await this.connection.sendCommand(['zrevrange',gameId,0, 10, 'withscores'])
+        var data = await this.connection.sendCommand(['zrevrange',gameId,'0', '10', 'withscores'])
+        return this.convertUser(data) 
+	}
+    @OriService({isInternal:true})
+	async getTop(gameId:string,top:number)
+	{ 
+        var data = await this.connection.sendCommand(['zrevrange',gameId,'0', top.toString(), 'withscores'])
         return this.convertUser(data) 
 	}
     @OriService({isInternal:true})
