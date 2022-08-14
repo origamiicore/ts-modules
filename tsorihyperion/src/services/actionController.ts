@@ -1,6 +1,7 @@
 import { Api, JsonRpc, RpcError } from 'eosjs';
 import { JsSignatureProvider } from 'eosjs/dist/eosjs-jssig';  
 import TransactionModel from '../models/transactionModel';
+import fetch from 'node-fetch' 
 export default class ActionController
 {
     static async run(url:string,privateKey:string,transaction:TransactionModel)

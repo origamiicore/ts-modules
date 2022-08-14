@@ -1,12 +1,14 @@
 import EventModel from "../models/eventModel";
 
 const Web3 = require('web3'); 
+
 export default class EvmRouter
 {
     url:string;
     socketUrl:string;
     abi:any;
     address:string;
+    
     constructor(url:string,socketUrl:string,abi:any,address:string)
     {
         this.url=url;
@@ -19,8 +21,27 @@ export default class EvmRouter
         response:(data:EventModel<T>)=>void)
     {
         var self=this;
+
         if(useSocket)
         {
+            var queue:any[]=[]
+            var isWork:boolean=false;
+            setInterval(async()=>{
+                if(isWork)return;
+                isWork=true;
+                while(queue.length)
+                {
+                    var event=queue.splice(0,1)[0];
+                    try{
+
+                        await response(new EventModel(hmyContract,event,cls))
+
+                    }catch(exp){
+                        var a=0;
+                    }
+                }
+                isWork=false;
+            },1000)
             const hweb3 = new Web3(self.url);  
             const hmyContract = new hweb3.eth.Contract(self.abi, self.address); 
 
@@ -31,7 +52,7 @@ export default class EvmRouter
                 fromBlock: fromBlock 
             })
             .on('data',async  (event) => {  
-               await response(new EventModel(hmyContract,event,cls))
+                queue.push(event)
             })
             .on('changed', changed => console.log('chaged',changed))
             .on('error', err => console.log('err',err))
