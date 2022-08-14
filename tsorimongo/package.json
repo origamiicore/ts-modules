@@ -1,6 +1,6 @@
 {
   "name": "tsorimongo",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "description": "typescript origami mongo",
   "main": "dist/index.js",
   "scripts": {

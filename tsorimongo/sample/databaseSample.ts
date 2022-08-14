@@ -69,6 +69,13 @@ export default class DatabaseSample
         console.log('15>>',JSON.stringify (record));
         record= await coll.search().where({_id:'noid'}).findOne();
         console.log('16>>',JSON.stringify (record));
+
+        records= await coll.search({where:{
+            firstName:{
+                $like:'%ame%'
+            }
+        }}).find();
+        console.log('17>>',records.toJson());
     }
     async delete(coll:MongoRouter<ProfileModel>)
     {
@@ -133,9 +140,6 @@ export default class DatabaseSample
         var coll = new MongoRouter('default','profile',ProfileModel);
         try{
             await this.insert(coll);
-            await this.update(coll);
-            await this.search(coll);
-            await this.delete(coll);
  
             
 
@@ -143,6 +147,9 @@ export default class DatabaseSample
             console.log('>>',exp);
             
         }
+            await this.update(coll);
+            await this.search(coll);
+            await this.delete(coll);
         
     }
 }

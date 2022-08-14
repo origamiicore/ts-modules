@@ -190,14 +190,28 @@ export default class QueryService
             }
             if(obj[a] && obj[a].$like)
             {
-                var stval= new RegExp( obj[a].$like , "gi")            
-                if(obj[a].$like[0]=='%' && obj[a].$like[obj[a].$like.length]=='%')
-                    stval = new RegExp("^" + obj[a].$like + "$", "gi");
-                if(  obj[a].$like[obj[a].$like.length]=='%')
-                    stval = new RegExp(  obj[a].$like + "$", "gi");
-                if(obj[a].$like[0]=='%'  )
-                    stval = new RegExp("^" + obj[a].$like  , "gi");
-                obj[a]=stval
+                
+                var stval= new RegExp( obj[a].$like  )            
+                if(obj[a].$like[0]=='%' && obj[a].$like[obj[a].$like.length-1]=='%')
+                {
+                    let val=obj[a].$like.substr(1,obj[a].$like.length-2)
+                    stval = new RegExp(".*" + val + ".*");
+
+                }
+                else if( obj[a].$like[0]=='%' )
+                {
+
+                    let val=obj[a].$like.substr(1)
+                    stval = new RegExp( val + "$" );
+                }
+                else if(  obj[a].$like[obj[a].$like.length-1]=='%')
+                {
+                    
+                    let val=obj[a].$like.substr(0,obj[a].$like.length-1)
+                    stval = new RegExp("^" + val  );
+                }
+                obj[a]={$regex:stval}
+                console.log('????????',obj[a]);
                 
             }
         } 
