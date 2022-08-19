@@ -18,7 +18,7 @@ export default class EvmRouter
     }
     readEvent<T>(useSocket:boolean,eventName:string,fromBlock:number,
         cls: { new(data:any,content?:any): T },
-        response:(data:EventModel<T>)=>void)
+        response:(data:EventModel<T>)=>void,interval:number=10000)
     {
         var self=this;
 
@@ -81,7 +81,7 @@ export default class EvmRouter
 
                 }
                 worker=false;
-            },10000)
+            },interval)
         }
         
     }

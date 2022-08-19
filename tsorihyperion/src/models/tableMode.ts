@@ -15,7 +15,7 @@ export default class TableModel<T>
     constructor(data:any,cls: { new(data:any,content?:any): T })
     {
         Object.assign(this,data);
-        this.timestamp=data['@timestamp']
+        this.timestamp=data['@timestamp']??data['timestamp']
         this.data =new cls(data.data,data)
         if(this.scope)
         {
