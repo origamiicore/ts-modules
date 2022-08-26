@@ -1,6 +1,7 @@
 import EventModel from "../models/eventModel";
 
 const Web3 = require('web3'); 
+const Provider = require('@truffle/hdwallet-provider');
 
 export default class EvmRouter
 {
@@ -15,6 +16,33 @@ export default class EvmRouter
         this.socketUrl=socketUrl;
         this.abi=abi;
         this.address=address;
+    }
+    async send(name:string,params:any[],phrase:string,from:string)
+    {
+        let provider = new Provider({
+            mnemonic: {
+                phrase
+            },
+            providerOrUrl:this.url
+        });
+        const web3 = new Web3(provider);   
+        const myContract = new web3.eth.Contract(this.abi, this.address,{from}); 
+        await myContract.methods[name](...params).send({from });
+
+    }
+    async callMethod(name:string,params:any[])
+    {
+        const web3 = new Web3(this.url);   
+        const myContract = new web3.eth.Contract(this.abi, this.address); 
+        var dt = await myContract.methods[name](...params).call()
+        return dt;
+    }
+    async callMethodByType<T>(name:string,params:any[],cls: { new(data:any,content?:any): T })
+    {
+        const web3 = new Web3(this.url);   
+        const myContract = new web3.eth.Contract(this.abi, this.address); 
+        var dt = await myContract.methods[name](...params).call()
+        return new cls(dt);
     }
     readEvent<T>(useSocket:boolean,eventName:string,fromBlock:number,
         cls: { new(data:any,content?:any): T },

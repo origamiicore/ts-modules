@@ -1,6 +1,6 @@
 {
   "name": "tsorihyperion",
-  "version": "0.3.9",
+  "version": "0.3.11",
   "description": "telos hyperion",
   "main": "dist/index.js",
   "scripts": {
@@ -20,6 +20,7 @@
     "eosjs-account-name": "^2.2.1",
     "fetch": "^1.1.0",
     "eosjs": "^22.1.0",
-    "web3": "^1.7.4"
+    "web3": "^1.7.4",
+    "@truffle/hdwallet-provider": "^1.6.0"
   }
 }
