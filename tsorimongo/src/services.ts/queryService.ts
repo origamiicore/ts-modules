@@ -211,7 +211,7 @@ export default class QueryService
                     stval = new RegExp("^" + val  );
                 }
                 obj[a]={$regex:stval}
-                console.log('????????',obj[a]);
+                // console.log('????????',obj[a]);
                 
             }
         } 
