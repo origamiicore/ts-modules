@@ -45,6 +45,13 @@ export default class TsOriLeaderboard implements PackageIndex
         return RouteResponse.success(data);
         
 	} 
+    @OriService({isInternal:true})
+	async removeScore(gameId:string,userid:string)
+	{   
+        var data =await this.connection.sendCommand(['zrem',gameId,userid])
+        return RouteResponse.success(data);
+        
+	} 
     @OriService({})
 	async getBoard(gameId:string,userid:string)
 	{
@@ -66,6 +73,17 @@ export default class TsOriLeaderboard implements PackageIndex
 	async getTop(gameId:string,top:number)
 	{ 
         var data = await this.connection.sendCommand(['zrevrange',gameId,'0', top.toString(), 'withscores'])
+        return this.convertUser(data) 
+	}
+    @OriService({isInternal:true})
+	async getRange(gameId:string,begin:number,end:number,isReverse:boolean)
+	{ 
+        var func='ZRANGE';
+        if(isReverse)
+        {
+          func='ZREVRANGE';
+        }
+        var data = await this.connection.sendCommand([func,gameId,begin.toString(), end.toString(), 'withscores'])
         return this.convertUser(data) 
 	}
     @OriService({isInternal:true})

@@ -1,4 +1,5 @@
 import { MessageModel, Router } from "origamicore"
+import BoardModel from "./models/boardModel";
 export default class LeaderboardRouter
 {
     static async addScore(gameId:string,score:number,userid:string):Promise<number>
@@ -12,6 +13,13 @@ export default class LeaderboardRouter
     {
         var response= await Router.runInternal('leaderboard','setScore',new MessageModel({data:{
             gameId,score,userid
+         }}))
+         return !!response.response.data;  
+    }
+    static async removeScore(gameId:string,userid:string):Promise<boolean>
+    {
+        var response= await Router.runInternal('leaderboard','removeScore',new MessageModel({data:{
+            gameId,userid
          }}))
          return !!response.response.data;  
     }
@@ -29,14 +37,24 @@ export default class LeaderboardRouter
             gameId
          }}))
          return response.response.data;  
+    } 
+    static async getRange(gameId:string,begin:number,end:number,isReverse:boolean=false):Promise<BoardModel[]>
+    {
+        var response= await Router.runInternal('leaderboard','getRange',new MessageModel({data:{
+            gameId,begin,end,isReverse
+         }}))
+         return response.response.data;  
+
     }
-    static async getTop(gameId:string,top:number):Promise<number>
+    static async getTop(gameId:string,top:number):Promise<BoardModel[]>
     {
         var response= await Router.runInternal('leaderboard','getTop',new MessageModel({data:{
             gameId,
             top
-         }}))          
-         return response.response.data;  
+         }}))       
+         var arr:BoardModel[]=[]   
+         for(var a of response.response.data)arr.push(new BoardModel(a))
+         return arr;  
     }
     static async updateUser(userid:string,value:string):Promise<boolean>
     {

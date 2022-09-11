@@ -23,9 +23,12 @@ class lbSample
         console.log( await LeaderboardRouter.getScore(gameid,userid));
         console.log( await LeaderboardRouter.getScore(gameid,'userid'));
         console.log(await LeaderboardRouter.addScore(gameid,1,userid));
+        console.log(await LeaderboardRouter.addScore(gameid,3,'vh1'));
+        console.log(await LeaderboardRouter.addScore(gameid,5,'vh3'));
         console.log(await LeaderboardRouter.getCount(gameid));
         console.log(await LeaderboardRouter.updateUser(userid,'vahid'));
         console.log(await LeaderboardRouter.getTop(gameid,1));
+        console.log(await LeaderboardRouter.getRange(gameid,0,5));
         
     }
 }
