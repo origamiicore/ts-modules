@@ -23,6 +23,34 @@ export default class HyperionRouter
     constructor(url:string){
         this.url=url;  
     }  
+    async getBlockTable(block:number)
+    { 
+        try{ 
+            var url=this.url+'/v2/history/get_deltas'; 
+            let data=[];
+            while(true)
+            {
+                var dt:any= await WebService.get(url,{
+                    block_num:block,
+                    limit:100,
+                    skip:data.length
+
+                },{},null);  
+                data.push(...dt.deltas); 
+                if(dt.deltas.length<100)
+                { 
+                    break;
+                }  
+
+            }
+            return data;
+        }catch(exp){
+            console.log('>>',exp.message);
+            
+            return []
+        }
+        
+    }
     async getNextTable(table:HpTable)
     {
         var key=table.code+'_'+table.table;
@@ -39,11 +67,23 @@ export default class HyperionRouter
                 table:table.table,
                 sort:'asc',
                 after:time
-            },{},null);
+            },{},null); 
+            if(dt.deltas.length>=50)
+            {
+                var dts=dt.deltas 
+                if(dts[0].timestamp==dts[dts.length-1].timestamp)
+                { 
+                    var blockTables=await  this.getBlockTable(dts[0].block_num) 
+                    this.tableTime[key]=dt.deltas[0]['timestamp'].substr(0,22)+'1Z'
+                   return blockTables
+                    
+                }
+            }
             if(dt.deltas[0] && dt.deltas[0]['timestamp']==time)
             {
                 dt.deltas.splice(0,1)
             }
+            
             return dt.deltas;
         }catch(exp){
             console.log('>>',exp.message);
@@ -51,6 +91,34 @@ export default class HyperionRouter
             return []
         }
 
+    }
+    async getBlockAction(block:number)
+    { 
+        try{ 
+            var url=this.url+'/v2/history/get_actions'; 
+            let data=[]; 
+            while(true)
+            {
+                var dt:any= await WebService.get(url,{
+                    block_num:block,
+                    limit:100,
+                    skip:data.length
+
+                },{},null);  
+                data.push(...dt.actions); 
+                if(dt.actions.length<100)
+                { 
+                    break;
+                } 
+                 
+            }
+            return data;
+        }catch(exp){
+            console.log('>>',exp.message);
+            
+            return []
+        }
+        
     }
     async getNextActions(action:HpAction)
     {
@@ -70,6 +138,19 @@ export default class HyperionRouter
                 after:time
             },{},null);
             var x=0;
+
+            if(dt.actions.length>=50)
+            {
+                var dts=dt.actions 
+                if(dts[0].timestamp==dts[dts.length-1].timestamp)
+                { 
+                    var blockActions=await  this.getBlockAction(dts[0].block_num) 
+                    this.actionTime[key]=dt.actions[0]['timestamp'].substr(0,22)+'1Z'
+                   return blockActions
+                    
+                }
+            }
+
             if(dt.actions[0] && dt.actions[0]['@timestamp']==time)
             {
                 dt.actions.splice(0,1)
@@ -100,7 +181,8 @@ export default class HyperionRouter
                         {
                              let model=new ActionModel(act,tempData.cls);
                              await tempData.response(model)
-                             this.actionTime[key]=  model.timestamp
+                             if(!this.actionTime[key] || model.timestamp>this.actionTime[key])
+                                this.actionTime[key]=  model.timestamp
                         }
                         if(actions.length<49)break;
                     }catch(exp){
@@ -122,8 +204,10 @@ export default class HyperionRouter
                         for(var table of tables)
                         {
                             let model=new TableModel(table,tempData.cls)
-                            await tempData.response(model)
-                            this.tableTime[key]=model.timestamp;
+                            await tempData.response(model) 
+                            
+                            if(!this.tableTime[key] || model.timestamp>this.tableTime[key])
+                                this.tableTime[key]=model.timestamp;
                             
                         } 
                         if(tables.length<49)
@@ -136,6 +220,67 @@ export default class HyperionRouter
                     console.log('Error>>',exp.message);
                 }
 
+            }
+            iswork=false;
+        },interval)
+    }
+
+
+    
+    async getNextSyncActions(action:HpAction,time:string):Promise<any[]>
+    { 
+        if(!time)
+        {
+            time=action.start_from??'2018-01-01T00:00:00.000Z';
+        }
+        try{
+            var url=this.url+'/v2/history/get_actions';
+            var dt:any= await WebService.get(url,{
+                account:action.contract,
+                limit:50,
+                'act.name':action.action,
+                sort:'asc',
+                after:time
+            },{},null);
+            var x=0;
+            if(dt.actions[0] && dt.actions[0]['@timestamp']==time)
+            {
+                dt.actions.splice(0,1)
+            }
+            return dt.actions;
+
+        }catch(exp){
+            console.log('>>',exp.message);
+            
+            return []
+        }
+    }
+    async statrtSyncedHttp(name:string,actionStartTime:string,interval:number=10000)
+    {
+        let tables:any={};
+        let actions:any={};
+        for(let tb of this.tableData)
+        {
+            if(!tables[tb.code])tables[tb.code]=[]
+            tables[tb.code].push(tb.table)
+        }
+        for(let act of this.actionsData)
+        {
+            if(!actions[act.contract])actions[act.contract]=[]
+            actions[act.contract].push(act.action) 
+        }
+        var iswork:boolean=false;
+        var action=new HpAction({
+            action:'',
+            contract:'',
+            start_from:actionStartTime
+        });
+        setInterval(async()=>{
+            if(iswork)return;
+            iswork=true;
+            while(true)
+            {
+                //await this.getNextSyncActions()
             }
             iswork=false;
         },interval)

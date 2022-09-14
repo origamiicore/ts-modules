@@ -4,9 +4,10 @@ import TransactionModel from '../models/transactionModel';
 import fetch from 'node-fetch' 
 export default class ActionController
 {
-    static async run(url:string,privateKey:string,transaction:TransactionModel)
+    static async run(url:string,privateKey:string|string[],transaction:TransactionModel)
     { 
-        const signatureProvider = new JsSignatureProvider([privateKey]);
+        if(!Array.isArray(privateKey))privateKey=[privateKey]
+        const signatureProvider = new JsSignatureProvider([...privateKey]);
         const rpc = new JsonRpc(url, { fetch });
         const api = new Api({ rpc, signatureProvider, textDecoder: new TextDecoder(), textEncoder: new TextEncoder() });
         return await api.transact( transaction, {
