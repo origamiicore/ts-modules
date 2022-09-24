@@ -6,6 +6,7 @@ import Follow from "./models/follow";
 const abi=[{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"from","type":"address"},{"indexed":true,"internalType":"address","name":"to","type":"address"},{"indexed":true,"internalType":"uint256","name":"tokenId","type":"uint256"}],"name":"Transfer","type":"event"},{"inputs":[{"internalType":"address","name":"receiver","type":"address"}],"name":"createNFT","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"getCount","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"tokenId","type":"uint256"}],"name":"ownerOf","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"owner","type":"address"}],"name":"setOwner","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"from","type":"address"},{"internalType":"address","name":"to","type":"address"},{"internalType":"uint256","name":"tokenId","type":"uint256"}],"name":"transferFrom","outputs":[],"stateMutability":"nonpayable","type":"function"}]
 
 var count:number=0;
+var count1:number=0;
 class SampleHyperion
 {
     constructor()
@@ -19,8 +20,10 @@ class SampleHyperion
     }
     getName(data:TableModel<Follow>)
     {
-        count++
-      console.log(count,'>>',data.timestamp);
+        if(data.table=='items')count++;
+        if(data.table=='followers')count1++;
+        
+      console.log(count, count1,data.timestamp);
       
     }
     getEvent(data:EventModel<ErcEvent>)
@@ -45,12 +48,13 @@ class SampleHyperion
         // var owner = await router.callMethod('ownerOf',['91']);
         // console.log('owner is',owner); 
         var hp = new HyperionRouter('https://telos.caleos.io');
-       // hp.addTable(new HpTable({code:'marble.code',table:'tags',start_from:'2021-01-01T20:46:07.000' } ),Follow,this.getName)
-       // hp.addTable(new HpTable({code:'nftsoc.code',table:'followers',start_from:'2020-01-08T00:00:00.000Z' } ),Follow,this.getName)
+       hp.addTable(new HpTable({code:'marble.code',table:'items',start_from:'2021-01-01T20:46:07.000' } ),Follow,this.getName)
+       hp.addTable(new HpTable({code:'nftsoc.code',table:'followers',start_from:'2020-01-08T00:00:00.000Z' } ),Follow,this.getName)
         // hp.addAction(new HpAction({contract:'nftmrkt.code',action:'additemcollc',start_from:'2020-01-08T00:00:00.000Z',}),CollectionItem,this.getAction);
         //hp.addAction(new HpAction({contract:'va.code',action:'createvareq',start_from:'2020-01-08T00:00:00.000Z',}),CollectionItem,this.getAction);
-        hp.addAction(new HpAction({contract:'marble.code',action:'rmvtag',start_from:'2021-11-10T19:15:36.500Z',}),CollectionItem,this.getAction);
-       hp.statrtHttp('Test',3000)
+       // hp.addAction(new HpAction({contract:'marble.code',action:'rmvtag',start_from:'2021-11-10T19:15:36.500Z',}),CollectionItem,this.getAction);
+       hp.statrtSyncedHttp('Test',3000)
+    //    hp.statrtHttp('Test',3000)
         // hp.start('Test')
     }
 }
