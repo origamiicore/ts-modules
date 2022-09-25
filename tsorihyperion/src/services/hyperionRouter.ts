@@ -368,12 +368,7 @@ export default class HyperionRouter
             code:contractTbStr.substring(0,contractTbStr.length-1),
             table:tablestr.substring(0,tablestr.length-1),
             start_from:this.startTable
-        })
-        console.log({
-            code:contractTbStr.substring(0,contractTbStr.length-1),
-            table:tablestr.substring(0,tablestr.length-1),
-            start_from:this.startTable
-        });
+        }) 
         
         setInterval(async()=>{
             if(iswork)return;
@@ -384,12 +379,10 @@ export default class HyperionRouter
                 {
                     
                     try{
-                        var actions= await this.getNextSyncActions(action,this.startAction);
-                        console.log(actions);
-                        
+                        var actions= await this.getNextSyncActions(action,this.startAction); 
                         for(let act of actions)
                         {
-                            let key=act.account+'_'+act.name;
+                            let key=act.act.account+'_'+act.act.name;
                             if(this.actions.has(key))
                             {
                                 let tempData = this.actions.get(key);

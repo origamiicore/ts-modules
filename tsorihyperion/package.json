@@ -1,6 +1,6 @@
 {
   "name": "tsorihyperion",
-  "version": "0.3.19",
+  "version": "0.3.21",
   "description": "telos hyperion",
   "main": "dist/index.js",
   "scripts": {
