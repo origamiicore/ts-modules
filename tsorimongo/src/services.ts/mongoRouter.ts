@@ -116,7 +116,7 @@ export default class MongoRouter<T>
             context:this.context,
             collection:this.collection,
             query:{
-                where:{_id:id}
+                where:{_id:{$eq:id}}
             } 
          }}))  
          if(!data.response.data)
@@ -130,7 +130,7 @@ export default class MongoRouter<T>
         var data= await Router.runInternal('mongo','deleteOne',new MessageModel({data:{
             context:this.context,
             collection:this.collection,
-            condition:  {_id:id}, 
+            condition:  {_id:{$eq:id}}, 
          }}))
          return new DeleteResponse(data.response.data); 
     }
@@ -153,7 +153,7 @@ export default class MongoRouter<T>
        var data= await Router.runInternal('mongo','replaceOne',new MessageModel({data:{
             context:this.context,
             collection:this.collection,
-             condition:copy._id,
+             condition:{_id:{$eq:copy._id}},
              document:copy
         }}))
         return new UpdateResponse(data.response.data); 
@@ -169,7 +169,7 @@ export default class MongoRouter<T>
         var data= await Router.runInternal('mongo','updateMany',new MessageModel({data:{
             context:this.context,
             collection:this.collection,
-            condition:{_id:id},
+            condition:{_id:{$eq:id}},
             set:fields?.set?this.copy(fields.set):null,
             inc:fields?.inc,
             push:fields?.push
