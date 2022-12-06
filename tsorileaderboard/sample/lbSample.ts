@@ -29,6 +29,8 @@ class lbSample
         console.log(await LeaderboardRouter.updateUser(userid,'vahid'));
         console.log(await LeaderboardRouter.getTop(gameid,1));
         console.log(await LeaderboardRouter.getRange(gameid,0,5));
+        console.log(await LeaderboardRouter.removeGame(gameid));
+        console.log(await LeaderboardRouter.removeGame(gameid));
         
     }
 }

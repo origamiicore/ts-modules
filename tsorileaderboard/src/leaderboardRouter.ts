@@ -60,7 +60,14 @@ export default class LeaderboardRouter
     {
         var response= await Router.runInternal('leaderboard','updateUser',new MessageModel({data:{
             userid,value
-         }}))
+         }})) 
          return response.response.data=='OK';  
+    }
+    static async removeGame(gameId:string):Promise<boolean>
+    {
+        var response= await Router.runInternal('leaderboard','removeGame',new MessageModel({data:{
+            gameId 
+         }}))        
+         return !!response.response.data;  
     }
 }

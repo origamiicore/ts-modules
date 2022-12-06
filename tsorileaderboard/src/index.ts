@@ -94,6 +94,13 @@ export default class TsOriLeaderboard implements PackageIndex
 	}
 
     @OriService({isInternal:true})
+	async removeGame(gameId:string)
+	{
+        var data =await this.connection.sendCommand(['del',gameId ])
+        return RouteResponse.success(data); 
+	}
+
+    @OriService({isInternal:true})
 	async updateUser(userid:string,value:string)
 	{ 
         var data =await this.connection.sendCommand(['set',userid,value])
