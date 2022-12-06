@@ -266,10 +266,11 @@ export default class MongoService
         return {count,value}
     }
     async updateOne(collection:string,condition:any,set:any,inc:any,push:any,upsert:boolean):Promise<any>
-    {
+    { 
+        
         var saveObjec:any={};
         if(set)saveObjec.$set=set;
-        if(inc)saveObjec.$inc=inc;
+        if(inc && Object.keys(inc).length>0)saveObjec.$inc=inc;
         if(push)saveObjec.$push=push; 
         var option:any={};
         if(upsert)option.upsert=upsert;

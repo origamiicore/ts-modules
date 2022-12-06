@@ -10,7 +10,7 @@ export default class DatabaseSample
     }
     async update(coll:MongoRouter<ProfileModel>)
     {
-        var updateOneData =await coll.UpdateOne({_id:'1'},{set:{firstName:'name1'},inc:{age:2}})
+        var updateOneData =await coll.UpdateOne({_id:'1'},{set:{firstName:'name1'} })
         console.log('updateOne>>',updateOneData);
         var updateManyData =await coll.UpdateMany({age:12},{inc:{age:1}})
         console.log('updateMany>>',updateManyData);
