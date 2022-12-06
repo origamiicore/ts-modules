@@ -1,5 +1,10 @@
-import { MessageModel, Router } from "origamicore"
+import { MessageModel, Router, RouteResponse } from "origamicore"
 
+var getResponse=function(resp:RouteResponse):RouteResponse
+    {
+        if(resp.error)throw resp.error
+        return resp
+    }
 export default class RedisRouter
 {
     context:string;
@@ -13,7 +18,7 @@ export default class RedisRouter
              context:this.context,
              data:['EXPIRE',key,sec.toString()]
          }}))
-         return response.response.data;  
+         return getResponse(response).response.data;  
     }
     async delete(key:string):Promise<boolean>
     {
@@ -21,7 +26,7 @@ export default class RedisRouter
              context:this.context,
              data:['DEL',key]
          }}))
-         return !!response.response.data;  
+         return !!getResponse(response).response.data;  
     }
     async exist(key:string):Promise<boolean>
     {
@@ -29,7 +34,7 @@ export default class RedisRouter
              context:this.context,
              data:['EXISTS',key]
          }})) 
-         return !!response.response.data;  
+         return !!getResponse(response).response.data;  
     }
     async getJsonValue(key:string)
     {
@@ -37,7 +42,7 @@ export default class RedisRouter
              context:this.context,
              data:['GET',key]
          }}))
-         return JSON.parse(response.response.data) ; 
+         return JSON.parse(getResponse(response).response.data) ; 
 
     }
     async getValue(key:string)
@@ -46,7 +51,7 @@ export default class RedisRouter
              context:this.context,
              data:['GET',key]
          }}))
-         return response.response.data; 
+         return getResponse(response).response.data; 
 
     }
     async setValue(key:string,value:any):Promise<boolean>
@@ -55,7 +60,7 @@ export default class RedisRouter
              context:this.context,
              data:['SET',key,typeof(value)=='string'?value:JSON.stringify(value)]
          }}))
-         return response.response.data=='OK';  
+         return getResponse(response).response.data=='OK';  
     }
     async getArray(key:string,
         fields?: { 
@@ -71,7 +76,7 @@ export default class RedisRouter
              context:this.context,
              data
          }}))
-         return response.response.data; 
+         return getResponse(response).response.data; 
         
     }
     async increment(key:string,value?:number):Promise<number>
@@ -80,7 +85,7 @@ export default class RedisRouter
              context:this.context,
              data:value!=null?['INCRBY',key,value.toString()]:['INCR',key]
          }}))
-         return response.response.data;  
+         return getResponse(response).response.data;  
     }
     async getLength(
         key:string ,
@@ -107,7 +112,7 @@ export default class RedisRouter
              context:this.context,
              data
          }}))
-         return response.response.data; 
+         return getResponse(response).response.data; 
     }
     async remove(key:string,value:string,type?:'unique')
     {
@@ -116,7 +121,7 @@ export default class RedisRouter
              context:this.context,
              data
          }}))
-         return response.response.data;  
+         return getResponse(response).response.data;  
 
     }
     async pop(key:string,type?:'left'|'rigth'|'unique',count?:number)
@@ -130,7 +135,7 @@ export default class RedisRouter
              context:this.context,
              data
          }}))
-         return response.response.data;  
+         return getResponse(response).response.data;  
     }
     async addToArray(
             key:string,
@@ -174,6 +179,6 @@ export default class RedisRouter
              data
          }})) 
          
-         return !!response.response.data; 
+         return !!getResponse(response).response.data; 
     }
 }
