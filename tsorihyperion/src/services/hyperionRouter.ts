@@ -189,7 +189,7 @@ export default class HyperionRouter
                         }
                         if(actions.length<49)break;
                     }catch(exp){
-                        console.log('Error>>',exp.message);
+                        console.log('Error>>',act.account,act.action,exp.message);
                         
                         break  
                     }
@@ -220,7 +220,7 @@ export default class HyperionRouter
                     }
 
                 }catch(exp){
-                    console.log('Error>>',exp.message);
+                    console.log('Error>>',tb.code,tb.table,exp.message);
                 }
 
             }
@@ -380,7 +380,7 @@ export default class HyperionRouter
                     
                     try{
                         var actions= await this.getNextSyncActions(action,this.startAction); 
-                        for(let act of actions)
+                        for(var act of actions)
                         {
                             let key=act.act.account+'_'+act.act.name;
                             if(this.actions.has(key))
@@ -395,7 +395,7 @@ export default class HyperionRouter
                         }
                         if(actions.length<49)break;
                     }catch(exp){
-                        console.log('Error>>',exp.message);
+                        console.log('Error>>',act.account,act.action,exp.message);
                         
                         break  
                     }
@@ -408,7 +408,7 @@ export default class HyperionRouter
                     while(true)
                     {
                         var tables= await this.getNextSyncTable(table,this.startTable); 
-                        for(let tbx of tables)
+                        for(var tbx of tables)
                         { 
                             var key=tbx.code+'_'+tbx.table; 
                             if(this.tables.has(key))
@@ -429,7 +429,7 @@ export default class HyperionRouter
                     }
 
                 }catch(exp){
-                    console.log('Error>>',exp.message);
+                    console.log('Error>>',tbx.code,tbx.table,exp.message);
                 }
             }
 
