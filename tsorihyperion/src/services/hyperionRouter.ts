@@ -377,11 +377,12 @@ export default class HyperionRouter
             {
                 while(true)
                 {
-                    
+                    let lastAction:any={}
                     try{
                         var actions= await this.getNextSyncActions(action,this.startAction); 
                         for(var act of actions)
                         {
+                            lastAction=act;
                             let key=act.act.account+'_'+act.act.name;
                             if(this.actions.has(key))
                             {
@@ -395,7 +396,7 @@ export default class HyperionRouter
                         }
                         if(actions.length<49)break;
                     }catch(exp){
-                        console.log('Error>>',act.account,act.action,exp.message);
+                        console.log('Error>>',lastAction.account,lastAction.action,exp.message);
                         
                         break  
                     }
@@ -404,12 +405,14 @@ export default class HyperionRouter
             if(contractTbStr)
             {
                 
+                let lsatTable:any={}
                 try{
                     while(true)
                     {
                         var tables= await this.getNextSyncTable(table,this.startTable); 
                         for(var tbx of tables)
                         { 
+                            lsatTable=tbx
                             var key=tbx.code+'_'+tbx.table; 
                             if(this.tables.has(key))
                             {
@@ -429,7 +432,7 @@ export default class HyperionRouter
                     }
 
                 }catch(exp){
-                    console.log('Error>>',tbx.code,tbx.table,exp.message);
+                    console.log('Error>>',lsatTable.code,lsatTable.table,exp.message);
                 }
             }
 

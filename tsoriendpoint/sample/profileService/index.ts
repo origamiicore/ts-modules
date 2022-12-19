@@ -2,6 +2,7 @@
 import {OriInjectable,PackageIndex,DataInput, OriService, SessionInput,ModuleConfig, RouteResponse, HttpMethod} from "origamicore"; 
 import ProfileConfig from "./models/profileConfig";
 import ProfileModel from "./models/profileModel";
+import Roles from "./models/roles";
  
 
 @OriInjectable({domain:'profile'})
@@ -32,10 +33,16 @@ class ProfileService implements PackageIndex
         return new ProfileModel({firstName:'vahid',lastName:'hossaini'})
     }   
     @OriService({isPublic:true})
+    async adminLogin(name:string)
+    { 
+        //return name;
+        return new RouteResponse({session:{userid:name,role:Roles.Admin}})
+    }    
+    @OriService({isPublic:true})
     async login(name:string)
     { 
         //return name;
-        return new RouteResponse({session:{userid:name}})
+        return new RouteResponse({session:{userid:name,role:null }})
     }    
     @OriService( )
     async isLogin()
@@ -43,6 +50,12 @@ class ProfileService implements PackageIndex
         //return name;
         return new RouteResponse({})
     }   
+    @OriService({roles:[Roles.Admin]} )
+    async isAdmin()
+    { 
+        //return name;
+        return new RouteResponse({})
+    } 
     @OriService({isPublic:false})
     async saveProfile(@DataInput({classType:ProfileModel}) info,@SessionInput session)
     {

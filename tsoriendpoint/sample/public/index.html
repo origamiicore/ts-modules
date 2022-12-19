@@ -36,11 +36,25 @@
                 })
 
             }
+            function adminlogin()
+            {
+                callApi('adminLogin?name='+name,(data)=>{ 
+                    console.log(data);
+                })
+
+            }
             function checkLogin()
             {
                 callApi('isLogin',(data)=>{ 
                     console.log(data);
                     alert('you are login')
+                })
+            }
+            function checkAdmim()
+            {
+                callApi('isAdmin',(data)=>{ 
+                    console.log(data);
+                    alert('you are admin')
                 })
             }
             function loadProfile()
@@ -59,5 +73,9 @@
         </div>
         <button onclick="login()">Login</button>
         <button onclick="checkLogin()">Chcek Login</button>
+
+        <br/>
+        <button onclick="adminlogin()">Admin Login</button>
+        <button onclick="checkAdmim()">Chcek Admin</button>
     </body>
 </html>
