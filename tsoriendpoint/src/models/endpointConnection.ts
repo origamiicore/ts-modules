@@ -19,6 +19,7 @@ export default class EndpointConnection
     limit:LimitModel;
     authz:AuthzEndpoint;
     protocol:ConnectionProtocol;
+    debug:boolean
     
     public constructor(
         fields: {
@@ -32,6 +33,7 @@ export default class EndpointConnection
             allowHeader?: string, 
             authz?:AuthzEndpoint,
             limit?:LimitModel,
+            debug?:boolean
         }) {
         if (fields) Object.assign(this, fields);
     }

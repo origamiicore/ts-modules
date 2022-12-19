@@ -8,6 +8,7 @@ import AuthzEndpoint from "../models/authzEndpoint";
 import ErrorMessages from "../models/errorMessages";
 import Authorization from "../modules/authorization";
 import UploadFileModel from "../models/uploadFileModel";
+import IpController, { ServiceLimit } from "../models/ipController";
 var url = require('url');
 var express = require('express');
 var bodyParser = require('body-parser'); 
@@ -15,15 +16,77 @@ var fs=require('fs')
 var formidable= require('formidable') ;
 var http = require('http');
 var https = require('https');
+var ips:Map<string,ServiceLimit>=new Map<string,ServiceLimit>();
+var allService:ServiceLimit;
+var byDomain:Map<string,ServiceLimit> ;
+var byService:Map<string,ServiceLimit> ;
+var haveIpcontroller:boolean;
 export default class ExpressIndex
 {
     sessionManager:SessionManager;
     config:EndpointConnection;
-    constructor(config:EndpointConnection)
+    constructor(config:EndpointConnection )
     {
         this.config=config;
     }
-    async init()
+    checkIp(req,data)
+    {
+        if(!haveIpcontroller)return true;
+        let now=new Date().getTime()
+        var ip = req.headers['x-forwarded-for'] ?? req.socket.remoteAddress  
+        if(this.config.debug) console.log( ip );
+
+        let key=ip+'_';
+        let check=byService?.get(data.domain+'*'+data.service) ;
+        if(!check)
+        {
+            check=byDomain?.get(data.domain) 
+
+            if(!check)
+            {
+                check=allService
+            }
+            else
+            {
+                key+=data.domain ;
+            }
+        }
+        else
+        {
+            key+=data.domain+'*'+data.service 
+
+        }  
+        
+        if(check) 
+        { 
+            let exist=ips.get(key)
+            if(exist)
+            {
+                
+                if(exist.delayPerSec<now)
+                {
+                    exist.count=0;
+                    exist.delayPerSec=now+check.delayPerSec*1000
+                }
+                exist.count++; 
+                if(exist.count>check.count)
+                { 
+                     
+                     return false
+                }
+            }
+            else
+            {
+                ips.set(key,new ServiceLimit({
+                    count:0,
+                    delayPerSec:now+check.delayPerSec*1000
+
+                }))
+            } 
+        }
+        return true
+    }
+    async init(ipController?:IpController)
     {
         var app = express();
         this.setPublic(app,this.config);
@@ -32,13 +95,36 @@ export default class ExpressIndex
         this.setCrossDomain(app,this.config);
         this.runServer(app,this.config);
         var self=this;
+        if(ipController?.limits.length)
+        {
+            allService=ipController?.limits.filter(p=>!p.domain && !p.service)[0]
+            let bydomain=ipController?.limits.filter(p=>p.domain && !p.service)
+            for(let s of bydomain)
+            {
+                if(!byDomain)byDomain=new Map<string,ServiceLimit>();
+                byDomain.set(s.domain,s);
+            }
+            let byservice=ipController?.limits.filter(p=>p.domain && p.service)
+            for(let s of byservice)
+            {
+                if(!byService)byService=new Map<string,ServiceLimit>();
+                byService.set(s.domain+'*'+s.service,s);
+            }
+            haveIpcontroller=true
+ 
+        }
         app.use(async(req, res, next)=> { 
+             
             
             var data = this.reqToDomain(req) 
             if(!data)
                 return
 			var session =req.session;
-			
+			if(!self.checkIp(req,data)) 
+            {
+                self.sendData(res,429 ,{message:ErrorMessages.tooManyRequests});
+                return
+            }
             let isAuthz = false;
             
             var route = Router.getRouteData(data.domain,data.service);
