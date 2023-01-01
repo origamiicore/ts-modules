@@ -24,12 +24,12 @@ class SampleHyperion
         if(data.table=='items')count++;
         if(data.table=='followers')count1++;
         
-      console.log(this, count, count1,data.timestamp);
+        console.log(this, count, count1,data.timestamp);
       
     }
     getEvent(data:EventModel<ErcEvent>)
     {
-        console.log('>>',data);
+       // console.log('>>',data);
         
     }
     async init()
@@ -50,13 +50,13 @@ class SampleHyperion
         // console.log('owner is',owner); 
         var hp = new HyperionRouter('https://telos.caleos.io');
         // hp.addTable(new HpTable({code:'marble.code',table:'items',start_from:'2021-01-01T20:46:07.000' } ),Follow,this.getName)
-        hp.addTable(new HpTable({code:'nftsoc.code',table:'followers',start_from:'2020-01-08T00:00:00.000Z' } ),Follow,this.getName,this )
+        hp.addTable(new HpTable({code:'nftsoc.code',table:'followers',start_from:'2020-01-08T00:00:00.000Z' ,} ),Follow,this.getName,this )
         // hp.addAction(new HpAction({contract:'nftmrkt.code',action:'additemcollc',start_from:'2020-01-08T00:00:00.000Z',}),CollectionItem,this.getAction);
         //hp.addAction(new HpAction({contract:'va.code',action:'createvareq',start_from:'2020-01-08T00:00:00.000Z',}),CollectionItem,this.getAction);
         // hp.addAction(new HpAction({contract:'marble.code',action:'rmvtag',start_from:'2021-11-10T19:15:36.500Z',}),CollectionItem,this.getAction);
-        hp.statrtHttp('Test',3000)
         //hp.statrtHttp('Test',3000)
-        // hp.start('Test')
+        //hp.statrtHttp('Test',3000)
+         hp.start('Test',true)
     }
 }
 new SampleHyperion()

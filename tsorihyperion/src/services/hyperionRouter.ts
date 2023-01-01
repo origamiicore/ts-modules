@@ -442,13 +442,14 @@ export default class HyperionRouter
             iswork=false;
         },interval)
     }
-    async start(name:string)
+    async start(name:string,autoConnect?:boolean)
     {
         var listener =new HpController(new HpConfig({
             netUrl:this.url,
             name,
             actions:this.actionsData,
-            tables:this.tableData
+            tables:this.tableData,
+            autoConnect
         }));
         listener.start(async(data:any)=>{
             var table=data.content.table;

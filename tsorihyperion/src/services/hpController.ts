@@ -1,6 +1,5 @@
 import HpConfig from "../models/hpConfig";
-
-const HyperionSocketClient = require('@eosrio/hyperion-stream-client').default;
+import {HyperionStreamClient,StreamClientEvents} from  '@eosrio/hyperion-stream-client'  ;
 const fetch=require('fetch') ; 
 
 
@@ -12,9 +11,16 @@ export default class HpController
         this.config=config;
     }
     async start(listener,self)
-    { 
-        const client = new HyperionSocketClient(this.config.netUrl, {async: true,fetch:fetch}); 
-        client.onConnect = async() => { 
+    {  
+        const client = new HyperionStreamClient({
+                endpoint:this.config.netUrl,
+                debug: true,
+                libStream: false
+            }
+          //, {async: true,fetch:fetch}
+        );  
+        client.on(StreamClientEvents.CONNECT,async() => { 
+            console.log(this.config.name,' connected!');  
             if(this.config.actions)
                 for(let a of this.config.actions)
                 {
@@ -33,14 +39,23 @@ export default class HpController
                     if(!a.payer)a.payer=''; 
                     client.streamDeltas(a);
                 }
-        }
-        
-        client.onData = async (data, ack) => { 
-            await listener(data,self);
-            ack();
-        }
-        client.connect(() => {
-          console.log(this.config.name,' connected!');
         });
+        
+        client.setAsyncDataHandler(async (data ) => { 
+            await listener(data,self);
+
+        }) 
+        client.connect();
+        if(this.config.autoConnect)
+        {
+            setInterval(()=>{
+                console.log(client.online);
+                
+                if(!client.online)
+                {
+                    client.connect()
+                }
+            },60000)
+        }
     }
 }

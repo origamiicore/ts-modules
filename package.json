@@ -1,6 +1,6 @@
 {
   "dependencies": {
-    "@eosrio/hyperion-stream-client": "^0.4.0-beta.5",
+    "@eosrio/hyperion-stream-client": "^1.0.3",
     "@truffle/hdwallet-provider": "^1.6.0",
     "captchapng": "^0.0.1",
     "eosjs": "^22.1.0",
