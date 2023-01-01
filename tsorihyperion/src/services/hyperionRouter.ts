@@ -4,12 +4,13 @@ import HpAction from "../models/hpAction";
 import HpConfig from "../models/hpConfig";
 import HpTable from "../models/hpTable";
 import TableModel from "../models/tableMode";
-import HpController from "./hpController";
-
+import HpController from "./hpController"; 
 class TempData
 {
     cls: { new(data:any) };
     response:(value:any)=>any
+    name:string;
+    parent:any;
 }
 export default class HyperionRouter
 {
@@ -183,7 +184,8 @@ export default class HyperionRouter
                         for(act of actions)
                         {
                              let model=new ActionModel(act,tempData.cls);
-                             await tempData.response(model)
+                             //await tempData.response(model)
+                             await tempData.parent[tempData.name](model)
                              if(!this.actionTime[key] || model.timestamp>this.actionTime[key])
                                 this.actionTime[key]=  model.timestamp
                         }
@@ -206,8 +208,8 @@ export default class HyperionRouter
                         var tempData=this.tables.get(key);
                         for(var table of tables)
                         {
-                            let model=new TableModel(table,tempData.cls)
-                            await tempData.response(model) 
+                            let model=new TableModel(table,tempData.cls) 
+                            await tempData.parent[tempData.name](model)
                             
                             if(!this.tableTime[key] || model.timestamp>this.tableTime[key])
                                 this.tableTime[key]=model.timestamp;
@@ -455,7 +457,8 @@ export default class HyperionRouter
                 var key=`${data.content.code}_${table}`            
                 var tempData=this.tables.get(key);
                 let model=new TableModel(data.content,tempData.cls);
-                await tempData.response(model)
+                await tempData.parent[tempData.name](model)
+                // await tempData.response(model)
             } 
             else
             {
@@ -463,23 +466,25 @@ export default class HyperionRouter
                 var key=`${act.account}_${act.name}`
                 var tempData = this.actions.get(key);
                 let model=new ActionModel(data.content,tempData.cls);
-                await tempData.response(model);
+                await tempData.parent[tempData.name](model)
+                // await tempData.response(model)
                 //ActionModel
             }
             
         },this)
     }
-    addTable<T>(table:HpTable,cls: { new(data:any,content?:any): T },response:(data:TableModel<T>)=>void):void
-    {
+    addTable<T>(table:HpTable,cls: { new(data:any,content?:any): T },response:(data:TableModel<T>)=>void,parent:any):void
+    {  
+        
         var key=`${table.code}_${table.table}`; 
         this.tableData.push(table)
-        this.tables.set(key,{cls,response})
+        this.tables.set(key,{cls,response,name:response.name,parent})
     }
-    addAction<T>(action:HpAction,cls: { new(data:any,content?:any): T },response:(data:ActionModel<T>)=>void):void
+    addAction<T>(action:HpAction,cls: { new(data:any,content?:any): T },response:(data:ActionModel<T>)=>void,parent:any):void
     {
         var key=`${action.contract}_${action.action}`;  
         this.actionsData.push(action);
-        this.actions.set(key,{cls,response}) 
+        this.actions.set(key,{cls,response,parent ,name:response.name }) 
     }
 
 }
