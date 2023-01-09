@@ -9,13 +9,14 @@ export default class EvmRouter
     socketUrl:string;
     abi:any;
     address:string;
-    
-    constructor(url:string,socketUrl:string,abi:any,address:string)
+    showLog:boolean;
+    constructor(url:string,socketUrl:string,abi:any,address:string,showLog:boolean=false)
     {
         this.url=url;
         this.socketUrl=socketUrl;
         this.abi=abi;
         this.address=address;
+        this.showLog=showLog;
     }
     async send(name:string,params:any[],phrase:string,from:string)
     {
@@ -46,10 +47,10 @@ export default class EvmRouter
     }
     readEvent<T>(useSocket:boolean,eventName:string,fromBlock:number,
         cls: { new(data:any,content?:any): T },
-        response:(data:EventModel<T>)=>void,interval:number=10000)
+        response:(data:EventModel<T>)=>void,parent:any,blockStep:number=0,interval:number=10000)
     {
         var self=this;
-
+        let name=response.name;
         if(useSocket)
         {
             var queue:any[]=[]
@@ -62,7 +63,8 @@ export default class EvmRouter
                     var event=queue.splice(0,1)[0];
                     try{
 
-                        await response(new EventModel(hmyContract,event,cls))
+                        await  parent[name](new EventModel(hmyContract,event,cls))
+                        // await response(new EventModel(hmyContract,event,cls))
 
                     }catch(exp){
                         var a=0;
@@ -94,19 +96,69 @@ export default class EvmRouter
             setInterval(async()=>{
                 if(worker)return;
                 worker=true;
-                try{
-                    let options = { 
-                        fromBlock: fromBlock,
-                        toBlock: 'latest'
-                    }; 
-                    var results =await myContract.getPastEvents(eventName, options)
-                    for(var res of results)
-                    {
-                        await response(new EventModel(myContract,res,cls))
-                        fromBlock=res.blockNumber+1;
-                    }
-                }catch(exp){
 
+                if(blockStep)
+                {
+                    let eblock:number= await new Promise((res,rej)=>{
+                        
+                        web3.eth.getBlockNumber((error, blockNumber) => {
+                            if(!error) {
+                                res(blockNumber);
+                            } else {
+                                rej(error);
+                            }
+                        });
+                    })
+                    
+                    while(true)
+                    {
+                        if(fromBlock>=eblock)
+                        {
+                            break;
+                        }
+                        try{
+                            let next=Math.min(eblock,fromBlock+blockStep)
+                            let options = { 
+                                fromBlock: fromBlock,
+                                toBlock: next
+                            }; 
+                            if(self.showLog)
+                                console.log('<>>>',options);
+                            
+                            var results =await myContract.getPastEvents(eventName, options)
+                            for(var res of results)
+                            {
+                                await  parent[name](new EventModel(myContract,res,cls)) 
+                                fromBlock=res.blockNumber+1;
+                            }
+                            
+                                fromBlock=next+1;
+                        }catch(exp){
+                            console.log(exp.message);
+                            
+                        }
+                    }
+                }
+                else
+                {
+
+                    try{
+                        let options = { 
+                            fromBlock: fromBlock,
+                            toBlock: 'latest'
+                        }; 
+                        var results =await myContract.getPastEvents(eventName, options)
+                        for(var res of results)
+                        {
+                            await  parent[name](new EventModel(myContract,res,cls))
+                            // await response(new EventModel(hmyContract,event,cls))
+                            //await response(new EventModel(myContract,res,cls))
+                            fromBlock=res.blockNumber+1;
+                        }
+                    }catch(exp){
+                        console.log(exp.message);
+                        
+                    }
                 }
                 worker=false;
             },interval)
