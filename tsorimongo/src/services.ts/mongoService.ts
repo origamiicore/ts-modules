@@ -1,3 +1,4 @@
+import { OdataModel } from "origamicore";
 import DatabaseConnection from "../models/databaseConnection";
 import LocalSearchModel from "../models/localModels/localSearchModel";
 import OdataResponse from "../models/odataResponse"; 
@@ -30,7 +31,7 @@ export default class MongoService
             console.log(exp);            
         }
     }
-    createSyntax(query:any,odata:any):LocalSearchModel
+    createSyntax(query:any,odata:OdataModel):LocalSearchModel
     { 
         var select=[]
         var selectGroup:SelectModel[]=[]
@@ -60,7 +61,7 @@ export default class MongoService
             if(sles.length>0)
             {
                 if(select.length)
-                    for(var x of sles)
+                    for(let x of sles)
                     {
                         if(select.indexOf(x)>-1)
                             tempssl.push(x)
@@ -114,10 +115,10 @@ export default class MongoService
         
         if(query.order)
         {
-            for(var a of query.order)
+            for(let a of query.order)
               order.push(a);
         }
-        for(var a of order)
+        for(let a of order)
         {
             objorder[a.name]=1
             if(a.type=='desc')
@@ -128,7 +129,7 @@ export default class MongoService
         
         if(select.length)
             objselect={}
-        for(var a of select)
+        for(let a of select)
         {
             objselect[a]=1
         }
@@ -144,9 +145,16 @@ export default class MongoService
             retobj.top=odata.$top;
         if(odata?.$skip)
             retobj.skip=odata.$skip;
-            
+        //console.log(query.limit,odata);
+        
 		if(query.limit)
-            retobj.top=query.limit;
+        { 
+            if(!odata?.$top || odata?.$top>query.limit)
+            {
+                retobj.top=query.limit;
+            }
+
+        } 
         if(query.skip)
             retobj.skip=query.skip;
 

@@ -50,7 +50,9 @@ export default class DatabaseSample
         console.log('11>>',records.toJson());
         records= await coll.search().limit(2).find();
         console.log('12>>',records.toJson());
-        records= await coll.search().limit(2).skip(1).find();
+        records= await coll.search().limit(3).skip(1).odata(new OdataModel({
+            $top:'1'
+        })).find();
         console.log('13>>',records.toJson());
         records= await coll.search()
         .select(['age','firstName'])
@@ -114,6 +116,12 @@ export default class DatabaseSample
                     firstName:'name 4',
                     lastName:'lastname 4',
                     age:3*4
+                }),
+                new ProfileModel({
+                    _id:'8',
+                    firstName:'name 8',
+                    lastName:'lastname 8',
+                    age:3*8
                 }),
             ]
         )
