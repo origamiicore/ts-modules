@@ -109,6 +109,8 @@ export default class EvmRouter
                             }
                         });
                     })
+                    if(self.showLog)
+                        console.log('getBlockNumber',eblock);
                     
                     while(true)
                     {

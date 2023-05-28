@@ -134,13 +134,24 @@ export default class HyperionRouter
         }
         try{
             var url=this.url+'/v2/history/get_actions';
-            var dt:any= await WebService.get(url,{
+            let param={
                 account:action.contract,
                 limit:50,
                 'act.name':action.action,
                 sort:'asc',
                 after:time
-            },{},null);
+            }
+            console.log(url,param);
+            
+            if(!action.action || action.action=='*')
+            {
+                delete param['act.name']
+            }
+            if(!action.contract || action.contract=='*')
+            {
+                delete param['account']
+            }
+            var dt:any= await WebService.get(url,param,{},null);
             var x=0;
 
             if(dt.actions.length>=50)
