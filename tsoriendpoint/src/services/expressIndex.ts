@@ -9,6 +9,8 @@ import ErrorMessages from "../models/errorMessages";
 import Authorization from "../modules/authorization";
 import UploadFileModel from "../models/uploadFileModel";
 import IpController, { ServiceLimit } from "../models/ipController";
+import QueueControl from "../modules/queueControl";
+import QueueController from "../models/queueController";
 var url = require('url');
 var express = require('express');
 var bodyParser = require('body-parser'); 
@@ -86,7 +88,7 @@ export default class ExpressIndex
         }
         return true
     }
-    async init(ipController?:IpController)
+    async init(ipController?:IpController,queueController?:QueueController)
     {
         var app = express();
         this.setPublic(app,this.config);
@@ -95,6 +97,7 @@ export default class ExpressIndex
         this.setCrossDomain(app,this.config);
         this.runServer(app,this.config);
         var self=this;
+        let qcontrol:QueueControl;
         if(ipController?.limits.length)
         {
             allService=ipController?.limits.filter(p=>!p.domain && !p.service)[0]
@@ -112,6 +115,10 @@ export default class ExpressIndex
             }
             haveIpcontroller=true
  
+        }
+        if(queueController)
+        {
+            qcontrol=new QueueControl(queueController);
         }
         app.use(async(req, res, next)=> { 
              
@@ -147,6 +154,15 @@ export default class ExpressIndex
             }
             if(!isAuthz) 
                 return self.sendData(res,403,{message:ErrorMessages.authz}) 
+            let checkQueue= qcontrol.check(data.domain,data.service,session)    
+            if(!checkQueue)
+            {
+                return self.sendData(res,403,{message:ErrorMessages.limit})  
+            }
+            if(qcontrol)
+            {
+                qcontrol.check(data.domain,data.service,session)
+            }
 			var upload=await self.checkUpload(req,data,self)
 			if(!upload)
 				return self.sendData(res,413,{message:ErrorMessages.upload})

@@ -50,6 +50,15 @@ class ProfileService implements PackageIndex
         //return name;
         return new RouteResponse({})
     }   
+    @OriService( )
+    async queueTest()
+    { 
+        return new Promise((res,rej)=>{
+            setTimeout(()=>{
+                res(true)
+            },300)
+        }) 
+    }   
     @OriService({roles:[Roles.Admin]} )
     async isAdmin()
     { 

@@ -1,13 +1,23 @@
 
 import {ConfigModel,HttpMethod} from "origamicore";
-import {ConnectionProtocol,EndpointConfig,EndpointConnection,EndpointConnectionType, IpController, ServiceLimit} from "..";  
+import {ConnectionProtocol,EndpointConfig,EndpointConnection,EndpointConnectionType, IpController, QueueController, QueueLimit, ServiceLimit} from "..";  
 import ProfileConfig from "./profileService/models/profileConfig";
 
 var path = require('path');  
 export default new ConfigModel({
     defaultMethod:HttpMethod.Get,
     packageConfig:[
-         new EndpointConfig({ 
+         new EndpointConfig({  
+             queue:new QueueController({
+                limits:[
+                    new QueueLimit({
+                        delayPerSec:5,
+                        domain:'profile',
+                        services:['queueTest']
+                    })
+                ]
+             })
+             ,
             ipController:new IpController({
                 limits:[
                     new ServiceLimit({ 

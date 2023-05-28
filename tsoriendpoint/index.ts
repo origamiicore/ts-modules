@@ -6,6 +6,7 @@ import EndpointConnection, { EndpointConnectionType } from "./src/models/endpoin
 import IpController, { ServiceLimit } from "./src/models/ipController";
 import JwtConfig from "./src/models/jwtConfig";
 import LimitModel from "./src/models/limitModel";
+import QueueController, { QueueLimit } from "./src/models/queueController";
 import RedisConfig from "./src/models/redisConfig";
 export {
     EndpointConfig,
@@ -17,6 +18,8 @@ export {
     RedisConfig,
     EndpointConnectionType,
     IpController,
-    ServiceLimit
+    ServiceLimit,
+    QueueController,
+    QueueLimit
 }
 export default TsOriEndpoint;

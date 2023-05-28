@@ -29,7 +29,7 @@ export default class TsOriEndpoint implements PackageIndex
 
         for(var express of this.expressList)
         {
-            await express.init(this.config.ipController);
+            await express.init(this.config.ipController,this.config.queue);
         }
         for(var socket of this.socketList)
         {
