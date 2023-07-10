@@ -1,6 +1,7 @@
 import AuthzEndpoint from "./authzEndpoint";
 import ConnectionProtocol from "./connectionProtocol";
 import LimitModel from "./limitModel";
+import ConnectionEvent from "./socket/connectionEvent";
 
 export class EndpointConnectionType
 {
@@ -20,7 +21,7 @@ export default class EndpointConnection
     authz:AuthzEndpoint;
     protocol:ConnectionProtocol;
     debug:boolean
-    
+    events:ConnectionEvent[]=[];
     public constructor(
         fields: {
             type: EndpointConnectionType, 
@@ -33,7 +34,8 @@ export default class EndpointConnection
             allowHeader?: string, 
             authz?:AuthzEndpoint,
             limit?:LimitModel,
-            debug?:boolean
+            debug?:boolean,
+            events?:ConnectionEvent[]
         }) {
         if (fields) Object.assign(this, fields);
     }

@@ -1,4 +1,5 @@
 import EndpointConnection from "../models/endpointConnection";
+import ConnectionEvent, { ConnectionEventType } from "../models/socket/connectionEvent";
 import JwtSessionManager from "../sessionManager/jwtSessionManager";
 import RamsSessionManager from "../sessionManager/ramSessionManager";
 import RedisSessionManager from "../sessionManager/redisSessionManager";
@@ -20,6 +21,13 @@ export default class SocketIndex
     {
         var server:any={};
         var protocol=this.config.protocol;
+        let openEvent:ConnectionEvent;
+        let closeEvent:ConnectionEvent;
+        if(this.config.events)
+        {
+            openEvent=this.config.events.filter(p=>p.type==ConnectionEventType.Open)[0];
+            closeEvent=this.config.events.filter(p=>p.type==ConnectionEventType.Close)[0];
+        }
         await this.setSessionManager(this.config);
         if(protocol.type=='http')
         {
@@ -43,18 +51,27 @@ export default class SocketIndex
             autoAcceptConnections: false
         });
         wsServer.on('request', (request)=> {
-            var connection:any ={}              
+            var connection:any ={}   
+                       
             try{
                 connection = request.accept(protocol.socketProtocol, request.origin); 
                 if(protocol.socketProtocol=='echo-protocol')
                 { 
+                    if(openEvent)
+                    {
+                        EchoPortocol.sendEvent(connection,request.key,this.sessionManager,this.config,openEvent)
+                    }
                     connection.on('message', (message)=> {
                         EchoPortocol.newMessage(message,connection,request.key,this.sessionManager,this.config);
                     })
                 }               
-                // connection.on("close",()=>{          
-                //     this.echoClose(connection,request.key,dist)
-                // })
+                if(closeEvent)
+                {
+                    connection.on("close",()=>{    
+                        EchoPortocol.sendEvent(connection,request.key,this.sessionManager,this.config,closeEvent)
+                        // this.echoClose(connection,request.key,dist)
+                    })
+                }
                 
             }catch(exp){
                 console.log('Error>>>',exp)

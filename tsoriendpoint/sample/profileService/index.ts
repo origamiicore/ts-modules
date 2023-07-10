@@ -73,5 +73,17 @@ class ProfileService implements PackageIndex
         
     }
  
+    @OriService({isInternal:true})
+    async openSession(@SessionInput session)
+    { 
+        console.log('Connection Opend >',session);
+        
+    }
+    @OriService({isInternal:true})
+    async closeSession(@SessionInput session)
+    { 
+        console.log('Connection Closed >',session);
+        
+    }
 }
 export default ProfileService

@@ -2,8 +2,28 @@ import { HttpMethod, MessageModel, Router } from "origamicore";
 import EndpointConnection from "../../models/endpointConnection";
 import Authorization from "../../modules/authorization";
 import SessionManager from "../../sessionManager/sessionManager";
+import ConnectionEvent, { ConnectionEventType } from "../../models/socket/connectionEvent";
+
+let tmpToken:Map<string,string>=new Map<string,string>();
 
 export default class EchoPortocol{
+    static async sendEvent(connection:any,key:any,sessionManager:SessionManager,config:EndpointConnection,event:ConnectionEvent)
+    {
+        let token=tmpToken.get(key);
+        var session= await sessionManager.getSession(token);
+        var body:any={ 
+            data:{},
+            key,
+            session
+        }
+        if(event.type==ConnectionEventType.Close)
+        {
+            tmpToken.delete(key)
+        }
+        let d =await Router.runInternal(event.domain,event.service,
+            new MessageModel(body))
+        let r=0;
+    }
     static async newMessage(message:any,connection:any,key:any,sessionManager:SessionManager,config:EndpointConnection)
     {
         if (message.type !== 'utf8')
@@ -20,6 +40,7 @@ export default class EchoPortocol{
 		if(!data.domain || !data.service)
 			return this.response({message:"wrong service"},{id:data.id},connection,sessionManager,id)
         var session= await sessionManager.getSession(data.token);
+        tmpToken.set(key,data.token)
         var body:any={ 
             data:data.param,
             key

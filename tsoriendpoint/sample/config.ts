@@ -2,6 +2,7 @@
 import {ConfigModel,HttpMethod} from "origamicore";
 import {ConnectionProtocol,EndpointConfig,EndpointConnection,EndpointConnectionType, IpController, QueueController, QueueLimit, ServiceLimit} from "..";  
 import ProfileConfig from "./profileService/models/profileConfig";
+import ConnectionEvent, { ConnectionEventType } from "../src/models/socket/connectionEvent";
 
 var path = require('path');  
 export default new ConfigModel({
@@ -50,7 +51,19 @@ export default new ConfigModel({
                     protocol:new ConnectionProtocol({
                         type:'http',
                         port:9202
-                    })
+                    }),
+                    events:[
+                        new ConnectionEvent({
+                            domain:'profile',
+                            service:'openSession',
+                            type:ConnectionEventType.Open
+                        }),
+                        new ConnectionEvent({
+                            domain:'profile',
+                            service:'closeSession',
+                            type:ConnectionEventType.Close
+                        }),
+                    ]
                 })
              ]
          }),
