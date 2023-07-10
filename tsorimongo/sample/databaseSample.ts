@@ -14,7 +14,7 @@ export default class DatabaseSample
         console.log('updateOne>>',updateOneData);
         var updateManyData =await coll.UpdateMany({age:12},{inc:{age:1}})
         console.log('updateMany>>',updateManyData);
-        var replaceData=await coll.Replace({_id:'1'},new ProfileModel({age:22,firstName:'r1',lastName:'r2'}))
+        var replaceData=await coll.Replace({_id:'1'},new ProfileModel({age:22,firstName:'r1',lastName:'r2',isValidate:false}))
         console.log('replaceData',replaceData);
 
     }
@@ -55,15 +55,15 @@ export default class DatabaseSample
         })).find();
         console.log('13>>',records.toJson());
         records= await coll.search()
-        .select(['age','firstName'])
-        .where({_id:{$ne:'2'}})
+        // .select(['age','firstName'])
+        // .where({_id:{$ne:'2'}})
         .odata(new OdataModel({
             $count:true,
             $top:4,
            // $skip:0,
-            $filter:'age gt 3',
+            $filter:'isValidate eq false',
             $orderby:'age desc',
-            $select:'age,lastName'     
+            // $select:'age,lastName'     
         })).find();
         console.log('14>>',records.toJson());
         var record= await coll.search().where({age:{$ne:null}}).findOne();
@@ -94,7 +94,8 @@ export default class DatabaseSample
             _id:'2',
             firstName:'vahid',
             lastName:'hossaini',
-            age:12
+            age:12,
+            isValidate:true
         }))
         console.log('1>>',insertData);
         var insertManyData= await coll.InsertMany(
@@ -103,25 +104,29 @@ export default class DatabaseSample
                     _id:'1',
                     firstName:'name 1',
                     lastName:'lastname 1',
-                    age:3*1
+                    age:3*1,
+                    isValidate:true
                 }),
                 new ProfileModel({
                     _id:'3',
                     firstName:'name 3',
                     lastName:'lastname 3',
-                    age:3*3
+                    age:3*3,
+                    isValidate:false
                 }),
                 new ProfileModel({
                     _id:'4',
                     firstName:'name 4',
                     lastName:'lastname 4',
-                    age:3*4
+                    age:3*4,
+                    isValidate:false
                 }),
                 new ProfileModel({
                     _id:'8',
                     firstName:'name 8',
                     lastName:'lastname 8',
-                    age:3*8
+                    age:3*8,
+                    isValidate:true
                 }),
             ]
         )
@@ -155,8 +160,8 @@ export default class DatabaseSample
             console.log('>>',exp);
             
         }
-            await this.update(coll);
             await this.search(coll);
+            await this.update(coll);
             await this.delete(coll);
         
     }

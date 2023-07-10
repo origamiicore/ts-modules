@@ -36,7 +36,8 @@ export default class QueryService
             {
                  if(token.value=="Edm.Boolean")
                  {
-                     return !!(token.raw)
+
+                     return  ( token.raw=='true')
                  }
                  if(token.value=="null")
                  {

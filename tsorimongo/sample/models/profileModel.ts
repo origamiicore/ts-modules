@@ -9,12 +9,14 @@ export default class ProfileModel extends IOriModel
     @OriProps({})
     lastName:string;
     age:number;
+    isValidate:boolean
     constructor(
         fields?: {
             _id?:string
             firstName?: string
             lastName?: string
             age?:number
+            isValidate:boolean
         })
     {
         super();  
