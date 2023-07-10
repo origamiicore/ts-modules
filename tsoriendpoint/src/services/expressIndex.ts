@@ -154,14 +154,15 @@ export default class ExpressIndex
             }
             if(!isAuthz) 
                 return self.sendData(res,403,{message:ErrorMessages.authz}) 
-            let checkQueue= qcontrol.check(data.domain,data.service,session)    
-            if(!checkQueue)
-            {
-                return self.sendData(res,403,{message:ErrorMessages.limit})  
-            }
+
+                
             if(qcontrol)
             {
-                qcontrol.check(data.domain,data.service,session)
+                let checkQueue= qcontrol.check(data.domain,data.service,session)    
+                if(!checkQueue)
+                {
+                    return self.sendData(res,403,{message:ErrorMessages.limit})  
+                } 
             }
 			var upload=await self.checkUpload(req,data,self)
 			if(!upload)

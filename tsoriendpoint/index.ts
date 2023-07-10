@@ -8,6 +8,10 @@ import JwtConfig from "./src/models/jwtConfig";
 import LimitModel from "./src/models/limitModel";
 import QueueController, { QueueLimit } from "./src/models/queueController";
 import RedisConfig from "./src/models/redisConfig";
+import JwtSessionManager from "./src/sessionManager/jwtSessionManager";
+import RamsSessionManager from "./src/sessionManager/ramSessionManager";
+import RedisSessionManager from "./src/sessionManager/redisSessionManager";
+import SessionManager from "./src/sessionManager/sessionManager";
 export {
     EndpointConfig,
     EndpointConnection,
@@ -20,6 +24,10 @@ export {
     IpController,
     ServiceLimit,
     QueueController,
-    QueueLimit
+    QueueLimit,
+    SessionManager,
+    RedisSessionManager,
+    JwtSessionManager,
+    RamsSessionManager
 }
 export default TsOriEndpoint;
